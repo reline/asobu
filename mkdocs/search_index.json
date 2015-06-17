@@ -1,0 +1,24 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "\u3042\u305d\u307c\u3046\u3088\uff01\u3000Let's Play!\n\n\nAn android app for studying Japanese.\n\n\nEnvironment\n\n\nAndroid App developed for Ice Cream Sandwich v4.04 and up.\n\n\nProject Description\n\n\nUsers will choose a song and then will be given the lyrics to the song with a few words blanked out. The \nusers will have to fill in the blanks with the words. They\u2019re scored on how many blank spaces they filled \nin correctly. If the user doesn\u2019t fill in the blanks correctly in the allotted time they will either lose points \nor simply gain none. The lyrics will be synced up with the song and will scroll along as it plays.", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/#lets-play", 
+            "text": "An android app for studying Japanese.", 
+            "title": "\u3042\u305d\u307c\u3046\u3088\uff01\u3000Let's Play!"
+        }, 
+        {
+            "location": "/#environment", 
+            "text": "Android App developed for Ice Cream Sandwich v4.04 and up.", 
+            "title": "Environment"
+        }, 
+        {
+            "location": "/#project-description", 
+            "text": "Users will choose a song and then will be given the lyrics to the song with a few words blanked out. The \nusers will have to fill in the blanks with the words. They\u2019re scored on how many blank spaces they filled \nin correctly. If the user doesn\u2019t fill in the blanks correctly in the allotted time they will either lose points \nor simply gain none. The lyrics will be synced up with the song and will scroll along as it plays.", 
+            "title": "Project Description"
+        }
+    ]
+}
