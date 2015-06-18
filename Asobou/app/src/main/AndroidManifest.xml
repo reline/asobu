@@ -48,6 +48,18 @@
             android:name=".ScoreboardActivity"
             android:label="@string/title_activity_scoreboard" >
         </activity>
+        <activity
+            android:name=".HelpActivity"
+            android:label="@string/title_activity_help" >
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name=".SongSelectionActivity"
+            android:label="@string/title_activity_song_selection" >
+        </activity>
     </application>
 
 </manifest>
