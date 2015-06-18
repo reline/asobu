@@ -5,10 +5,10 @@
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"
           android:orderInCategory="1"
-          app:showAsAction="never"/>
+          android:onClick="onSettingsButtonClick"/>
     <item android:id="@+id/action_help"
-        android:title="Help"
+        android:title="@string/action_help"
         android:orderInCategory="2"
-        app:showAsAction="never"/>
+        android:onClick="onHelpButtonClick"/>
 
 </menu>
