@@ -12,8 +12,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application
         android:allowBackup="true"
@@ -61,6 +61,10 @@
         <activity
             android:name=".SongSelectionActivity"
             android:label="@string/title_activity_song_selection" >
+        </activity>
+        <activity
+            android:name=".PlayTapModeActivity"
+            android:label="@string/title_activity_play_tap_mode" >
         </activity>
     </application>
 

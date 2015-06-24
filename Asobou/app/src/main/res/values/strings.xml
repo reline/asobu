@@ -54,5 +54,6 @@
     <string name="change_name">Change Name</string>
     <string name="new_name">New Name</string>
     <string name="title_activity_song_selection">Select a Song</string>
+    <string name="title_activity_play_tap_mode">Play</string>
 
 </resources>
