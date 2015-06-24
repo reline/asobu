@@ -21,11 +21,15 @@ android {
 
 repositories {
     mavenCentral()
+    maven { url 'https://maven.fabric.io/public' }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
+    compile('com.digits.sdk.android:digits:1.5.0@aar') {
+        transitive = true;
+    }
     compile 'com.android.support:appcompat-v7:22.2.0'
     //compile 'org.jooq:jooq:3.6.2' // may be including libraries that are being included already
     compile 'com.google.android.gms:play-services:7.5.0'

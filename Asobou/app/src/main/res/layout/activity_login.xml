@@ -16,45 +16,25 @@
         android:text="@string/asobou"
         android:id="@+id/textView"
         android:textSize="40sp"
-        android:layout_marginBottom="50dp"
-        android:layout_above="@+id/phone_number"
-        android:layout_centerHorizontal="true"/>
-
-    <EditText
-        android:id="@+id/phone_number"
-        android:layout_width="204dp"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:layout_above="@+id/password"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:hint="@string/phone"/>
+        android:layout_marginTop="82dp"/>
 
-    <EditText
-        android:id="@+id/password"
+    <com.digits.sdk.android.DigitsAuthButton
+        android:id="@+id/auth_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
         android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/phone_number"
-        android:layout_alignEnd="@+id/phone_number"
-        android:layout_alignLeft="@+id/phone_number"
-        android:layout_alignStart="@+id/phone_number"
-        android:hint="@string/password"/>
-
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/password"
-        android:layout_centerHorizontal="true"
-        android:hint="@string/login"/>
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView"/>
 
     <Button
         android:id="@+id/about_button"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/login_button"
+        android:hint="@string/about"
+        android:layout_below="@+id/auth_button"
         android:layout_centerHorizontal="true"
-        android:hint="@string/about"/>
+        android:layout_marginTop="32dp"/>
 
 </RelativeLayout>

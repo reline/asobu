@@ -8,22 +8,40 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import io.fabric.sdk.android.Fabric;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.digits.sdk.android.Digits;
+import com.digits.sdk.android.AuthCallback;
+import com.digits.sdk.android.DigitsAuthButton;
+import com.digits.sdk.android.DigitsException;
+import com.digits.sdk.android.DigitsSession;
+
 public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        Button loginButton = (Button) findViewById(R.id.login_button);
-        Button aboutButton = (Button) findViewById(R.id.about_button);
+        TwitterAuthConfig authConfig =
+                new TwitterAuthConfig("vQWTcKngcE4UE05x7d6tc3Gj8", "7AVmT8iJvFs6AKPcyMQ9Ygf6xYCxaHveoBySsh7V4dylND88EH");
+        Fabric.with(this, new TwitterCore(authConfig), new Digits());
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_login);
+        DigitsAuthButton digitsButton =
+                (DigitsAuthButton) findViewById(R.id.auth_button);
+        digitsButton.setCallback(new AuthCallback() {
             @Override
-            public void onClick(View v) {
-                // TODO: Change to verify login credentials before proceeding to Dashboard
+            public void success(DigitsSession digitsSession, String s) {
                 startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
             }
+
+            @Override
+            public void failure(DigitsException e) {
+                // Do something on failure
+                System.out.println("Digits authentication failure.");
+            }
         });
+        Button aboutButton = (Button) findViewById(R.id.about_button);
 
         aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
