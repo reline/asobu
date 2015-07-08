@@ -20,19 +20,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <!-- To access Fabric Digits API: -->
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="6aebf3659c5f53f7d33e300095f5d2c538bfecd7" />
 
         <activity
             android:name=".LoginActivity"
@@ -67,5 +62,7 @@
             android:label="@string/title_activity_play_tap_mode" >
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

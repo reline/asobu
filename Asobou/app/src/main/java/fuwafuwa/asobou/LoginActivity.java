@@ -19,11 +19,14 @@ import com.digits.sdk.android.DigitsSession;
 
 public class LoginActivity extends AppCompatActivity {
 
+    // Store in database for retrieval when web services are available
+    private static final String TWITTER_KEY = "QoRJuK2MljCoc6VG19INXBHwJ";
+    private static final String TWITTER_SECRET = "FfnPO03pLwiXBmfQ9zivAZ1K6qSL8PFv10KVU66HIyetrDSrTe";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TwitterAuthConfig authConfig =
-                new TwitterAuthConfig("vQWTcKngcE4UE05x7d6tc3Gj8", "7AVmT8iJvFs6AKPcyMQ9Ygf6xYCxaHveoBySsh7V4dylND88EH");
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this, new TwitterCore(authConfig), new Digits());
 
         setContentView(R.layout.activity_login);

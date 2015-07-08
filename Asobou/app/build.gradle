@@ -1,4 +1,16 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'https://maven.fabric.io/public' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
+
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 22
@@ -29,10 +41,11 @@ dependencies {
 
     compile files('libs/YouTube/AndroidPlayerApi.jar')
 
-    compile('com.digits.sdk.android:digits:1.5.0@aar') {
-        transitive = true;
-    }
     compile 'com.android.support:appcompat-v7:22.2.0'
     //compile 'org.jooq:jooq:3.6.2' // may be including libraries that are being included already
     compile 'com.google.android.gms:play-services:7.5.0'
+
+    compile('com.digits.sdk.android:digits:1.6.1@aar') {
+        transitive = true;
+    }
 }
