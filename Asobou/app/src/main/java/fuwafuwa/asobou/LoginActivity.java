@@ -44,8 +44,16 @@ public class LoginActivity extends AppCompatActivity {
                 System.out.println("Digits authentication failure.");
             }
         });
-        Button aboutButton = (Button) findViewById(R.id.about_button);
 
+        Button loginButton = (Button) findViewById(R.id.skip);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+            }
+        });
+
+        Button aboutButton = (Button) findViewById(R.id.about_button);
         aboutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
