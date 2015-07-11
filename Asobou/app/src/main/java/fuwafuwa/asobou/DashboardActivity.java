@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -38,8 +39,12 @@ public class DashboardActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onViewMoreButtonClick(View v) {
+    public void onViewMoreButtonClick(View v){
         startActivity(new Intent(DashboardActivity.this, ScoreboardActivity.class));
+    }
+
+    public void onPlayButtonClick(View v) {
+        startActivity(new Intent(this, SongSelectionActivity.class));
     }
 
     public void onSettingsButtonClick(MenuItem menuItem) {
@@ -48,6 +53,10 @@ public class DashboardActivity extends AppCompatActivity {
 
     public void onHelpButtonClick(MenuItem menuItem) {
         startActivity(new Intent(this, HelpActivity.class));
+    }
+
+    public void onGoToActivityPagesClick(View v) {
+        startActivity(new Intent(DashboardActivity.this, gotoeverypage.class));
     }
 
 }

@@ -16,6 +16,7 @@
         android:textStyle="bold"
         android:textSize="16sp"/>
 
+    <!-- TODO: HELP - change the words so it's not all lorem ipsum -->
     <TextView
         android:id="@+id/requirements_b"
         android:text="@string/requirements_b"

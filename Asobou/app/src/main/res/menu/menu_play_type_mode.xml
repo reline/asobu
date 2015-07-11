@@ -1,7 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context="fuwafuwa.asobou.SongSelectionActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="fuwafuwa.asobou.PlayTypeModeActivity">
+
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="1"
@@ -10,4 +11,5 @@
         android:title="@string/action_help"
         android:orderInCategory="2"
         android:onClick="onHelpButtonClick"/>
+
 </menu>

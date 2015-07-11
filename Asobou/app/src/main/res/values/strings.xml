@@ -55,5 +55,7 @@
     <string name="new_name">New Name</string>
     <string name="title_activity_song_selection">Select a Song</string>
     <string name="title_activity_play_tap_mode">Play</string>
+    <string name="title_activity_gotoeverypage">gotoeverypage</string>
+    <string name="title_activity_play_type_mode">PlayTypeMode</string>
 
 </resources>
