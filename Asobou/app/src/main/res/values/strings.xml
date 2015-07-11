@@ -57,5 +57,12 @@
     <string name="title_activity_play_tap_mode">Play</string>
     <string name="title_activity_gotoeverypage">gotoeverypage</string>
     <string name="title_activity_play_type_mode">PlayTypeMode</string>
+    <string name="order_song_button">Song</string>
+    <string name="order_artist_button">Artist</string>
+    <string-array name="order_diff_spinner">
+        <item>Slow</item>
+        <item>Medium</item>
+        <item>Fast</item>
+    </string-array>
 
 </resources>

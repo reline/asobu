@@ -10,11 +10,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fuwafuwa.asobou.model.Song;
@@ -24,21 +28,33 @@ public class ScoreboardActivity extends AppCompatActivity {
 
     private static final String TAG = "ScoreboardActivity";
 
-    String weburl = "http://198.199.94.36/change/backend/getallsongs.php";
-    TextView output;
-    List<Song> songList;
+    private String weburl = "http://198.199.94.36/change/backend/getallsongs.php";
+    //private TextView output;
+    private List<Song> songList = new ArrayList<>();
+    private ListView songListView;
+    //private ArrayAdapter<String> songAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scoreboard);
 
-        output = (TextView) findViewById(R.id.textView2);
+        //get the spinner to display the difficulty levels
+        Spinner diffView = (Spinner) findViewById(R.id.scoreboard_diffspinner);
+        ArrayAdapter spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.order_diff_spinner, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        diffView.setAdapter(spinnerAdapter);
+
+        songListView = (ListView) findViewById(R.id.scoreboard_listview);
+
+        //output = (TextView) findViewById(R.id.textView2);
         if(isOnline()){
             requestData(weburl);
         } else {
             Toast.makeText(this, "Network isn;t avalible, you're offline", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
@@ -75,11 +91,17 @@ public class ScoreboardActivity extends AppCompatActivity {
     protected void updateDisplay() {
         //output.append(message + "\n");
 
+        ArrayList<String> songTitles = new ArrayList<>();
+
         if(songList != null) {
             for(Song song : songList) {
                 Log.d(TAG, " - updateDisplay: " + song.getTitle());
-                output.append(song.getTitle() + "\n");
+                //output.append(song.getTitle() + "\n");
+                songTitles.add(song.getTitle());
             }
+
+            ArrayAdapter<String> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, songTitles);
+            songListView.setAdapter(songAdapter);
         }
     }
 
@@ -116,8 +138,8 @@ public class ScoreboardActivity extends AppCompatActivity {
             return "Task Complete";
             */
 
-            String content = HttpManager.getData(params[0]);
-            return content;
+            //String content = HttpManager.getData(params[0]);
+            return HttpManager.getData(params[0]);
         }
 
         @Override

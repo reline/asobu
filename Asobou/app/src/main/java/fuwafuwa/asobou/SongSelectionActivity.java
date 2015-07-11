@@ -1,52 +1,79 @@
 package fuwafuwa.asobou;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.gson.internal.bind.ArrayTypeAdapter;
 
 import java.util.ArrayList;
 
+import fuwafuwa.asobou.model.Song;
+import fuwafuwa.asobou.parser.SongJSONparser;
+
 public class SongSelectionActivity extends AppCompatActivity {
 
+    private static final String TAG = "SongSelectionActivity";
+    private String weburl = "http://198.199.94.36/change/backend/getallsongs.php";
     private ListView songListView;
     private ArrayAdapter<String> listAdapter;
-    private ArrayList<String> songarray = new ArrayList<>();
+    private ArrayList<Song> songList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_selection);
 
-        songarray.add("ド・キ・ド・キ　モーニン");
-        songarray.add("メギツネ");
-        songarray.add("ギッミチョコ");
-        songarray.add("イ～ネ");
-        songarray.add("Love Metal");
-        songarray.add("Love Machine");
-        songarray.add("Song 4 (Black Night)");
-        songarray.add("いいね!");
-        songarray.add("Headbangeeeeeeeeeeeeeerrrrrrrrrrr!!!!!!");
-        songarray.add("Onedari Dalsakusen");
-        songarray.add("Tamashii no Rufuran");
-        songarray.add("Catch me if you can");
-        songarray.add("Uki Uki Nightmare");
-        songarray.add("Rondo of Nightmare");
-        songarray.add("イジメ, ダメ, ゼッタイ");
-        songarray.add("Road of Resistance");
-        songarray.add("Akatsuki");
-        songarray.add("BABYMETAL DEATH");
-        songarray.add("君とアニメが見たい");
+        //get the spinner to display the difficulty levels
+        Spinner diffView = (Spinner) findViewById(R.id.selectsong_diff);
+        ArrayAdapter spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.order_diff_spinner, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        diffView.setAdapter(spinnerAdapter);
+
+        if(isOnline()){
+            requestData(weburl);
+        } else {
+            Toast.makeText(this, "Network isn;t avalible, you're offline", Toast.LENGTH_SHORT).show();
+        }
+
+        /*
+
+        songList.add("ド・キ・ド・キ　モーニン");
+        songList.add("メギツネ");
+        songList.add("ギッミチョコ");
+        songList.add("イ～ネ");
+        songList.add("Love Metal");
+        songList.add("Love Machine");
+        songList.add("Song 4 (Black Night)");
+        songList.add("いいね!");
+        songList.add("Headbangeeeeeeeeeeeeeerrrrrrrrrrr!!!!!!");
+        songList.add("Onedari Dalsakusen");
+        songList.add("Tamashii no Rufuran");
+        songList.add("Catch me if you can");
+        songList.add("Uki Uki Nightmare");
+        songList.add("Rondo of Nightmare");
+        songList.add("イジメ, ダメ, ゼッタイ");
+        songList.add("Road of Resistance");
+        songList.add("Akatsuki");
+        songList.add("BABYMETAL DEATH");
+        songList.add("君とアニメが見たい");
 
         songListView = (ListView) findViewById(R.id.selectsong_listview);
-        listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songarray);
+        listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songList);
         songListView.setAdapter(listAdapter);
+
+        */
 
     }
 
@@ -80,24 +107,53 @@ public class SongSelectionActivity extends AppCompatActivity {
         startActivity(new Intent(this, HelpActivity.class));
     }
 
-    /*
+    protected void updateDisplay() {
+        //output.append(message + "\n");
+
+        ArrayList<String> songTitles = new ArrayList<>();
+
+        if(songList != null) {
+            for(Song song : songList) {
+                Log.d(TAG, " - updateDisplay: " + song.getTitle());
+                //output.append(song.getTitle() + "\n");
+                songTitles.add(song.getTitle());
+            }
+
+            ArrayAdapter<String> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, songTitles);
+            songListView.setAdapter(songAdapter);
+        }
+    }
+
+    private void requestData(String uri){
+
+        SelectSongTask task = new SelectSongTask();
+        //task.execute("ド・キ・ド・キ　モーニン", "メギツネ", "ギッミチョコ", "イ～ネ", "君とアニメが見たい");
+        task.execute(uri);
+    }
+
+    protected boolean isOnline(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if((netInfo != null) &&(netInfo.isConnectedOrConnecting())){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private class SelectSongTask extends AsyncTask<String, String, String>{
 
         @Override
-        protected void onPreExecute() {
-
-        }
-
-        @Override
         protected String doInBackground(String... params) {
-            return null;
+            return HttpManager.getData(params[0]);
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+        protected void onPostExecute(String result) {
+            songList = (ArrayList<Song>) SongJSONparser.parseSongs(result);
+            updateDisplay();
         }
-    }
-    */
+    }   //end song select task
+
 
 }   //end of activity
