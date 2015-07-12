@@ -28,7 +28,7 @@ public class SongJSONparser {
             */
             JSONArray array = new JSONArray(content);
 
-            Log.d(TAG, "- Content: " + content.toString());
+            Log.d(TAG, "- Content: " + content);
 
             Log.d(TAG, "- JSONarray: " + array.toString());
 
@@ -51,7 +51,7 @@ public class SongJSONparser {
                 song.setAlbumArtwork(obj.getString("album_artwork"));
 
                 //media
-
+                song.setVideoLink(obj.getString("media_video"));
 
                 //lyrics
 
@@ -68,6 +68,6 @@ public class SongJSONparser {
             e.printStackTrace();
             return null;
         }
-    }   //end pasrseSongs
+    }   //end parseSongs
 
 }   //end SongJSON parser class

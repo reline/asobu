@@ -11,10 +11,14 @@ import com.google.android.youtube.player.YouTubePlayerView;
 
 public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
 
+    private String songVideoLink;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_tap_mode);
+
+        songVideoLink = getIntent().getStringExtra("songVideoLink");
 
         YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
@@ -23,7 +27,9 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         if (!wasRestored) {
-            player.cueVideo("wKJ9KzGQq0w");
+            player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+            //player.cueVideo(songVideoLink);
+            player.loadVideo("dQw4w9WgXcQ");
         }
     }
 

@@ -1,7 +1,11 @@
 package fuwafuwa.asobou;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -10,9 +14,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.internal.bind.ArrayTypeAdapter;
@@ -22,7 +29,7 @@ import java.util.ArrayList;
 import fuwafuwa.asobou.model.Song;
 import fuwafuwa.asobou.parser.SongJSONparser;
 
-public class SongSelectionActivity extends AppCompatActivity {
+public class SongSelectionActivity extends Activity implements AdapterView.OnItemClickListener{
 
     private static final String TAG = "SongSelectionActivity";
     private String weburl = "http://198.199.94.36/change/backend/getallsongs.php";
@@ -78,6 +85,21 @@ public class SongSelectionActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String clickedSongId = (String) parent.getItemAtPosition(position);
+        startActivity(new Intent(this, PlayTapModeActivity.class).putExtra("songVideoLink", getVideoLink(clickedSongId)));
+    }
+
+    public String getVideoLink(String songName) {
+        for (Song s : songList) {
+            if (s.getVideoLink().equals(songName)) {
+                return s.getVideoLink();
+            }
+        }
+        return "dQw4w9WgXcQ"; // if that song has no link, get rick rolled
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_song_selection, menu);
@@ -129,16 +151,14 @@ public class SongSelectionActivity extends AppCompatActivity {
         SelectSongTask task = new SelectSongTask();
         //task.execute("ド・キ・ド・キ　モーニン", "メギツネ", "ギッミチョコ", "イ～ネ", "君とアニメが見たい");
         task.execute(uri);
+        //task.onPostExecute();
     }
 
     protected boolean isOnline(){
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if((netInfo != null) &&(netInfo.isConnectedOrConnecting())){
-            return true;
-        } else {
-            return false;
-        }
+
+        return (netInfo != null && netInfo.isConnectedOrConnecting());
     }
 
     private class SelectSongTask extends AsyncTask<String, String, String>{

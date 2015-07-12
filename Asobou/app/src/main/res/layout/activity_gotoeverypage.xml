@@ -50,7 +50,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="scorebaord"
+            android:text="scoreboard"
             android:id="@+id/scoreboardbtn"
             android:onClick="onScoreboardButtonClick" />
 

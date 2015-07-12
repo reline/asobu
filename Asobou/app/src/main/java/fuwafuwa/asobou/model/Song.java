@@ -31,6 +31,10 @@ public class Song {
     private int userScore;
     //TODO: implement datatime thing...
 
+    public Song() {
+
+    }
+
     public int getSongId() {
         return songId;
     }
