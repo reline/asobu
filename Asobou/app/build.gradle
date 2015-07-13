@@ -29,7 +29,7 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile files('libs/YouTube/AndroidPlayerApi.jar')
+    compile files('libs/YouTubeAndroidPlayerApi.jar')
 
     compile 'com.android.support:appcompat-v7:22.2.0'
     //compile 'org.jooq:jooq:3.6.2' // may be including libraries that are being included already

@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import fuwafuwa.asobou.model.Song;
 import fuwafuwa.asobou.parser.SongJSONparser;
 
-public class SongSelectionActivity extends Activity implements AdapterView.OnItemClickListener{
+public class SongSelectionActivity extends AppCompatActivity {//Activity implements AdapterView.OnItemClickListener{
 
     private static final String TAG = "SongSelectionActivity";
     private String weburl = "http://198.199.94.36/change/backend/getallsongs.php";
@@ -51,7 +51,7 @@ public class SongSelectionActivity extends Activity implements AdapterView.OnIte
         if(isOnline()){
             requestData(weburl);
         } else {
-            Toast.makeText(this, "Network isn;t avalible, you're offline", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Network isn;t available, you're offline", Toast.LENGTH_SHORT).show();
         }
 
         /*
@@ -84,6 +84,7 @@ public class SongSelectionActivity extends Activity implements AdapterView.OnIte
 
     }
 
+    /*
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         String clickedSongId = (String) parent.getItemAtPosition(position);
@@ -97,7 +98,7 @@ public class SongSelectionActivity extends Activity implements AdapterView.OnIte
             }
         }
         return "dQw4w9WgXcQ"; // if that song has no link, get rick rolled
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

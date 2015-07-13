@@ -3,6 +3,7 @@ package fuwafuwa.asobou;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -12,6 +13,8 @@ import com.google.android.youtube.player.YouTubePlayerView;
 public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
 
     private String songVideoLink;
+
+    private static final String TAG = "PlayTapModeActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +31,17 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         if (!wasRestored) {
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
-            //player.cueVideo(songVideoLink);
+
+            // ridiculous sleep function
+           /* try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
+
+            //player.loadVideo(songVideoLink);
             player.loadVideo("dQw4w9WgXcQ");
+            Log.d(TAG, " - Video has finished loading.");
         }
     }
 
