@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Asobu</title>
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>Asobu</h1>
+        <div id="div_abt">
+            <h3>About Asobu</h3>
+            <p>Asobu project.....blah blah blah</p>
+        </div>
+        <div id="div_db">
+            <h2>Database</h2>
+            <h3>Add Tables</h3>
+            <ul id="ul_add_records">
+                <li><a href="editnewusers.html">Add Users</a></li>
+                <li><a href="editsongs.html">Add Songs</a></li>
+                <li><a href="editlyrics.html">Add Lyrics</a></li>
+                <li><a href="editmedia.html">Add Media</a></li>
+                <li><a href="editscores.html">Add Scores</a></li>
+            </ul>
+            <h3>Edit Tables</h3>
+            <ul id="ul_edit_records">
+                <li><a href="editnewusers.html">Edit Users</a></li>
+                <li><a href="editsongs.html">Edit Songs</a></li>
+                <li><a href="editlyrics">Edit Lyrics</a></li>
+                <li><a href="editmedia.html">Edit Media</a></li>
+                <li><a href="editscores.html">Edit Scores</a></li>
+            </ul>
+            <h3>Get Results</h3>
+            <div id="div_get_results">
+                <select id="select_get_results">
+                    <option>--select--</option>
+                    <option value="viewuserinfo">User</option>
+                    <option value="viewsonginfo">Song</option>
+                    <option value="viewlyricinfo">Lyrics</option>
+                    <option value="viewmediainfo">Media</option>
+                    <option value="viewscoreinfo">Scores</option>
+                </select>
+                <div id="div_results_display"></div>
+            </div>
+        </div>
+        <div id="div_sverinfo">
+            <h2>Info</h2>
+        </div>
+    </body>
+    <script>
+        $(document).ready(function(){
+            $view_selection = $('#select_get_results');
+            $view_div = $('#div_results_display');
+            var viewdata = [];
+            var datadisplay = "";
+            
+            //display information based on the selection
+            $view_selection.change(function(){
+                $view_div.html("&nbsp;");
+                //TODO: find out a way to clear this stupid array
+                //maybe just make it all one long string in the $.each and then display...no need for the array maybe...?
+                /*while(viewdata.length) {
+                    viewdata.pop();
+                }*/
+                //viewdata.length = 0;
+                
+                if($(this).val() === 'viewuserinfo') {
+                    $.getJSON("backend/getallnewusers.php", function(data){
+                        
+                        $.each(data, function(key, val){
+                            viewdata.push(val);
+                        });
+                        
+                        //display the data
+                        for(obj in viewdata) {
+                            var user = viewdata[obj];
+                            datadisplay += "<br>user id: " + user.user_id;
+                            datadisplay += "<br>username: " + user.username;
+                            datadisplay += "<br>phone number: " + user.phonenumber;
+                            datadisplay += "<br>";
+                        }
+                        $view_div.html(datadisplay);
+                    }); //end get JSON
+                    
+                }
+                else if($(this).val() === 'viewsonginfo') {
+                    $.getJSON("backend/getallsongs.php", function(data){
+                        viewdata.length = 0;
+                        $.each(data, function(key, val){
+                            viewdata.push(val);
+                        });
+                        
+                        //display the data
+                        for(obj in viewdata) {
+                            var song = viewdata[obj];
+                            datadisplay += "<br>id: " + song.song_id;
+                            datadisplay += "<br>name: " + song.song_name;
+                            datadisplay += "<br>artist : " + song.song_artist;
+                            datadisplay += "<br>album : " + song.song_album;
+                            datadisplay += "<br>genre : " + song.song_genre;
+                            datadisplay += "<br>length : " + song.song_length;
+                            datadisplay += "<br>difficulty : " + song.song_diff;
+                            datadisplay += "<br>artwork : " + song.album_artwork;
+                            datadisplay += "<br>";
+                        }
+                        $view_div.html(datadisplay);
+                    }); //end get JSON
+                }
+                else if($(this).val() === 'viewlyricinfo') {
+                    $.getJSON("backend/getalllyrics.php", function(data){
+                        $.each(data, function(key, val){
+                            viewdata.push(val);
+                        });
+                        
+                        //display the data
+                        for(obj in viewdata) {
+                            var lyrics = viewdata[obj];
+                            datadisplay += "<br>id: " + lyrics.lyric_id;
+                            datadisplay += "<br>song id: " + lyrics.song_id;
+                            datadisplay += "<br>song name : " + lyrics.song_name;
+                            datadisplay += "<br>format : " + lyrics.format;
+                            datadisplay += "<br>link : " + lyrics.link_to_file;
+                            datadisplay += "<br>";
+                        }
+                        $view_div.html(datadisplay);
+                    }); //end get JSON
+                }
+                else if($(this).val() === 'viewmediainfo') {
+                    $.getJSON("backend/getallmedia.php", function(data){
+                        $.each(data, function(key, val){
+                            viewdata.push(val);
+                        });
+                        
+                        //TODO: finish this...
+                        
+                    }); //end get JSON
+                    
+                    //display the data
+                }
+                else if($(this).val() === 'viewscoreinfo') {
+                    $.getJSON("backend/getallscores.php", function(data){
+                        $.each(data, function(key, val){
+                            viewdata.push(val);
+                        });
+                        
+                        //TODO: finish this...
+                        
+                    }); //end get JSON
+                }
+                else {
+                    //TODO: finish this...
+                }
+                
+            });//view selection change
+            
+        });//end document.ready
+    </script>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Adding Records to the database!</title>
+        <link rel="stylesheet" href="main.css">
+    </head>
+    <body>
+        <h1>Add a song</h1>
+        <form method="post" action="addsong.php">
+            Song Name: <input type="text" name="song_name" id="song_name">
+            <br>Song Artist <input type="text" name="song_artist" id="song_artist">
+            <br>Song Album <input type="text" name="song_album" id="song_album">
+            <br>Song Genre <input type="text" name="song_genre" id="song_genre">
+            <br>Song Length <input type="text" name="song_length" id="song_length" placeholder="mm:ss">
+            <br>Song Difficulty
+            <select name="song_diff">
+                <option value="slow">slow</option>
+                <option value="medium">medium</option>
+                <option value="fast">fast</option>
+            </select>
+            <br><br>Album Artywork (will be able to upload file) <input type="file" name="album_artwork" id="album_artwork">
+            
+            <br><br><br><button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </form>
+        <h1>Add lyrics</h1>
+        <form method="post" action="">
+            Song Name
+            <select>
+                <option>--Select One--</option>
+            </select>
+            <br>Format
+            <select>
+                <option>Kana</option>
+                <option>Kanji</option>
+                <option>Romaji</option>
+            </select>
+            <br>Link to lyric file <input type="text" name="lyricfilelink" id="lyricfilelink" placeholder="shortlinks only">
+            
+            <br><br><button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </form>
+        
+        <h1>Add media</h1>
+        <form method="post" action="">
+            Song Name
+            <select>
+                <option>--Select One</option>
+            </select>
+            <br>Link to youtube video <input type="text" name="ytvideolink" id="ytvideolink">
+            <br>Link to video file <input type="text" name="videolink" id="videolink" placeholder="shortlinks only">
+            <br>Link to song file <input type="text" name="songfilelink" id="songfilelink" placeholder="shortlinks only">
+            <br><br><button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </form>
+    </body>
+</html>

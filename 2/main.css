@@ -1,0 +1,132 @@
+body {
+    margin: 20px;
+    background-color: indianred;
+    
+    color: ghostwhite;
+    font-size: 14pt;
+    font-family: Verdana, sans-serif;
+}
+
+h1 {
+    
+}
+    
+h2 {
+    
+}
+    
+h3 {
+    text-align: center;
+}
+    
+h4 {
+    
+}
+    
+h5 {
+    
+}
+    
+h6 {
+    
+}
+    
+a:link, a:visited {
+    text-decoration: none;
+    text-transform: none;
+    color: palegoldenrod;
+}
+    
+a:hover, a:active {
+    text-decoration: none;
+    text-transform: none;
+    color: goldenrod;
+}
+
+ul {
+    list-style-type: none;
+    padding: 2px;
+    text-align: center;
+}
+
+li {
+    display: block;
+    padding: 3px;
+}
+
+div {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+form {
+    width: 80%;
+    text-align: left;
+    
+    font-size: 12pt;
+    
+    padding: 5px;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    
+    color: midnightblue;
+    background-color: deepskyblue;
+    border-bottom: solid 4px slateblue;
+    
+}
+
+legend {
+    text-align: center;
+    padding: 0px;
+    margin-bottom: 5px;
+    width: 100%;
+    font-size: 20pt;
+    font-weight: 500;
+    background-color: slateblue;
+    color: skyblue;
+}
+
+input {
+    width: 70%;
+    padding: 3px;
+    margin: 5px;
+    border: none;
+    border-bottom: solid 2px midnightblue;
+    color: midnightblue;
+}
+
+select {
+    width: 30%;
+    padding: 3px;
+    margin: 5px;
+    border: none;
+    border-bottom: solid 2px midnightblue;
+    color: gray;
+}
+
+button {
+    border: none;
+    padding: 10px;
+    float: right;
+    margin-left: 5px;
+    margin-top: 30px;
+    
+    background-color: deepskyblue;
+    color: midnightblue;
+    border-bottom: solid 4px slateblue;
+    /*border-right: solid 4px goldenrod;*/
+    /*border-left: solid 4px goldenrod;*/
+}
+
+#div_get_results {
+    
+}
+
+#div_get_results {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}

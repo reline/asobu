@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Edit Scores</title>
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    </head>
+    <body>
+        <h2>Scores</h2>
+        <a href="index.html" class="backbtn">Back</a>
+        <form method="post" action="">
+            <legend>Add Scores</legend>
+            Select User ID <span id="#add_score_select_user_id_span"><i>There are no users in the database</i></span>
+            <br>Select Song ID <span id="#add_score_select_song_id_span"><i>This user hasn't played any songs</i></span>
+            <br>Score <input type="number" name="add_score_score" id="add_score_score">
+            <br>Achived Date <input type="datetime" name="add_score_date" id="add_score_date">
+            <br><button type="submit" id="add_score_submit">Submit</button> <button type="reset" id="add_score_reset">Reset</button>
+        </form> 
+        <!-- Might not have an edit score
+        <br>
+        <br>
+        <form method="post" action="">
+            <legend>Edit Scores</legend>
+            
+            <button type="submit" id="edit_score_submit">Submit</button> <button type="reset" id="edit_score_reset">Reset</button>
+        </form>-->
+        
+        <script>
+            $(document).ready(function(){
+                $add_score_user_id_span = $('#add_score_select_user_id_span');
+                $add_score_song_id_span = $('#add_score_select_song_id_span');
+                
+                $ughh = $('#add_score_score');
+                
+                $idek_song = "";
+                $idek_user = "";
+                
+                var userdata = '<option>--Select--</option>';
+                var songdata = '<option>--Select--</option>';
+                
+                console.log("ughh.....");
+                
+                $.getJSON("backend/getallnewusers.php", function(data){
+                    var userslist = [];
+                    $.each(data, function(key, val){
+                        userslist.push(val);
+                        //console.log(val);
+                    });
+                    for(var user in userslist){
+                        userdata += '<option value="'+ userslist[user].user_id +'">' + userslist[user].username + '</option>';
+                        //console.log(userslist[user]);
+                        //console.log(userslist[user].user_id);
+                    }
+                    
+                    //console.log("why");
+                    console.log(userdata);
+                    $idek_user = userdata;
+                    
+                    $add_score_user_id_span.html('<select id="add_score_user_id" name="add_score_user_id">' + userdata + '</select>');
+                    console.log($add_score_user_id_span.html());
+                }); // end user data
+                
+                $.getJSON("backend/getallsongs.php", function(data){
+                    var songlist = [];
+                    $.each(data, function(key, val){
+                        songlist.push(val);
+                        //console.log(val);
+                    });
+                    for(var song in songlist){
+                        songdata += '<option value="'+ songlist[song].song_id +'">' + songlist[song].song_name + '</option>';
+                        //console.log(songlist[song]);
+                        //console.log(songlist[song].song_id);
+                    }
+                    console.log("isn't");
+                    console.log(songdata);
+                    
+                    $idek_song = songdata;
+                    
+                    $add_score_song_id_span.html('<select id="edit_score_user_id" name="edit_score_user_id">' + songdata + '</select>');
+                    console.log($add_score_song_id_span.html());
+                }); //end get song data
+                
+                
+            });//end document.ready
+            
+        </script>
+    </body>
+</html>
