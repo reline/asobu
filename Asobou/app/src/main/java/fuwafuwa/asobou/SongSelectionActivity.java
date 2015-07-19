@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.google.gson.internal.bind.ArrayTypeAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fuwafuwa.asobou.model.Song;
 import fuwafuwa.asobou.parser.SongJSONparser;
@@ -33,9 +34,9 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
 
     private static final String TAG = "SongSelectionActivity";
     private String weburl = "http://198.199.94.36/change/backend/getallsongs.php";
+    //private ArrayAdapter<String> listAdapter;
+    private List<Song> songList = new ArrayList<>();
     private ListView songListView;
-    private ArrayAdapter<String> listAdapter;
-    private ArrayList<Song> songList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +49,12 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         diffView.setAdapter(spinnerAdapter);
 
+        songListView = (ListView) findViewById(R.id.selectsong_listview);
+
         if(isOnline()){
             requestData(weburl);
         } else {
-            Toast.makeText(this, "Network isn;t available, you're offline", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "The network is currently unavailable, check your connection.", Toast.LENGTH_SHORT).show();
         }
 
         /*
@@ -171,7 +174,7 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
 
         @Override
         protected void onPostExecute(String result) {
-            songList = (ArrayList<Song>) SongJSONparser.parseSongs(result);
+            songList = /*(ArrayList<Song>)*/ SongJSONparser.parseSongs(result);
             updateDisplay();
         }
     }   //end song select task

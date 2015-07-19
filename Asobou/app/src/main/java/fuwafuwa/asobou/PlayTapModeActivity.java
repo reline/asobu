@@ -10,11 +10,15 @@ import android.view.MenuItem;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
 
     private String songVideoLink;
-
     private static final String TAG = "PlayTapModeActivity";
+    ArrayList<String[]> lyrics = new ArrayList<String[]>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,7 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
             }*/
 
             //player.loadVideo(songVideoLink);
-            player.loadVideo("dQw4w9WgXcQ");
+            player.loadVideo("WIKqgE4BwAY"); // gimi choko 4:03
             Log.d(TAG, " - Video has finished loading.");
         }
     }
@@ -79,4 +83,23 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
     public void onHelpButtonClick(MenuItem menuItem) {
         startActivity(new Intent(this, HelpActivity.class));
     }
+
+    public void updateView(YouTubePlayer player, ArrayList<String[]> lyrics) {
+        if(player.isPlaying()) {
+            for(int line = 0; line < lyrics.size(); line++) {
+                String[] currLine = lyrics.get(line);
+                Time currentPlayerTime = new Time(player.getCurrentTimeMillis());
+                if(currentPlayerTime.toString() == currLine[0]) {
+                    scrollLyrics(currLine[1]);
+                }
+            }
+        }
+    }
+
+    public void scrollLyrics(String lyrics) {
+        // scroll lyrics into view
+    }
+
+
+
 }

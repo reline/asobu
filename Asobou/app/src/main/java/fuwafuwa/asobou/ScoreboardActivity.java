@@ -52,7 +52,7 @@ public class ScoreboardActivity extends AppCompatActivity {
         if(isOnline()){
             requestData(weburl);
         } else {
-            Toast.makeText(this, "Network isn;t avalible, you're offline", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "The network is currently unavailable, check your connection.", Toast.LENGTH_SHORT).show();
         }
 
     }
