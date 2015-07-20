@@ -49,6 +49,13 @@
                 //alert($select_user_id = $('#input_edit_user_select_user option:selected').val());
                 $select_user_id = $('#input_edit_user_select_user option:selected').val();
                 
+                $user_id_input = $("#input_edit_user_id");
+                $username_input = $("#edit_username");
+                $phone_input = $("#edit_phone");
+                
+                $user_id_input.val("");
+                $username_input.val("");
+                $phone_input.val("");
                 
                 postquery = "?user_id=" + $select_user_id + "&limit=1";
                 console.log(postquery);
@@ -59,9 +66,9 @@
                     console.log("info...");
                     console.log(data);
                     var selected_user = data;
-                    $("#input_edit_user_id").val(selected_user[0].user_id);
-                    $("#edit_username").val(selected_user[0].username);
-                    $("#edit_phone").val(selected_user[0].phonenumber);
+                    $user_id_input.val(selected_user[0].user_id);
+                    $username_input.val(selected_user[0].username);
+                    $phone_input.val(selected_user[0].phonenumber);
                     console.log("done");
                 }).fail(function(){
                     console.log("It failed jim.");

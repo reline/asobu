@@ -24,7 +24,7 @@
         </form>
         <br>
         <br>
-        <form method="post" action="editmediainfo.php">
+        <form method="post" action="backend/editmediainfo.php">
             <legend>Edit Media</legend>
             Select Media ID <span id="edit_media_select_media_id"><i>There are no media links in the database</i></span>
             <br>Select Song ID <span id="edit_media_select_song_id"><i>There are no songs in the database</i></span>
@@ -74,14 +74,23 @@
                     for(var media in medialist){
                         mediadata += '<option value="'+ medialist[media].media_id +'">' + medialist[media].song_name + " - " + medialist[media].type_of_link +  '</option>';
                     }
-                    $edit_media_span.html('<select id="edit_media_select_media" name="edit_media_select_media">'+ mediadata +'</select>');
+                    $edit_media_span.html('<select id="edit_media_id" name="edit_media_id">'+ mediadata +'</select>');
                     
                 }); //end get media list
                 
             });     //end document.ready
             
             $(document).on('change', '#edit_media_select_media_id', function(){
-                $media_id = $('#edit_media_select_media').val();
+                $media_id = $('#edit_media_id').val();
+                
+                $song_input = $('#edit_media_song');
+                $link_input = $('#edit_media_link');
+                $type_format = $('#edit_media_type');
+                
+                $song_input.val("");
+                $link_input.val("");
+                $type_format.val("");
+                
                 var getquery = "?media_id=" + $media_id;
                 
                 $.ajax({
@@ -90,9 +99,9 @@
                 }).done(function(data){
                     console.log(data);
                     var selected_media = data;
-                    $('#edit_media_song').val(selected_media[0].song_id).change();
-                    $('#edit_media_type').val(selected_media[0].type_of_link).change();
-                    $('#edit_media_link').val(selected_media[0].link);
+                    $song_input.val(selected_media[0].song_id).change();
+                    $type_format.val(selected_media[0].type_of_link).change();
+                    $link_input.val(selected_media[0].link);
                     console.log("media have been gotten");
                 }).fail(function(){
                     console.log("media failed to be gotten");

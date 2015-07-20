@@ -2,9 +2,9 @@
 
 //for database
 define("DB_HOST", "localhost");
-define("DB_NAME", "asobu_db");
+define("DB_NAME", "asobu_db_test");
 define("DB_USER", "root");
-define("DB_PASS", "");
+define("DB_PASS", "enter");
 
 
 function doDB() {

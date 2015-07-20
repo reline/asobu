@@ -1,6 +1,6 @@
 <?php
 //get the information of a spesific user
-header("Content-Type: application/json");
+header("Content-Type: application/json; charset=utf-8");
 
 include 'common.php';
 

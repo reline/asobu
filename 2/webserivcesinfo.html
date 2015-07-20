@@ -1,0 +1,237 @@
+<h3>Asobu Web Services</h3>
+<br>ContentType changes
+<br>Charset: UTF-8
+<br>
+<br>
+<br><h4>addlyrics.php</h4>
+<br><b>header:</b> none
+<br><b>method:</b> POST
+<br><b>query:</b> input_add_lyrics_format, input_add_lyrics_file, <br>input_add_lyrics_select_song (all required)
+<br><b>returns:</b> string
+<br><b>description:</b> add lyric info to the database
+<br><b>note:</b> 
+<br>
+<br>
+<br><h4>addmediainfo.php</h4>
+<br><b>header:</b> none
+<br><b>method:</b> POST
+<br><b>query:</b> add_media_song, add_media_type, add_media_link (all required)
+<br><b>returns:</b> string
+<br><b>description:</b> add media info to the database
+<br><b>note:</b> 
+<br>
+<br>
+<br><h4>addnewuser.php</h4>
+<br><b>header:</b> none
+<br><b>method:</b> POST
+<br><b>query:</b> add_username, add_phone (all required)
+<br><b>returns:</b> string
+<br><b>description:</b> add user info to the database
+<br><b>note:</b>
+<br>
+<br>
+<br><h4>addscore.php</h4>
+<br><b>header:</b> none
+<br><b>method:</b> POST
+<br><b>query:</b> add_user_id, add_song_id, add_score, add_date (all required)
+<br><b>returns:</b> string
+<br><b>description:</b> add score info to the database
+<br><b>note<br>note:</b> 
+<br>
+<br>
+<br><h4>addsong.php</h4>
+<br><b>header:<br>note:</b> none
+<br><b>method:</b> POST
+<br><b>query:</b> input_add_song_name(required), input_add_song_artist, input_add_song_album, input_add_song_album, input_add_song_genre, input_add_song_length, input_add_song_difficulty (required), input_add_song_art
+<br><b>returns:</b> string
+<br><b>description:</b> add song info to the database
+<br><b>note:</b>
+<br>
+<br>
+<br><h4>common.php</h4>
+<br><b>header:</b> none
+<br><b>method:</b> none
+<br><b>query:</b>  none
+<br><b>returns:</b> connection to the database
+<br><b>description:</b> database configuration file
+<br><b>note:</b> configure db in here
+<br>
+<br>
+<br><h4>editlyricsinfo.php</h4>
+<br><b>header:</b> none
+<br><b>method:</b> POST
+<br><b>query:</b> edit_lyric_id, edit_lyrics_song, edit_lyrics_format, edit_lyrics_file (all required)
+<br><b>returns:</b> string
+<br><b>description:</b> edit lyric info in the database
+<br><b>note:</b> 
+<br>
+<br>
+<br><h4>editmediainfo.php</h4>
+<br><b>header:</b> none
+<br><b>method:</b> POST
+<br><b>query:</b> edit_media_song, edit_media_type, edit_media_link, edit_media_id (all required)
+<br><b>returns:</b> string
+<br><b>description:</b> edit media info in the database
+<br><b>note:</b> 
+<br>
+<br>
+<br><h4>editnewuserinfo.php</h4>
+<br><b>header:</b> none
+<br><b>method:</b> POST
+<br><b>query:</b> input_edit_user_id, edit_username, input_edit_user_id edit_phone (all required)
+<br><b>returns:</b> string
+<br><b>description:</b> edit user info in the database
+<br><b>note:</b>
+<br>
+<br>
+<br><h4>editscoreinfo.php</h4>
+<br><b>header:</b> none
+<br><b>method:</b> POST
+<br><b>query:</b> edit_user_id, edit_song_id, edit_score, edit_date (all required)
+<br><b>returns:</b> string
+<br><b>description:</b> edit score info in the database
+<br><b>note:</b>
+<br>
+<br>
+<br><h4>editsonginfo.php</h4>
+<br><b>header:</b> none
+<br><b>method:</b> POST
+<br><b>query:</b> input_edit_song_id (required), input_edit_song_name (required), input_edit_song_artist, input_edit_song_album, input_edit_song_genre, input_edit_song_length, input_edit_song_difficulty <br>(required), input_edit_song_art
+<br><b>returns:</b> string
+<br><b>description:</b> edit song info in the database
+<br><b>note:</b>
+<br>
+<br>
+<br><h4>edituserinfo.php</h4>
+<br><b>header:</b> none
+<br><b>method:</b> POST
+<br><b>query:</b> input_edit_user_name, input_edit_user_pass, input_edit_user_email (all required)
+<br><b>returns:</b> string
+<br><b>description:</b> 
+<br><b>note:</b> user editnewuserinfo.php instead
+<br>
+<br>
+<br><h4>getalllyrics.php</h4>
+<br><b>header:</b> ContentType: application/json
+<br><b>method:</b> GET
+<br><b>query:</b> none
+<br><b>returns:</b> [{song_id:int, song_name:string, format:string, link_to_file:string}]
+<br><b>description:</b> gets all lyric infomation in the db and returns it as a JSON array string
+<br><b>note:</b> 
+<br>
+<br>
+<br><h4>getallmedia.php</h4>
+<br><b>header:</b> ContentType: application/json
+<br><b>method:</b> GET
+<br><b>query:</b> none
+<br><b>returns:</b> [{media_id:int, song_id:int, song_name:string, type_of_link:string}]
+<br><b>description:</b> gets all media info from db and returns it as a JSON array string
+<br><b>note:</b> 
+<br>
+<br>
+<br><h4>getallnewusers.php</h4>
+<br><b>header:</b> ContentType: application/json
+<br><b>method:</b> GET
+<br><b>query:</b> none
+<br><b>returns:</b> [{user_id:int, username:string, phonenumber:string}]
+<br><b>description:</b> gets all user info from the db and returns it as a JSON array string
+<br><b>note:</b> 
+<br>
+<br>
+<br><h4>getallscores.php</h4>
+<br><b>header:</b> ContentType: application/json
+<br><b>method:</b> GET
+<br><b>query:</b> none
+<br><b>returns:</b> [{song_id:int, score:int, song_name:string, user_id:int, username:string, archived_date:datetime}]
+<br><b>description:</b> gets all score info from db and returns it as a JSON array string
+<br><b>note:</b> 
+<br>
+<br>
+<br><h4>getallsongs.php</h4>
+<br><b>header:</b> ContentType: application/json
+<br><b>method:</b> GET
+<br><b>query:</b> none
+<br><b>returns:</b> [{song_id:int, song_name:string, song_artist:string, song_album:string, song_length:time, song_diff:string, album_artwork:string}]
+<br><b>description:</b> gets all song data from the db and returns it as a JSON array string
+<br><b>note:</b> 
+<br>
+<br>
+<br><h4>getallusers.php</h4>
+<br><b>header:</b> ContentType: application/json
+<br><b>method:</b> GET
+<br><b>query:</b> none
+<br><b>returns:</b> [{user_id:int, username:string, password:string, email:string}]
+<br><b>description:</b> gets all user info from the db and returns it as a JSON array string
+<br><b>note:</b> use getallnewusers.php instead
+<br>
+<br>
+<br><h4>getlyricinfo.php</h4>
+<br><b>header:</b> ContentType: application/json
+<br><b>method:</b> GET
+<br><b>query:</b> lyric_id:int, song_id:int, format:string, limit:int
+<br><b>returns:</b> [{lyric_id:int, song_id:int, song_name:string, format:string, link_to_file:string}]
+<br><b>description:</b> queries db and returns lyric info as JSON array string based on the query data
+<br><b>note:</b> returns an error is limit is used by itself; all optional but you're gonna get an error if one isn't set
+<br>
+<br>
+<br><h4>getmediainfo.php</h4>
+<br><b>header:</b> ContentType: application/json
+<br><b>method:</b> GET
+<br><b>query:</b> media_id:int, song_id_int, type:string, limit:int
+<br><b>returns:</b> [{media_id:int, song_id:int, song_name:string, type_of_link:string}]
+<br><b>description:</b> queries db and returns media info as JSON array string based on the query data
+<br><b>note:</b> returns an error is limit is used by itself; all optional but you're gonna get an error if one isn't set
+<br>
+<br>
+<br><h4>getnewuserinfo.php</h4>
+<br><b>header:</b> ContentType: application/json
+<br><b>method:</b> GET
+<br><b>query:</b> user_id:int, username:string, phone:string, limit:int
+<br><b>returns:</b> [{user_id:int, username:string, phonenumber:string}]
+<br><b>description:</b> queries db and returns user info as JSON array string based on the query data
+<br><b>note:</b> returns an error is limit is used by itself; all optional but you're gonna get an error if one isn't set
+<br>
+<br>
+<br><h4>getscoreinfo.php</h4>
+<br><b>header:</b> ContentType: application/json
+<br><b>method:</b> GET
+<br><b>query:</b> user_id:int, song_id:int, date:datetime(but right now it's a string...will put in TODO), score:int, limit:int, orderby:string, asc:string
+<br><b>returns:</b> [{song_id:int, score:int, song_name:string, user_id:int, username:string, archived_date:datetime}]
+<br><b>description:</b> queries db and returns score info as a JSON array string based on the query data
+<br><b>note:</b> returns an error is limit is used by itself; all optional but you're gonna get an error if one isn't set
+<br>
+<br>
+<br><h4>getsonginfo.php</h4>
+<br><b>header:</b> ContentType: application/json
+<br><b>method:</b> GET
+<br><b>query:</b> song_id:int, name:string, artist:string, album:string, genre:string, length:string, diff:string, artwork:string, orderby:string, desc:string, limit:int
+<br><b>returns:</b> [{song_id:int, song_name:string, song_album:string, song_length:time, song_diff:string, album_artwork:string}]
+<br><b>description:</b> queries db and returns song info as a JSON array string based on the query data
+<br><b>note:</b> returns an error is limit is used by itself; all optional but you're gonna get an error if one isn't set
+<br>
+<br>
+<br><h4>getuserinfo.php</h4>
+<br><b>header:</b> ContentType: application/json
+<br><b>method:</b> GET
+<br><b>query:</b> user_id:int
+<br><b>returns:</b> {username:string, password:string, email:string}
+<br><b>description:</b> queries db and returns user info as a JSON object based on the user_id
+<br><b>note:</b> returns an error is limit is used by itself; use getnewuserinfo.php instead
+<br>
+<br>
+<br><h4>getsongselection.php</h4>
+<br><b>header:</b> ContentType: application/json
+<br><b>method:</b> GET
+<br><b>query:</b> name:string, artist:string, diff:string, orderby:string, asc:string, limit:int
+<br><b>returns:</b> {song_id:int, song_name:sting, song_album:string, song_genre:string, song_length:time, song_diff:string, album_arkwork:string, lyric_id:int, format:string, link_to_file:string, media_id:int, type_of_link:youtube, link:string"}
+<br><b>description:</b> gets the list of songs in the database. It only returns songs that have both lyrics and media links.
+<br><b>note:</b> returns an error is limit is used by itself;
+<br>
+<br>
+<br><h4>getscoreboard.php</h4>
+<br><b>header:</b> ContentType: application/json
+<br><b>method:</b> GET
+<br><b>query:</b> user_id:int (required), song_id:int, name:string, artist:string, diff:string, score:int, orderby:string, asc:string, limit:int
+<br><b>returns:</b> {user_id:int, song_id:int, song_name:string, song_artist:string, score:int, achived_date:datetime}
+<br><b>description:</b> gets the score info for all the songs in the database for a specified user
+<br><b>note:</b> returns an error is limit is used by itself; returns an error if user id isn't set

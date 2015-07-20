@@ -67,6 +67,22 @@
             $(document).on('change', '#input_edit_song_select_song', function(){
                 $select_song_id = $('#input_edit_song_select_song option:selected').val();
                 
+                $id_input = $("#input_edit_song_id");
+                $name_input = $("#input_edit_song_name");
+                $artist_input = $("#input_edit_song_artist");
+                $album_input = $("#input_edit_song_album");
+                $genre_input = $("#input_edit_song_genre");
+                $length_input = $("#input_edit_song_length");
+                $diff_input = $("#input_edit_song_difficulty")
+                //$art_input = $("#");
+                
+                $id_input.val("");
+                $name_input.val("");
+                $artist_input.val("");
+                $album_input.val("");
+                $genre_input.val("");
+                $length_input.val("");
+                $diff_input.val("");
                 
                 postquery = "?song_id=" + $select_song_id + "&limit=1";
                 $.ajax({
@@ -74,13 +90,13 @@
                     url: "backend/getsonginfo.php"+postquery
                 }).done(function(data){
                     var selected_song = data;
-                    $("#input_edit_song_id").val(selected_song[0].song_id);
-                    $("#input_edit_song_name").val(selected_song[0].song_name);
-                    $("#input_edit_song_artist").val(selected_song[0].song_artist);
-                    $("#input_edit_song_album").val(selected_song[0].song_album);
-                    $("#input_edit_song_genre").val(selected_song[0].song_genre);
-                    $("#input_edit_song_length").val(selected_song[0].song_length);
-                    $("#input_edit_song_difficulty").val(selected_song[0].song_diff).change();
+                    $id_input.val(selected_song[0].song_id);
+                    $name_input.val(selected_song[0].song_name);
+                    $artist_input.val(selected_song[0].song_artist);
+                    $album_input.val(selected_song[0].song_album);
+                    $genre_input.val(selected_song[0].song_genre);
+                    $length_input.val(selected_song[0].song_length);
+                    $diff_input.val(selected_song[0].song_diff).change();
                     //TODO: edit album artwork...it has to be an text input too...
                     console.log("done");
                 }).fail(function(){
