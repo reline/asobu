@@ -1,5 +1,8 @@
 package fuwafuwa.asobou.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
@@ -8,7 +11,7 @@ import java.io.Serializable;
  * Song Class
  * holds song info, media info, lyric info and also user score info
  */
-public class Song implements Serializable {
+public class Song implements Parcelable {
     //about the song
     private int songId;
     private String title;
@@ -33,9 +36,69 @@ public class Song implements Serializable {
     private int userScore;
     //TODO: implement datatime thing...
 
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(songId);
+        dest.writeString(title);
+        dest.writeString(artist);
+        dest.writeString(album);
+        dest.writeString(genre);
+        dest.writeString(length);
+        dest.writeString(difficulty);
+        dest.writeString(albumArtwork);
+
+        dest.writeString(youtubeLink);
+        dest.writeString(videoLink);
+        dest.writeString(songLink);
+
+        dest.writeString(lyricsKana);
+        dest.writeString(lyricsKanji);
+        dest.writeString(lyricsRomaji);
+
+        dest.writeInt(userScore);
+    }
+
+    public Song(Parcel parcel) {
+        songId = parcel.readInt();
+        title = parcel.readString();
+        artist = parcel.readString();
+        album = parcel.readString();
+        genre = parcel.readString();
+        length = parcel.readString();
+        difficulty = parcel.readString();
+        albumArtwork = parcel.readString();
+
+        youtubeLink = parcel.readString();
+        videoLink = parcel.readString();
+        songLink = parcel.readString();
+
+        lyricsKana = parcel.readString();
+        lyricsKanji = parcel.readString();
+        lyricsRomaji = parcel.readString();
+
+        userScore = parcel.readInt();
+    }
+
     public Song() {
 
     }
+
+    public static final Parcelable.Creator<Song> CREATOR = new Parcelable.Creator<Song>() {
+        @Override
+        public Song createFromParcel(Parcel parcel) {
+            return new Song(parcel);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
 
     public String toString() {
         return getTitle();

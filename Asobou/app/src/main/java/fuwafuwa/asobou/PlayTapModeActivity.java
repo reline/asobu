@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
+import java.io.File;
+import java.lang.reflect.Array;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +22,13 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
 
     private Song song;
     private static final String TAG = "PlayTapModeActivity";
-    ArrayList<String[]> lyrics = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_tap_mode);
 
-        song = (Song) getIntent().getSerializableExtra("song");
+        song = getIntent().getParcelableExtra("song");
 
         YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
@@ -56,36 +57,6 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         return (YouTubePlayerView) findViewById(R.id.youtube_view);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_play_tap_mode, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void onSettingsButtonClick(MenuItem menuItem) {
-        startActivity(new Intent(this, SettingsActivity.class));
-    }
-
-    public void onHelpButtonClick(MenuItem menuItem) {
-        startActivity(new Intent(this, HelpActivity.class));
-    }
-
     public void updateView(YouTubePlayer player, ArrayList<String[]> lyrics) {
         if(player.isPlaying()) {
             for(int line = 0; line < lyrics.size(); line++) {
@@ -102,6 +73,10 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         // scroll lyrics into view
     }
 
-
-
+    public String[] parseLyrics() {
+        //File songLyrics = song.getLyricsKanji();
+        List lines = new ArrayList<>();
+        String[] lyrics = new String[0];
+        return lyrics;
+    }
 }

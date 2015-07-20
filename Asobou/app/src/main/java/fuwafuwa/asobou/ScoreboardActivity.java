@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -19,6 +21,8 @@ import android.widget.Toast;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import fuwafuwa.asobou.model.Song;
@@ -28,10 +32,11 @@ public class ScoreboardActivity extends AppCompatActivity {
 
     private static final String TAG = "ScoreboardActivity";
 
-    private String weburl = "http://198.199.94.36/change/backend/getallsongs.php";
+    private String weburl = "http://198.199.94.36/change/backend/getsongselection.php"; //getallsongs
 
     private List<Song> songList = new ArrayList<>();
     private ListView songListView;
+    boolean ascending;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +50,30 @@ public class ScoreboardActivity extends AppCompatActivity {
         diffView.setAdapter(spinnerAdapter);
 
         songListView = (ListView) findViewById(R.id.scoreboard_listview);
-
         //output = (TextView) findViewById(R.id.textView2);
         if(isOnline()){
             requestData(weburl);
         } else {
             Toast.makeText(this, "The network is currently unavailable, check your connection.", Toast.LENGTH_SHORT).show();
         }
+
+        // sort by song title
+        Button sortSongButton = (Button) findViewById(R.id.sort_by_song);
+        sortSongButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortSongList(false);
+            }
+        });
+
+        // sort by artist
+        Button sortArtistButton = (Button) findViewById(R.id.sort_by_artist);
+        sortArtistButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortSongList(true);
+            }
+        });
 
     }
 
@@ -97,6 +119,7 @@ public class ScoreboardActivity extends AppCompatActivity {
                 songTitles.add(song.getTitle());
             }
 
+            sortSongList(false); // sort song list by ascending song title by default
             ArrayAdapter<String> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, songTitles);
             songListView.setAdapter(songAdapter);
         }
@@ -146,5 +169,29 @@ public class ScoreboardActivity extends AppCompatActivity {
             //updateDisplay(values[0]);
         }
     }   //end Scoreboard Tasks
+
+    public void sortSongList(final boolean sortMethod) { // 0 : song; 1 : artist
+        ascending = !ascending;
+        Collections.sort(songList, new Comparator<Song>() {
+            @Override
+            public int compare(Song lhs, Song rhs) {
+                if (ascending) {
+                    if (sortMethod) {
+                        return (lhs.getArtist().compareTo(rhs.getArtist()));
+                    } else {
+                        return (lhs.getTitle().compareTo(rhs.getTitle()));
+                    }
+                } else { // descending
+                    if (sortMethod) {
+                        return (-lhs.getArtist().compareTo(rhs.getArtist()));
+                    } else {
+                        return (-lhs.getTitle().compareTo(rhs.getTitle()));
+                    }
+                }
+            }
+        });
+        ArrayAdapter<Song> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, songList);
+        songListView.setAdapter(songAdapter);
+    }
 
 }   //end scoreboard activity

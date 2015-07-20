@@ -12,11 +12,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import fuwafuwa.asobou.model.Song;
 import fuwafuwa.asobou.parser.SongJSONparser;
@@ -29,6 +33,7 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
 
     private ArrayList<Song> songList = new ArrayList<>();
     private ListView songListView;
+    private boolean ascending;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +46,8 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         diffView.setAdapter(spinnerAdapter);
 
+        // get songs and place them in the listview
         songListView = (ListView) findViewById(R.id.selectsong_listview);
-
         if(isOnline()){
             requestData(weburl);
         } else {
@@ -69,6 +74,23 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
             }
         });
 
+        // sort by song title
+        Button sortSongButton = (Button) findViewById(R.id.sort_by_song);
+        sortSongButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortSongList(false);
+            }
+        });
+
+        // sort by artist
+        Button sortArtistButton = (Button) findViewById(R.id.sort_by_artist);
+        sortArtistButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortSongList(true);
+            }
+        });
     }
 
     protected void updateDisplay() {
@@ -82,6 +104,7 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
                 songTitles.add(song.getTitle());
             }*/
 
+            sortSongList(false); // sort song list by ascending song title by default
             ArrayAdapter<Song> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, songList);
             songListView.setAdapter(songAdapter);
         }
@@ -116,5 +139,28 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
         }
     }   //end song select task
 
+    public void sortSongList(final boolean sortMethod) { // 0 : song; 1 : artist
+        ascending = !ascending;
+        Collections.sort(songList, new Comparator<Song>() {
+            @Override
+            public int compare(Song lhs, Song rhs) {
+                if(ascending) {
+                    if(sortMethod) {
+                        return (lhs.getArtist().compareTo(rhs.getArtist()));
+                    } else {
+                        return (lhs.getTitle().compareTo(rhs.getTitle()));
+                    }
+                } else { // descending
+                    if(sortMethod) {
+                        return (-lhs.getArtist().compareTo(rhs.getArtist()));
+                    } else {
+                        return (-lhs.getTitle().compareTo(rhs.getTitle()));
+                    }
+                }
+            }
+        });
+        ArrayAdapter<Song> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, songList);
+        songListView.setAdapter(songAdapter);
+    }
 
 }   //end of activity

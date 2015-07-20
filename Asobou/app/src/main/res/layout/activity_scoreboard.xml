@@ -21,7 +21,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/order_song_button"
-            android:id="@+id/scoreboard_songbutton"
+            android:id="@+id/sort_by_song"
             android:layout_alignParentTop="true"
             android:layout_alignParentStart="true"
             android:layout_weight=".30"/>
@@ -31,7 +31,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/order_artist_button"
-            android:id="@+id/scoreboard_artistbutton"
+            android:id="@+id/sort_by_artist"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/scoreboard_songbutton"
             android:layout_weight=".30"/>
