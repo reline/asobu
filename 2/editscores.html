@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Edit Scores</title>
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    </head>
+    <body>
+        <h2>Scores</h2>
+        <a href="index.html" class="backbtn">Back</a>
+        <form method="post" action="backend/addscore.php">
+            <legend>Add Scores</legend>
+            Select User ID <span id="add_score_select_user_id_span"><i>There are no users in the database</i></span>
+            <br>Select Song ID <span id="add_score_select_song_id_span"><i>This user hasn't played any songs</i></span>
+            <br>Score <input type="number" name="add_score" id="add_score">
+            <br>Achived Date <input type="datetime" name="add_date" id="add_date" placeholder="yyyy-mm-dd hh:mm:ss">
+            <br><button type="submit" id="add_score_submit">Submit</button> <button type="reset" id="add_score_reset">Reset</button>
+        </form> 
+        
+        <br>
+        <br>
+        <form method="post" action="backend/editscoreinfo.php">
+            <legend>Edit Scores</legend>
+            <div id="select_attributes_div">
+                Select User ID <span id="edit_score_select_user_id_span"><i>There are no users in the database</i></span>
+                <br>Select Song ID <span id="edit_score_select_song_id_span"><i>This user hasn't played any songs</i></span>
+            </div>
+            <br>Score <input type="number" name="edit_score" id="edit_score">
+            <br>Achived Date <input type="datetime" name="edit_date" id="edit_date" placeholder="yyyy-mm-dd hh:mm:ss">
+            <br><button type="submit" id="edit_score_submit">Submit</button> <button type="reset" id="edit_score_reset">Reset</button>
+        </form>
+        
+        <script>
+            $(document).ready(function(){
+                $add_user_id_span = $('#add_score_select_user_id_span');
+                $edit_user_id_span = $('#edit_score_select_user_id_span');
+                
+                var userdata = '<option value="">--Select--</option>';
+                var songdata = '<option value="">--Select--</option>';
+                
+                $.getJSON("backend/getallnewusers.php", function(data){
+                    var userslist = [];
+                    $.each(data, function(key, val){
+                        userslist.push(val);
+                        //console.log(val);
+                    });
+                    for(var user in userslist){
+                        userdata += '<option value="'+ userslist[user].user_id +'">' + userslist[user].username + '</option>';
+                        //console.log(userslist[user]);
+                        //console.log(userslist[user].user_id);
+                    }
+                    //console.log(userdata);
+                    
+                    $add_user_id_span.html('<select id="add_user_id" name="add_user_id">' + userdata + '</select>');
+                    $edit_user_id_span.html('<select id="edit_user_id" name="edit_user_id">' + userdata + '</select>');
+                    //console.log($add_user_id_span.html());
+                }); // end user data
+                
+                //----------------------------------------------------------------------//
+                $add_song_id_span = $('#add_score_select_song_id_span');
+                $edit_song_id_span = $('#edit_score_select_song_id_span');
+                
+                $.getJSON("backend/getallsongs.php", function(data){
+                    var songlist = [];
+                    $.each(data, function(key, val){
+                        songlist.push(val);
+                        //console.log(val);
+                    });
+                    for(var song in songlist){
+                        songdata += '<option value="'+ songlist[song].song_id +'">' + songlist[song].song_name + '</option>';
+                        //console.log(songlist[song]);
+                        //console.log(songlist[song].song_id);
+                    }
+                    //console.log(songdata);
+                    
+                    $add_song_id_span.html('<select id="add_song_id" name="add_song_id">' + songdata + '</select>');
+                    $edit_song_id_span.html('<select id="edit_song_id" name="edit_song_id">' + songdata + '</select>');
+                    //console.log($add_song_id_span.html());
+                }); //end get song data
+                
+            });//end document.ready
+            
+            $(document).on('change', '#select_attributes_div', function(){
+                $selected_user_id = $('#edit_user_id option:selected').val();
+                $selected_song_id = $('#edit_song_id option:selected').val();
+                
+                $score_input = $('#edit_score');
+                $date_input = $('#edit_date');
+                
+                $score_input.val("");
+                $date_input.val("");
+                
+                
+                var postquery = "?user_id=" + $selected_user_id + "&song_id=" + $selected_song_id + "&limit=1";
+                try{
+                    $.ajax({
+                        method: "GET",
+                        url: "backend/getscoreinfo.php"+postquery
+                    }).done(function(data){
+                        var selected_score = data;
+                        console.log(data);
+                        $score_input.val(selected_score[0].score);
+                        $date_input.val(selected_score[0].achived_date);
+                    }).fail(function(){
+                        console.log('...and we\'ve failed....');
+                    });   
+                } catch(e) {
+                    if(e instanceof TypeError){
+                        console.log(e.message);
+                    }
+                    else {
+                        console.log(e.message);
+                    }
+                }
+                
+            }); //end document.on change
+            
+            
+        </script>
+    </body>
+</html>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Built application files
 *.apk
 *.ap_
@@ -62,3 +63,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+=======
+Asobou/
+docsite/
+>>>>>>> 7edb375f08821d484847bac6eea967ac109a26fb

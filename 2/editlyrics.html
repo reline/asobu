@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Edit Lyrics</title>
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    </head>
+    <body>
+        <h2>Lyrics</h2>
+        <a href="index.html" class="backbtn">Back</a>
+        <form method="post" action="backend/addlyrics.php">
+            <legend>Add Lyrics</legend>
+            Song ID <span id="add_lyrics_select_song_id"><i>There are no songs in the database</i></span>
+            <br>Format
+            <select name="input_add_lyrics_format" id="input_add_lyrics_format">
+                <option>--select--</option>
+                <option value="kana">かな・カナ</option>
+                <option value="kanji">漢字</option>
+                <option value="romaji">romaji</option>
+            </select>
+            <br>Link to File <input type="text" name="input_add_lyrics_file" id="input_add_lyrics_file">
+            <br><button type="submit" id="add_lyric_submit">Submit</button> <button type="reset" id="add_lyric_reset">Reset</button>
+        </form>
+        <br>
+        <br>
+        <form method="post" action="backend/editlyricsinfo.php">
+            <legend>Edit Lyrics</legend>
+            Select the lyric to edit <span id="edit_lyrics_select_lyrics_id"><i>There are no lyrics in the database</i></span>
+            <br>Song ID <span id="edit_lyrics_select_song_id"><i>There are no songs in the database</i></span>
+            <br>Format
+            <select name="edit_lyrics_format" id="edit_lyrics_format">
+                <option>--select--</option>
+                <option value="kana">かな・カナ</option>
+                <option value="kanji">漢字</option>
+                <option value="romaji">romaji</option>
+            </select>
+            <br>Link to File <input type="text" name="edit_lyrics_file" id="edit_lyrics_file">
+            <br><button type="submit" id="edit_lyric_submit">Submit</button> <button type="reset" id="edit_lyric_reset">Reset</button>
+        </form>
+        
+        <!-- ugh
+        <div id="lyric_search">
+            <h3>Search Lyrics</h3>
+            <form>
+                lyric id <span id="search_lyric_id_span"></span>
+                <br>song id <span id="search_song_id_span"></span>
+                <br>format <span id="search_lyric_format_span"></span>
+                <br>limit <span id="search_lyric_limit_span"></span>
+            </form>
+            <div id="view_lyric_search"></div>
+        </div>-->
+        
+        <script>
+            $(document).ready(function(){
+                $add_song_id_span = $('#add_lyrics_select_song_id');
+                $edit_song_id_span = $('#edit_lyrics_select_song_id');
+                var songdata = "<option>--select--</option>";
+                $.getJSON("backend/getallsongs.php", function(data){
+                    songlist = [];
+                    $.each(data, function(key, val){
+                        songlist.push(val);
+                    });
+                    for(var song in songlist){
+                        songdata += '<option value="'+ songlist[song].song_id +'">' + songlist[song].song_name + '</option>';
+                    }
+                    $add_song_id_span.html('<select id="input_add_lyrics_select_song" name="input_add_lyrics_select_song">'+ songdata +'</select>');
+                    
+                    $edit_song_id_span.html('<select id="edit_lyrics_song" name="edit_lyrics_song"">'+ songdata +'</select>');
+                }); //end song get song data
+                
+                //get lyrics info
+                $edit_lyric_is_span = $('#edit_lyrics_select_lyrics_id');
+                var lyricdata = "<option>--select--</option>";
+                $.getJSON("backend/getalllyrics.php", function(data){
+                    lyriclist = [];
+                    $.each(data, function(key, val){
+                        lyriclist.push(val);
+                        //console.log(val);
+                    });
+                    for(var sheet in lyriclist){
+                        lyricdata += '<option value="'+ lyriclist[sheet].lyric_id +'">' + lyriclist[sheet].song_name + ' - ' + lyriclist[sheet].format + '</option>';
+                    }
+                    $edit_lyric_is_span.html('<select id="edit_lyric_id" name="edit_lyric_id">'+ lyricdata +'</select>');
+                }); //end song get song data
+                
+                
+                //do the view thing
+                /*
+                $lyric_id_span = $('#search_lyric_id_span');
+                $song_id_span = $('#search_song_id_span');
+                $format_span = $('#search_lyric_format_span');
+                $limit_span = $('#search_lyric_limit_span');
+                $view_lyric_search_div = $('#view_lyric_search');
+                
+                var lyricdata = "<option>--select--</option>";
+                */
+                
+                
+                
+            }); //end document.ready
+            
+            $(document).on('change', '#edit_lyric_id', function(){
+                $lyric_id = $('#edit_lyric_id option:selected').val();
+                
+                $song_id_input = $('#edit_lyrics_song');
+                $format_input = $('#edit_lyrics_format');
+                $file_input = $('#edit_lyrics_file');
+                
+                $song_id_input.val("");
+                $format_input.val("");
+                $file_input.val("");
+                
+                //query
+                var postquery = "?lyric_id=" + $lyric_id;
+                console.log(postquery);
+                $.ajax({
+                    method: "GET",
+                    url: "backend/getlyricinfo.php" + postquery
+                }).done(function(data){
+                    console.log(data);
+                    var selected_lyric = data;
+                    $song_id_input.val(selected_lyric[0].song_id).change();
+                    $format_input.val(selected_lyric[0].format).change();
+                    $file_input.val(selected_lyric[0].link_to_file);
+                    console.log("lyrics have been gotten");
+                }).fail(function(){
+                    console.log("lyrics failed to be gotten");
+                });
+            }); //end doument.on change
+            
+            /*
+            $(document).on('change', '#lyric_search', function(){
+                $lyric_id = $('#input_edit_select_lyrics option:selected').val();
+                
+                
+                //query
+                var getquery = "?lyric_id=" + $lyric_id + "&song_id=" + $song_id + "&format=" + $format + "&limit=" + $limit;
+                
+                $.ajax({
+                    method: "GET",
+                    url: "backend/getlyricinfo.php" + getquery;
+                }).done(function(data){
+                    console.log(data);
+                    var selected_lyric = data;
+                    
+                    console.log("lyrics have been gotten");
+                }).fail(function(){
+                    console.log("lyrics failed to be gotten");
+                });
+            }); //end doument.on change
+            
+            */
+            
+    </script>
+    </body>
+    
+</html>

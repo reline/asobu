@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿#あそぼうよ！　Let's Play!
+=======
+#あそぼうよ！　Let's Play!
+>>>>>>> 7edb375f08821d484847bac6eea967ac109a26fb
 An android app for studying Japanese.
 
 #Environment
@@ -9,3 +13,9 @@ Users will choose a song and then will be given the lyrics to the song with a fe
 users will have to fill in the blanks with the words. They’re scored on how many blank spaces they filled 
 in correctly. If the user doesn’t fill in the blanks correctly in the allotted time they will either lose points 
 or simply gain none. The lyrics will be synced up with the song and will scroll along as it plays.
+<<<<<<< HEAD
+=======
+
+#Backend
+This is the backend stuff
+>>>>>>> 7edb375f08821d484847bac6eea967ac109a26fb

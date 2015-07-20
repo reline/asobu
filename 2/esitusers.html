@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Edit Users</title>
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    </head>
+    <body>
+        <h2>Users</h2>
+        <a href="index.html" class="backbtn">Back</a>
+        <form method="post" action="backend/adduser.php">
+            <legend>Add Users</legend>
+            username <input type="text" name="input_add_user_name" id="input_add_user_name">
+            <br>password <input type="password" name="input_add_user_pass" id="input_add_user_pass">
+            <br>email <input type="email" name="input_add_user_email" id="input_add_user_email">
+            <br><button type="submit" name="add_user_submit" id="add_user_submit">Submit</button> <button type="reset" id="add_user_reset">Reset</button>
+        </form>
+        <br>
+        <br>
+        <form method="post" action="backend/edituserinfo.php">
+            <legend>Edit Users</legend>
+            Select A User <span id="edit_user_id"><i>There are no Users in the database</i></span>
+            <br><span id="edit_user_id">User ID</span><input type="text" name="input_edit_user_id" id="input_edit_user_id" readonly>
+            <br>username <input type="text" name="input_edit_user_name" id="input_edit_user_name">
+            <br>password <input type="password" name="input_edit_user_pass" id="input_edit_user_pass">
+            <br>email <input type="email" name="input_edit_user_email" id="input_edit_user_email">
+            <br><button type="submit" name="edit_user_submit" id="edit_user_submit">Submit</button> <button type="reset" id="edit_user_reset">Reset</button>
+        </form>
+        
+        <script>
+            $(document).ready(function(){
+                $user_id_span = $('#edit_user_id');
+                var userdata = "";
+                $.getJSON("backend/getallusers.php", function(data){
+                    userslist = [];
+                    $.each(data, function(key, val){
+                        userslist.push(val);
+                    });
+                    for(var user in userslist){
+                        userdata += '<option value="'+ userslist[user].user_id +'">' + userslist[user].username + '</option>';
+                        //console.log(userslist[user].user_id);
+                    }
+                    
+                    $user_id_span.html('<select id="input_edit_user_select_user">'+ userdata +'</select>');
+            });
+                
+                
+                /*
+            $.getJSON("backend/getuserinfo.php", function(data){
+                selected_user = JSON.parse(data);
+            });
+                */
+            });//end document.ready
+            
+            $(document).on('change', '#input_edit_user_select_user', function(){
+                //alert($select_user_id = $('#input_edit_user_select_user option:selected').val());
+                $select_user_id = $('#input_edit_user_select_user option:selected').val();
+                
+                
+                postquery = "?user_id=" + $select_user_id;
+                $.ajax({
+                    method: "GET",
+                    url: "backend/getuserinfo.php"+postquery
+                }).done(function(data){
+                    var selected_user = data;
+                    console.log(data);
+                    $("#input_edit_user_id").val($select_user_id);
+                    $("#input_edit_user_name").val(selected_user.username);
+                    $("#input_edit_user_pass").val(selected_user.password);
+                    $("#input_edit_user_email").val(selected_user.email);
+                    console.log("done");
+                }).fail(function(){
+                    console.log("It failed jim.");
+                });
+            }); //end document on change
+            
+        </script>
+        
+    </body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Edit Songs</title>
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    </head>
+    <body>
+        <h2>Songs</h2>
+        <a href="index.html" class="backbtn">Back</a>
+        <form method="post" action="backend/addsong.php">
+            <legend>Add Songs</legend>
+            name <input type="text" name="input_add_song_name" id="input_add_song_name">
+            <br>artist <input type="text" name="input_add_song_artist" id="input_add_song_artist">
+            <br>album <input type="text" name="input_add_song_album" id="input_add_song_album">
+            <br>genre <input type="text" name="input_add_song_genre" id="input_add_song_genre">
+            <br>length <input type="text" name="input_add_song_length" id="input_add_song_length" placeholder="hh:mm:ss">
+            <br>diffifulty
+            <select id="input_add_song_difficulty" name="input_add_song_difficulty">
+                <option value="slow">slow</option>
+                <option value="medium">medium</option>
+                <option value="fast">fast</option>
+            </select>
+            <br>album artwork <input type="text" name="input_add_song_art" id="input_add_song_art">
+            <br><button type="submit" id="add_song_submit">Submit</button> <button type="reset" id="add_song_reset">Reset</button>
+        </form>
+        <br>
+        <br>
+        <form method="POST" action="backend/editsonginfo.php">
+            <legend>Edit Songs</legend>
+            Select a song id <span id="edit_song_id"><i>There are no songs in the database</i></span>
+            <br>Song ID <input type="text" name="input_edit_song_id" id="input_edit_song_id" readonly>
+            <br>name <input type="text" name="input_edit_song_name" id="input_edit_song_name">
+            <br>artist <input type="text" name="input_edit_song_artist" id="input_edit_song_artist">
+            <br>album <input type="text" name="input_edit_song_album" id="input_edit_song_album">
+            <br>genre <input type="text" name="input_edit_song_genre" id="input_edit_song_genre">
+            <br>length <input type="text" name="input_edit_song_length" id="input_edit_song_length">
+            <br>diffifulty
+            <select id="input_edit_song_difficulty" name="input_edit_song_difficulty">
+                <option value="slow">slow</option>
+                <option value="medium">medium</option>
+                <option value="fast">fast</option>
+            </select>
+            <br>album artwork
+            <br><span id="song_artwork"><i>There is currently no album art for this song</i></span>
+            <br><input type="text" name="input_edit_song_art" id="input_edit_song_art">
+            <br><button type="submit" id="edit_song_submit">Submit</button> <button type="reset" id="edit_song_reset">Reset</button>
+        </form>
+        
+        <script>
+            $(document).ready(function(){
+                $song_id_span = $('#edit_song_id');
+                var songdata = "<option>--select--</option>";
+                $.getJSON("backend/getallsongs.php", function(data){
+                    songlist = [];
+                    $.each(data, function(key, val){
+                        songlist.push(val);
+                    });
+                    for(var song in songlist){
+                        songdata += '<option value="'+ songlist[song].song_id +'">' + songlist[song].song_name + '</option>';
+                    }
+                    $song_id_span.html('<select id="input_edit_song_select_song">'+ songdata +'</select>');
+                });
+            }); //end document.ready
+            
+            $(document).on('change', '#input_edit_song_select_song', function(){
+                $select_song_id = $('#input_edit_song_select_song option:selected').val();
+                
+                $id_input = $("#input_edit_song_id");
+                $name_input = $("#input_edit_song_name");
+                $artist_input = $("#input_edit_song_artist");
+                $album_input = $("#input_edit_song_album");
+                $genre_input = $("#input_edit_song_genre");
+                $length_input = $("#input_edit_song_length");
+                $diff_input = $("#input_edit_song_difficulty")
+                //$art_input = $("#");
+                
+                $id_input.val("");
+                $name_input.val("");
+                $artist_input.val("");
+                $album_input.val("");
+                $genre_input.val("");
+                $length_input.val("");
+                $diff_input.val("");
+                
+                postquery = "?song_id=" + $select_song_id + "&limit=1";
+                $.ajax({
+                    method: "GET",
+                    url: "backend/getsonginfo.php"+postquery
+                }).done(function(data){
+                    var selected_song = data;
+                    $id_input.val(selected_song[0].song_id);
+                    $name_input.val(selected_song[0].song_name);
+                    $artist_input.val(selected_song[0].song_artist);
+                    $album_input.val(selected_song[0].song_album);
+                    $genre_input.val(selected_song[0].song_genre);
+                    $length_input.val(selected_song[0].song_length);
+                    $diff_input.val(selected_song[0].song_diff).change();
+                    //TODO: edit album artwork...it has to be an text input too...
+                    console.log("done");
+                }).fail(function(){
+                    console.log("It failed jim.");
+                });
+            }); //end document on change
+        </script>
+        
+    </body>
+</html>

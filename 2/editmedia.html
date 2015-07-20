@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Edit Media</title>
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    </head>
+    <body>
+        <h2>Users</h2>
+        <a href="index.html" class="backbtn">Back</a>
+        <form method="post" action="backend/addmediainfo.php">
+            <legend>Add Media</legend>
+            Seelct Song ID <span id="add_media_select_song_id"><i>There are no songs in the database</i></span>
+            <br>Type of Link 
+            <select id="add_media_type" name="add_media_type">
+                <option>--select--</option>
+                <option value="youtube">Youtube video</option>
+                <option value="videofile">video file</option>
+                <option value="songfile">song file</option>
+            </select>
+            <br>Link <input name="add_media_link" id="add_media_link">
+            <br><button type="submit" id="add_media_submit">Submit</button> <button type="reset" id="add_media_reset">Reset</button>
+        </form>
+        <br>
+        <br>
+        <form method="post" action="backend/editmediainfo.php">
+            <legend>Edit Media</legend>
+            Select Media ID <span id="edit_media_select_media_id"><i>There are no media links in the database</i></span>
+            <br>Select Song ID <span id="edit_media_select_song_id"><i>There are no songs in the database</i></span>
+            <br>Type of Link 
+            <select id="edit_media_type" name="edit_media_type">
+                <option>--select--</option>
+                <option value="youtube">Youtube video</option>
+                <option value="videofile">video file</option>
+                <option value="songfile">song file</option>
+            </select>
+            <br>Link <input name="edit_media_link" id="edit_media_link">
+            <br><button type="submit" id="edit_media_submit">Submit</button> <button type="reset" id="edit_media_reset">Reset</button>
+        </form>
+        <script>
+            
+            $(document).ready(function(){
+                $add_song_id_span = $('#add_media_select_song_id');
+                $edit_song_id_span = $('#edit_media_select_song_id');
+                var songdata = "<option>--select--</option>";
+                
+                $.getJSON("backend/getallsongs.php", function(data){
+                    songlist = [];
+                    $.each(data, function(key, val){
+                        songlist.push(val);
+                    });
+                    
+                    for(var song in songlist){
+                        songdata += '<option value="'+ songlist[song].song_id +'">' + songlist[song].song_name + '</option>';
+                    }
+                    
+                    $add_song_id_span.html('<select id="add_media_song" name="add_media_song">'+ songdata +'</select>');
+                    
+                    $edit_song_id_span.html('<select id="edit_media_song" name="edit_media_song">'+ songdata +'</select>');
+                }); //end song get song data
+                
+                $edit_media_span = $('#edit_media_select_media_id');
+                
+                var mediadata = "<option>--select--</option>";
+                
+                $.getJSON("backend/getallmedia.php", function(data){
+                    medialist = [];
+                    $.each(data, function(key, val){
+                        //console.log(val);
+                        medialist.push(val);
+                    });
+                    
+                    for(var media in medialist){
+                        mediadata += '<option value="'+ medialist[media].media_id +'">' + medialist[media].song_name + " - " + medialist[media].type_of_link +  '</option>';
+                    }
+                    $edit_media_span.html('<select id="edit_media_id" name="edit_media_id">'+ mediadata +'</select>');
+                    
+                }); //end get media list
+                
+            });     //end document.ready
+            
+            $(document).on('change', '#edit_media_select_media_id', function(){
+                $media_id = $('#edit_media_id').val();
+                
+                $song_input = $('#edit_media_song');
+                $link_input = $('#edit_media_link');
+                $type_format = $('#edit_media_type');
+                
+                $song_input.val("");
+                $link_input.val("");
+                $type_format.val("");
+                
+                var getquery = "?media_id=" + $media_id;
+                
+                $.ajax({
+                    method: "GET",
+                    url: "backend/getmediainfo.php" + getquery
+                }).done(function(data){
+                    console.log(data);
+                    var selected_media = data;
+                    $song_input.val(selected_media[0].song_id).change();
+                    $type_format.val(selected_media[0].type_of_link).change();
+                    $link_input.val(selected_media[0].link);
+                    console.log("media have been gotten");
+                }).fail(function(){
+                    console.log("media failed to be gotten");
+                });
+                
+            });
+                
+        </script>
+    </body>
+</html>

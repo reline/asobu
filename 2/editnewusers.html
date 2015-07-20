@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Edit NEW Users</title>
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    </head>
+    <body>
+        <h2>NEW Users</h2>
+        <a href="index.html" class="backbtn">Back</a>
+        <form method="post" action="backend/addnewuser.php">
+            <legend>Add Users</legend>
+            username <input type="text" name="add_username" id="add_username">
+            <br>phone number <input type="tel" name="add_phone" id="add_phone">
+            <br><button type="submit" name="add_user_submit" id="add_user_submit">Submit</button> <button type="reset" id="add_user_reset">Reset</button>
+        </form>
+        <br>
+        <br>
+        <form method="post" action="backend/editnewuserinfo.php">
+            <legend>Edit Users</legend>
+            Select A User <span id="edit_user_id"><i>There are no Users in the database</i></span>
+            <br><span id="edit_user_id">User ID</span><input type="text" name="input_edit_user_id" id="input_edit_user_id" readonly>
+            <br>username <input type="text" name="edit_username" id="edit_username">
+            <br>phone number <input type="tel" name="edit_phone" id="edit_phone">
+            <br><button type="submit" name="edit_user_submit" id="edit_user_submit">Submit</button> <button type="reset" id="edit_user_reset">Reset</button>
+        </form>
+        
+        <script>
+            $(document).ready(function(){
+                $user_id_span = $('#edit_user_id');
+                var userdata = '<option>--Select--</option>';
+                $.getJSON("backend/getallnewusers.php", function(data){
+                    userslist = [];
+                    $.each(data, function(key, val){
+                        userslist.push(val);
+                    });
+                    for(var user in userslist){
+                        userdata += '<option value="'+ userslist[user].user_id +'">' + userslist[user].username + '</option>';
+                        //console.log(userslist[user].user_id);
+                    }
+                    
+                    $user_id_span.html('<select id="input_edit_user_select_user">'+ userdata +'</select>');
+                });
+            
+            });//end document.ready
+            
+            $(document).on('change', '#input_edit_user_select_user', function(){
+                //alert($select_user_id = $('#input_edit_user_select_user option:selected').val());
+                $select_user_id = $('#input_edit_user_select_user option:selected').val();
+                
+                $user_id_input = $("#input_edit_user_id");
+                $username_input = $("#edit_username");
+                $phone_input = $("#edit_phone");
+                
+                $user_id_input.val("");
+                $username_input.val("");
+                $phone_input.val("");
+                
+                postquery = "?user_id=" + $select_user_id + "&limit=1";
+                console.log(postquery);
+                $.ajax({
+                    method: "GET",
+                    url: "backend/getnewuserinfo.php"+postquery
+                }).done(function(data){
+                    console.log("info...");
+                    console.log(data);
+                    var selected_user = data;
+                    $user_id_input.val(selected_user[0].user_id);
+                    $username_input.val(selected_user[0].username);
+                    $phone_input.val(selected_user[0].phonenumber);
+                    console.log("done");
+                }).fail(function(){
+                    console.log("It failed jim.");
+                });
+            }); //end document on change
+            
+        </script>
+        
+    </body>
+</html>
