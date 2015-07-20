@@ -29,11 +29,9 @@ public class ScoreboardActivity extends AppCompatActivity {
     private static final String TAG = "ScoreboardActivity";
 
     private String weburl = "http://198.199.94.36/change/backend/getallsongs.php";
-    //private TextView output;
+
     private List<Song> songList = new ArrayList<>();
     private ListView songListView;
-    //private ArrayAdapter<String> songAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +88,6 @@ public class ScoreboardActivity extends AppCompatActivity {
 
     protected void updateDisplay() {
         //output.append(message + "\n");
-
         ArrayList<String> songTitles = new ArrayList<>();
 
         if(songList != null) {
@@ -115,11 +112,7 @@ public class ScoreboardActivity extends AppCompatActivity {
     protected boolean isOnline(){
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if((netInfo != null) &&(netInfo.isConnectedOrConnecting())){
-            return true;
-        } else {
-            return false;
-        }
+        return ((netInfo != null) &&(netInfo.isConnectedOrConnecting()));
     }
 
     private class ScoreboardTasks extends AsyncTask<String, String, String> {

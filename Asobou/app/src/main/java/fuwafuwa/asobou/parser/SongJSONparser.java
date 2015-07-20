@@ -51,6 +51,9 @@ public class SongJSONparser {
                 song.setAlbumArtwork(obj.getString("album_artwork"));
 
                 //media
+                //song.setYoutubeLink("WIKqgE4BwAY");
+                song.setYoutubeLink(obj.getString("link"));
+
 
                 //lyrics
 

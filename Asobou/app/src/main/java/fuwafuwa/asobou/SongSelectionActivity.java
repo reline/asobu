@@ -1,31 +1,22 @@
 package fuwafuwa.asobou;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.internal.bind.ArrayTypeAdapter;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import fuwafuwa.asobou.model.Song;
 import fuwafuwa.asobou.parser.SongJSONparser;
@@ -33,9 +24,10 @@ import fuwafuwa.asobou.parser.SongJSONparser;
 public class SongSelectionActivity extends AppCompatActivity {//Activity implements AdapterView.OnItemClickListener{
 
     private static final String TAG = "SongSelectionActivity";
-    private String weburl = "http://198.199.94.36/change/backend/getallsongs.php";
-    //private ArrayAdapter<String> listAdapter;
-    private List<Song> songList = new ArrayList<>();
+
+    private String weburl = "http://198.199.94.36/change/backend/getsongselection.php";
+
+    private ArrayList<Song> songList = new ArrayList<>();
     private ListView songListView;
 
     @Override
@@ -57,95 +49,40 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
             Toast.makeText(this, "The network is currently unavailable, check your connection.", Toast.LENGTH_SHORT).show();
         }
 
-        /*
+        songListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Song selectedSong = (Song) parent.getAdapter().getItem(position);
+                //String youtubeLink = "";
 
-        songList.add("ド・キ・ド・キ　モーニン");
-        songList.add("メギツネ");
-        songList.add("ギッミチョコ");
-        songList.add("イ～ネ");
-        songList.add("Love Metal");
-        songList.add("Love Machine");
-        songList.add("Song 4 (Black Night)");
-        songList.add("いいね!");
-        songList.add("Headbangeeeeeeeeeeeeeerrrrrrrrrrr!!!!!!");
-        songList.add("Onedari Dalsakusen");
-        songList.add("Tamashii no Rufuran");
-        songList.add("Catch me if you can");
-        songList.add("Uki Uki Nightmare");
-        songList.add("Rondo of Nightmare");
-        songList.add("イジメ, ダメ, ゼッタイ");
-        songList.add("Road of Resistance");
-        songList.add("Akatsuki");
-        songList.add("BABYMETAL DEATH");
-        songList.add("君とアニメが見たい");
+                /*for(Song song : songList) {
+                    if(song.getTitle().equals(selectedSong)) {
+                        selectedSong = song;
+                        youtubeLink = song.getYoutubeLink();
+                    }
+                }*/
 
-        songListView = (ListView) findViewById(R.id.selectsong_listview);
-        listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songList);
-        songListView.setAdapter(listAdapter);
-
-        */
-
-    }
-
-    /*
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String clickedSongId = (String) parent.getItemAtPosition(position);
-        startActivity(new Intent(this, PlayTapModeActivity.class).putExtra("songVideoLink", getVideoLink(clickedSongId)));
-    }
-
-    public String getVideoLink(String songName) {
-        for (Song s : songList) {
-            if (s.getVideoLink().equals(songName)) {
-                return s.getVideoLink();
+                Intent intent = new Intent(SongSelectionActivity.this, PlayTapModeActivity.class);
+                //intent.putExtra("song_url", youtubeLink);
+                intent.putExtra("song", selectedSong);
+                startActivity(intent);
             }
-        }
-        return "dQw4w9WgXcQ"; // if that song has no link, get rick rolled
-    }*/
+        });
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_song_selection, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void onSettingsButtonClick(MenuItem menuItem) {
-        startActivity(new Intent(this, SettingsActivity.class));
-    }
-
-    public void onHelpButtonClick(MenuItem menuItem) {
-        startActivity(new Intent(this, HelpActivity.class));
     }
 
     protected void updateDisplay() {
         //output.append(message + "\n");
-
-        ArrayList<String> songTitles = new ArrayList<>();
+        //ArrayList<String> songTitles = new ArrayList<>();
 
         if(songList != null) {
-            for(Song song : songList) {
+            /*for(Song song : songList) {
                 Log.d(TAG, " - updateDisplay: " + song.getTitle());
                 //output.append(song.getTitle() + "\n");
                 songTitles.add(song.getTitle());
-            }
+            }*/
 
-            ArrayAdapter<String> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, songTitles);
+            ArrayAdapter<Song> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, songList);
             songListView.setAdapter(songAdapter);
         }
     }
@@ -174,7 +111,7 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
 
         @Override
         protected void onPostExecute(String result) {
-            songList = /*(ArrayList<Song>)*/ SongJSONparser.parseSongs(result);
+            songList = (ArrayList<Song>) SongJSONparser.parseSongs(result);
             updateDisplay();
         }
     }   //end song select task

@@ -14,18 +14,20 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import fuwafuwa.asobou.model.Song;
+
 public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
 
-    private String songVideoLink;
+    private Song song;
     private static final String TAG = "PlayTapModeActivity";
-    ArrayList<String[]> lyrics = new ArrayList<String[]>();
+    ArrayList<String[]> lyrics = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_tap_mode);
 
-        songVideoLink = getIntent().getStringExtra("songVideoLink");
+        song = (Song) getIntent().getSerializableExtra("song");
 
         YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
@@ -43,8 +45,8 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
                 e.printStackTrace();
             }*/
 
-            //player.loadVideo(songVideoLink);
-            player.loadVideo("WIKqgE4BwAY"); // gimi choko 4:03
+            player.loadVideo(song.getYoutubeLink());
+            //player.loadVideo("WIKqgE4BwAY"); // gimi choko 4:03
             Log.d(TAG, " - Video has finished loading.");
         }
     }
@@ -89,7 +91,7 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
             for(int line = 0; line < lyrics.size(); line++) {
                 String[] currLine = lyrics.get(line);
                 Time currentPlayerTime = new Time(player.getCurrentTimeMillis());
-                if(currentPlayerTime.toString() == currLine[0]) {
+                if(currentPlayerTime.toString().equals(currLine[0])) {
                     scrollLyrics(currLine[1]);
                 }
             }

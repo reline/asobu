@@ -1,12 +1,14 @@
 package fuwafuwa.asobou.model;
 
+import java.io.Serializable;
+
 /**
  * Created by mena on 7/10/2015.
  *
  * Song Class
  * holds song info, media info, lyric info and also user score info
  */
-public class Song {
+public class Song implements Serializable {
     //about the song
     private int songId;
     private String title;
@@ -33,6 +35,10 @@ public class Song {
 
     public Song() {
 
+    }
+
+    public String toString() {
+        return getTitle();
     }
 
     public int getSongId() {
