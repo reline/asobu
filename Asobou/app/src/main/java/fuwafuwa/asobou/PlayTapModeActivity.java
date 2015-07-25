@@ -34,14 +34,17 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
 
     private Song song;
     private List<String> lyrics;
+    private List<Integer> timings = new ArrayList<>();
     TextView lyricsTextView;
     private static final String TAG = "PlayTapModeActivity";
     YouTubePlayer player;
     int currTime;
+    int lastTiming = -1;
     Button answer1;
     Button answer2;
     Button answer3;
     Button answer4;
+    String missingWord;
 
     private Handler hUpdate;
     private Runnable rUpdate;
@@ -57,28 +60,28 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         answer1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                checkAnswer(v);
             }
         });
         answer2 = (Button) findViewById(R.id.button2);
         answer2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                checkAnswer(v);
             }
         });
         answer3 = (Button) findViewById(R.id.button3);
         answer3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                checkAnswer(v);
             }
         });
         answer4 = (Button) findViewById(R.id.button4);
         answer4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                checkAnswer(v);
             }
         });
 
@@ -96,6 +99,11 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
             lyrics.add("ヤダ! ヤダ! ヤダ! ヤダ!");
         }
         Log.d(TAG, " - lyrics: " + lyrics);
+        timings.add(4);
+        timings.add(6);
+        timings.add(8);
+        timings.add(9);
+        timings.add(10);
          /*
             あたたたたた ずっきゅん!
             わたたたたた どっきゅん!
@@ -115,8 +123,13 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
                 try {
                     currTime = player.getCurrentTimeMillis()/1000;
                     Log.d(TAG, " - current time in secs: " + currTime);
-                    if(currTime < lyrics.size()) {
+                    /*if(currTime < lyrics.size()) {
                         lyricsTextView.setText(blankLyrics());
+                    }*/
+                    if(timings.contains(currTime) && lastTiming != currTime) { // if the currTime matches the call time for the lyrics, set the textview once
+                        Log.d(TAG, " - change lyrics at " + currTime);
+                        lastTiming = currTime;
+                        lyricsTextView.setText(blankLyrics()); //blankLyrics()
                     }
                 } catch (NullPointerException e) {
                     e.printStackTrace();
@@ -170,19 +183,19 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
     }
 
     private String blankLyrics() {
-        String[] wordsAsArray = lyrics.get(currTime).split(" ");
+        String[] wordsAsArray = lyrics.get(timings.indexOf(currTime)).split(" ");
 
         int index = new Random().nextInt(wordsAsArray.length);
-        String randomWord = wordsAsArray[index];
+        missingWord = wordsAsArray[index];
         int buttonNum = new Random().nextInt(4);
         if(buttonNum == 1) {
-            answer1.setText(randomWord);
+            answer1.setText(missingWord);
         } else if (buttonNum == 2) {
-            answer2.setText(randomWord);
+            answer2.setText(missingWord);
         } else if (buttonNum == 3) {
-            answer3.setText(randomWord);
+            answer3.setText(missingWord);
         } else {
-            answer4.setText(randomWord);
+            answer4.setText(missingWord);
         }
 
         wordsAsArray[index] = "_______";
@@ -194,5 +207,13 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
             }
         }
         return blankLyrics;
+    }
+
+    private void checkAnswer(View v) {
+        if(v.toString().equals(missingWord)) {
+            // yay you got it right
+        } else {
+            // boo you suck
+        }
     }
 }
