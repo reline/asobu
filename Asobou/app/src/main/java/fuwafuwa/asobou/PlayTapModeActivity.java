@@ -37,7 +37,7 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
     private List<Integer> timings = new ArrayList<>();
     TextView lyricsTextView;
     private static final String TAG = "PlayTapModeActivity";
-    YouTubePlayer player;
+    YouTubePlayer youTubePlayer;
     int currTime;
     int lastTiming = -1;
     Button answer1;
@@ -121,7 +121,7 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
             @Override
             public void run() {
                 try {
-                    currTime = player.getCurrentTimeMillis()/1000;
+                    currTime = youTubePlayer.getCurrentTimeMillis()/1000;
                     Log.d(TAG, " - current time in secs: " + currTime);
                     /*if(currTime < lyrics.size()) {
                         lyricsTextView.setText(blankLyrics());
@@ -152,11 +152,11 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
     }
 
     @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
+    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean wasRestored) {
         if (!wasRestored) {
-            this.player = player;
-            player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
-            player.loadVideo(song.getYoutubeLink());
+            this.youTubePlayer = youTubePlayer;
+            youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
+            youTubePlayer.loadVideo(song.getYoutubeLink());
             Log.d(TAG, " - Video has finished loading.");
         }
     }
