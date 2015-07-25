@@ -54,9 +54,8 @@ public class SongJSONparser {
                 //song.setYoutubeLink("WIKqgE4BwAY");
                 song.setYoutubeLink(obj.getString("link"));
 
-
                 //lyrics
-
+                song.setLyricsKanji(obj.getString("link_to_file"));
 
                 //userscore
 

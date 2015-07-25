@@ -14,11 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="258dp"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/currLyrics"
         android:id="@+id/lyrics"
-        android:layout_gravity="center_horizontal"
-        android:fillViewport="false"/>
+        android:maxLines="100"
+        android:scrollbars="vertical"/>
 
 </LinearLayout>

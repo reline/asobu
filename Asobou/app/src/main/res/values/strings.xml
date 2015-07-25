@@ -68,6 +68,7 @@
 
     <!--PlayTapModeActivity -->
     <string name="title_activity_play_tap_mode">Play</string>
+    <string name="currLyrics">Lyrics were not loaded properly.</string>
 
     <!--PlayTypeModeActivity -->
     <string name="title_activity_play_type_mode">Play</string>
