@@ -60,28 +60,28 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         answer1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAnswer(v);
+                checkAnswer(((Button)v).getText().toString());
             }
         });
         answer2 = (Button) findViewById(R.id.button2);
         answer2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAnswer(v);
+                checkAnswer(((Button)v).getText().toString());
             }
         });
         answer3 = (Button) findViewById(R.id.button3);
         answer3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAnswer(v);
+                checkAnswer(((Button)v).getText().toString());
             }
         });
         answer4 = (Button) findViewById(R.id.button4);
         answer4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkAnswer(v);
+                checkAnswer(((Button)v).getText().toString());
             }
         });
 
@@ -100,10 +100,10 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         }
         Log.d(TAG, " - lyrics: " + lyrics);
         timings.add(4);
-        timings.add(6);
-        timings.add(8);
-        timings.add(9);
-        timings.add(10);
+        timings.add(16);
+        timings.add(28);
+        timings.add(39);
+        timings.add(50);
          /*
             あたたたたた ずっきゅん!
             わたたたたた どっきゅん!
@@ -209,11 +209,16 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         return blankLyrics;
     }
 
-    private void checkAnswer(View v) {
-        if(v.toString().equals(missingWord)) {
+    private void checkAnswer(String answer) {
+        if (missingWord == null) {
+            return; // do nothing if the first answer is not available
+        }
+        if(answer.equals(missingWord)) {
             // yay you got it right
+            Log.d(TAG, "Correct! " + answer + " = " + missingWord);
         } else {
             // boo you suck
+            Log.d(TAG, "You clicked on " + answer + "; Correct answer is " + missingWord);
         }
     }
 }
