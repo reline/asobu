@@ -47,7 +47,7 @@ public class SongJSONparser {
                 song.setAlbum(obj.getString("song_album"));
                 song.setGenre(obj.getString("song_genre"));
                 song.setLength(obj.getString("song_length"));
-                song.setDifficulty(obj.getString("song_diff"));
+                song.setDifficulty(obj.getString("song_diff")); // "slow", "medium", "fast"
                 song.setAlbumArtwork(obj.getString("album_artwork"));
 
                 //media

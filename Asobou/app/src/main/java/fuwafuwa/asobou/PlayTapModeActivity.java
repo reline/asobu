@@ -8,6 +8,8 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubePlayer;
@@ -24,6 +26,7 @@ import java.nio.Buffer;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import fuwafuwa.asobou.model.Song;
 
@@ -34,6 +37,11 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
     TextView lyricsTextView;
     private static final String TAG = "PlayTapModeActivity";
     YouTubePlayer player;
+    int currTime;
+    Button answer1;
+    Button answer2;
+    Button answer3;
+    Button answer4;
 
     private Handler hUpdate;
     private Runnable rUpdate;
@@ -45,9 +53,36 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
 
         lyricsTextView = (TextView) findViewById(R.id.lyrics);
 
+        answer1 = (Button) findViewById(R.id.button);
+        answer1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        answer2 = (Button) findViewById(R.id.button2);
+        answer2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        answer3 = (Button) findViewById(R.id.button3);
+        answer3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        answer4 = (Button) findViewById(R.id.button4);
+        answer4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         song = getIntent().getParcelableExtra("song");
-
-
 
         try { // to retrieve the song lyrics file as type ArrayList<String>
             lyrics = readFile(song.getLyricsKanji());
@@ -77,9 +112,14 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         rUpdate = new Runnable() {
             @Override
             public void run() {
-                Log.d(TAG, " - current time in secs: " + player.getCurrentTimeMillis()/1000);
-                if(player.getCurrentTimeMillis()/1000 < lyrics.size()) {
-                    lyricsTextView.setText(lyrics.get(player.getCurrentTimeMillis() / 1000));
+                try {
+                    currTime = player.getCurrentTimeMillis()/1000;
+                    Log.d(TAG, " - current time in secs: " + currTime);
+                    if(currTime < lyrics.size()) {
+                        lyricsTextView.setText(blankLyrics());
+                    }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                 }
             }
         };
@@ -87,7 +127,7 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
             public void run() {
                 while(true) {
                     try {
-                        this.sleep(25); // 40th of a second
+                        this.sleep(1);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -103,16 +143,7 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         if (!wasRestored) {
             this.player = player;
             player.setPlayerStyle(YouTubePlayer.PlayerStyle.CHROMELESS);
-
-            // ridiculous sleep function
-           /* try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
-
             player.loadVideo(song.getYoutubeLink());
-            //player.loadVideo("WIKqgE4BwAY"); // gimi choko 4:03
             Log.d(TAG, " - Video has finished loading.");
         }
     }
@@ -120,28 +151,6 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
     @Override
     protected YouTubePlayer.Provider getYouTubePlayerProvider() {
         return (YouTubePlayerView) findViewById(R.id.youtube_view);
-    }
-
-    public void updateView() {
-        if(player.isPlaying()) {
-            /*for(int line = 0; line < lyrics.size(); line++) {
-                String currLine = lyrics.get(line);
-                Time currentPlayerTime = new Time(player.getCurrentTimeMillis());
-                if(currentPlayerTime.toString().equals(currLine)) {
-                    scrollLyrics(currLine);
-                }
-            }*/
-            int currTime = player.getCurrentTimeMillis()/1000;
-            Log.d(TAG, " - Current video time in seconds: " + currTime);
-            if(currTime <= lyrics.size()) {
-                lyricsTextView.setText(lyrics.get(currTime));
-            }
-        }
-    }
-
-    public void scrollLyrics(String lyrics) {
-        // scroll lyrics into view
-        lyricsTextView.setMovementMethod(new ScrollingMovementMethod());
     }
 
     private List<String> readFile(String file) throws IOException {
@@ -158,5 +167,32 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         }
         //return stringBuilder.toString();
         return lyrics;
+    }
+
+    private String blankLyrics() {
+        String[] wordsAsArray = lyrics.get(currTime).split(" ");
+
+        int index = new Random().nextInt(wordsAsArray.length);
+        String randomWord = wordsAsArray[index];
+        int buttonNum = new Random().nextInt(4);
+        if(buttonNum == 1) {
+            answer1.setText(randomWord);
+        } else if (buttonNum == 2) {
+            answer2.setText(randomWord);
+        } else if (buttonNum == 3) {
+            answer3.setText(randomWord);
+        } else {
+            answer4.setText(randomWord);
+        }
+
+        wordsAsArray[index] = "_______";
+        String blankLyrics = "";
+        for (int i = 0; i < wordsAsArray.length; i++) {
+            blankLyrics = blankLyrics.concat(wordsAsArray[i]);
+            if(i != wordsAsArray.length - 1) {
+                blankLyrics = blankLyrics.concat(" ");
+            }
+        }
+        return blankLyrics;
     }
 }

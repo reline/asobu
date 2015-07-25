@@ -12,6 +12,7 @@
 
     <!-- Shared -->
     <string-array name="order_diff_spinner">
+        <item>All</item>
         <item>Slow</item>
         <item>Medium</item>
         <item>Fast</item>
@@ -69,6 +70,10 @@
     <!--PlayTapModeActivity -->
     <string name="title_activity_play_tap_mode">Play</string>
     <string name="currLyrics">Lyrics were not loaded properly.</string>
+    <string name="answer1">Answer 1</string>
+    <string name="answer2">Answer 2</string>
+    <string name="answer3">Answer 3</string>
+    <string name="answer4">Answer 4</string>
 
     <!--PlayTypeModeActivity -->
     <string name="title_activity_play_type_mode">Play</string>
