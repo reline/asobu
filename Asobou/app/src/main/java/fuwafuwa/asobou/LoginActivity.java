@@ -3,11 +3,13 @@ package fuwafuwa.asobou;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import fuwafuwa.asobou.model.User;
 import io.fabric.sdk.android.Fabric;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -23,6 +25,8 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TWITTER_KEY = "QoRJuK2MljCoc6VG19INXBHwJ";
     private static final String TWITTER_SECRET = "FfnPO03pLwiXBmfQ9zivAZ1K6qSL8PFv10KVU66HIyetrDSrTe";
 
+    private static final String TAG = "LoginActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,26 +34,25 @@ public class LoginActivity extends AppCompatActivity {
         Fabric.with(this, new TwitterCore(authConfig), new Digits());
 
         setContentView(R.layout.activity_login);
-        DigitsAuthButton digitsButton =
-                (DigitsAuthButton) findViewById(R.id.auth_button);
-        digitsButton.setCallback(new AuthCallback() {
-            @Override
-            public void success(DigitsSession digitsSession, String s) {
-                startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
-            }
 
-            @Override
-            public void failure(DigitsException e) {
-                // Do something on failure
-                System.out.println("Digits authentication failure.");
-            }
-        });
-
-        Button loginButton = (Button) findViewById(R.id.skip);
+        Button loginButton = (Button) findViewById(R.id.login);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                Digits.authenticate(new AuthCallback() {
+                    @Override
+                    public void success(DigitsSession digitsSession, String s) {
+                        Log.d(TAG, " - digitsSession " + digitsSession.getId());
+                        Log.d(TAG, " - phoneNumber " + s);
+                        User.id = digitsSession.getId();
+                        startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+                    }
+
+                    @Override
+                    public void failure(DigitsException e) {
+                        System.out.println("Digits authentication failure.");
+                    }
+                });
             }
         });
 

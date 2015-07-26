@@ -1,7 +1,9 @@
 package fuwafuwa.asobou;
 
+import android.app.AlertDialog;
 import android.content.ClipData.Item;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -24,6 +26,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import fuwafuwa.asobou.model.Song;
+import fuwafuwa.asobou.model.User;
 import fuwafuwa.asobou.parser.SongJSONparser;
 
 public class SongSelectionActivity extends AppCompatActivity {//Activity implements AdapterView.OnItemClickListener{
@@ -43,6 +46,8 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_selection);
+
+        Log.d(TAG, " - digitsSession " + User.id);
 
         //get the spinner to display the difficulty levels
         Spinner diffView = (Spinner) findViewById(R.id.selectsong_diff);
@@ -78,7 +83,7 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
         songListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Song selectedSong = (Song) parent.getAdapter().getItem(position);
+                final Song selectedSong = (Song) parent.getAdapter().getItem(position);
                 //String youtubeLink = "";
 
                 /*for(Song song : songList) {
@@ -88,10 +93,29 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
                     }
                 }*/
 
-                Intent intent = new Intent(SongSelectionActivity.this, PlayTapModeActivity.class);
-                //intent.putExtra("song_url", youtubeLink);
-                intent.putExtra("song", selectedSong);
-                startActivity(intent);
+                AlertDialog.Builder builder = new AlertDialog.Builder(SongSelectionActivity.this);
+                builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
+                builder.setPositiveButton(R.string.tap_mode, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(SongSelectionActivity.this, PlayTapModeActivity.class).putExtra("song", selectedSong));
+                    }
+                });
+                builder.setNeutralButton(R.string.type_mode, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(SongSelectionActivity.this, PlayTypeModeActivity.class).putExtra("song", selectedSong));
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // user canceled dialog
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 

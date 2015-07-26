@@ -47,17 +47,18 @@
     <!-- HelpActivity -->
     <string name="title_activity_help">Help</string>
     <string name="requirements_h">Requirements</string>
-    <string name="requirements_b">&#9;&#9;&#9;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam efficitur euismod ex ut
-        porttitor. Nulla faucibus tincidunt ultrices. Curabitur a placerat
-        diam, id commodo turpis. Praesent non elit quis sem ornare lobortis. Nulla vitae maximus
-        diam, eu pharetra odio. Proin sodales molestie egestas. Curabitur iaculis, elit fringilla
-        hendrerit euismod, mi quam tempor mauris, eget volutpat massa lacus aliquam lacus.</string>
+    <string name="requirements_b">In order to play あそぼうよ！ your device must be connected to
+                                    the internet. The phone number used to log in must also have
+                                    access to SMS. Lastly, if you intend to play Type Mode, your
+                                    device must have a Japanese keyboard installed.</string>
     <string name="how_to_play_h">How to Play</string>
-    <string name="how_to_play_b">&#9;&#9;&#9;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam efficitur euismod ex ut
-        porttitor. Nulla faucibus tincidunt ultrices. Curabitur a placerat
-        diam, id commodo turpis. Praesent non elit quis sem ornare lobortis. Nulla vitae maximus
-        diam, eu pharetra odio. Proin sodales molestie egestas. Curabitur iaculis, elit fringilla
-        hendrerit euismod, mi quam tempor mauris, eget volutpat massa lacus aliquam lacus.</string>
+    <string name="how_to_play_b">The objective of the game is to play through each song and fill in
+                                    the blanks as they appear throughout the lyrics. There are two
+                                    game modes that alter how the game is played. Tap Mode is the
+                                    easier of the two, simply giving four possible answers to choose
+                                    from. Type Mode is much more advanced, requiring the user to
+                                    type in the missing lyrics using a combination of Hiragana,
+                                    Katakana, and Kanji.</string>
 
     <!-- HttpManager -->
 
@@ -96,5 +97,10 @@
 
     <!-- SongSelectionActivity -->
     <string name="title_activity_song_selection">Select a Song</string>
+    <string name="dialog_message">Select which mode you would like to play.</string>
+    <string name="dialog_title">Song Mode Selection</string>
+    <string name="tap_mode">Tap Mode</string>
+    <string name="type_mode">Type Mode</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

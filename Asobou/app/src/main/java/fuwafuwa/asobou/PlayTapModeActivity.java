@@ -131,7 +131,7 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
                         lastTiming = currTime;
                         lyricsTextView.setText(blankLyrics()); //blankLyrics()
                     }
-                } catch (NullPointerException e) {
+                } catch (NullPointerException | IllegalStateException e) {
                     e.printStackTrace();
                 }
             }
