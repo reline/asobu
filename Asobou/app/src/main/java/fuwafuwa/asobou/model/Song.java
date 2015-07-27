@@ -18,7 +18,7 @@ public class Song implements Parcelable {
     private String artist;
     private String album;
     private String genre;
-    private String length;
+    private long length;
     private String difficulty;
     private String albumArtwork;
 
@@ -48,7 +48,7 @@ public class Song implements Parcelable {
         dest.writeString(artist);
         dest.writeString(album);
         dest.writeString(genre);
-        dest.writeString(length);
+        dest.writeLong(length);
         dest.writeString(difficulty);
         dest.writeString(albumArtwork);
 
@@ -69,7 +69,7 @@ public class Song implements Parcelable {
         artist = parcel.readString();
         album = parcel.readString();
         genre = parcel.readString();
-        length = parcel.readString();
+        length = parcel.readLong();
         difficulty = parcel.readString();
         albumArtwork = parcel.readString();
 
@@ -104,11 +104,11 @@ public class Song implements Parcelable {
         return getTitle();
     }
 
-    public int getSongId() {
+    public int getId() {
         return songId;
     }
 
-    public void setSongId(int songId) {
+    public void setId(int songId) {
         this.songId = songId;
     }
 
@@ -144,11 +144,11 @@ public class Song implements Parcelable {
         this.genre = genre;
     }
 
-    public String getLength() {
+    public long getLength() {
         return length;
     }
 
-    public void setLength(String length) {
+    public void setLength(long length) {
         this.length = length;
     }
 
@@ -216,12 +216,13 @@ public class Song implements Parcelable {
         this.lyricsRomaji = lyricsRomaji;
     }
 
+    /* should not be in Song, should be in User if anything
     public int getUserScore() {
         return userScore;
     }
 
     public void setUserScore(int userScore) {
         this.userScore = userScore;
-    }
+    }*/
 
 }

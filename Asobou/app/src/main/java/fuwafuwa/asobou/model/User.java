@@ -12,20 +12,19 @@ public class User {
     private String phonenumber;
     private String username;
 
-
-    public long getUser_id() {
+    public long getId() {
         return id;
     }
 
-    public void setUser_id(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getPhonebnumber() {
+    public String getPhonenumber() {
         return phonenumber;
     }
 
-    public void setPhonebnumber(String phonenumber) {
+    public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
     }
 

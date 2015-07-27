@@ -42,9 +42,8 @@ public class LoginActivity extends AppCompatActivity {
                 Digits.authenticate(new AuthCallback() {
                     @Override
                     public void success(DigitsSession digitsSession, String s) {
-                        Log.d(TAG, " - digitsSession " + digitsSession.getId());
-                        Log.d(TAG, " - phoneNumber " + s);
                         User.id = digitsSession.getId();
+                        Log.d(TAG, " - digitsSession " + User.id);
                         startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
                     }
 

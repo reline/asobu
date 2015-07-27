@@ -41,12 +41,18 @@ public class SongJSONparser {
 
                 //TODO: change php so that the col names exclude "song"
                 //song
-                song.setSongId(obj.getInt("song_id"));
+                song.setId(obj.getInt("song_id"));
                 song.setTitle(obj.getString("song_name"));
                 song.setArtist(obj.getString("song_artist"));
                 song.setAlbum(obj.getString("song_album"));
                 song.setGenre(obj.getString("song_genre"));
-                song.setLength(obj.getString("song_length"));
+
+                String[] split = obj.getString("song_length").split(":");
+                int hours = Integer.parseInt(split[0]);
+                int minutes = Integer.parseInt(split[1]) + hours*60;
+                int seconds = Integer.parseInt(split[2]) + minutes*60;
+                song.setLength(seconds);
+
                 song.setDifficulty(obj.getString("song_diff")); // "slow", "medium", "fast"
                 song.setAlbumArtwork(obj.getString("album_artwork"));
 
@@ -70,5 +76,7 @@ public class SongJSONparser {
             return null;
         }
     }   //end parseSongs
+
+
 
 }   //end SongJSON parser class

@@ -47,8 +47,6 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_selection);
 
-        Log.d(TAG, " - digitsSession " + User.id);
-
         //get the spinner to display the difficulty levels
         Spinner diffView = (Spinner) findViewById(R.id.selectsong_diff);
         ArrayAdapter spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.order_diff_spinner, android.R.layout.simple_spinner_item);
@@ -94,7 +92,7 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
                 }*/
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(SongSelectionActivity.this);
-                builder.setMessage(R.string.dialog_message).setTitle(R.string.dialog_title);
+                builder.setMessage(R.string.song_mode_dialog_message).setTitle(R.string.song_mode_dialog_title);
                 builder.setPositiveButton(R.string.tap_mode, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

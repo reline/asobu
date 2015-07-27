@@ -75,6 +75,10 @@
     <string name="answer2">Answer 2</string>
     <string name="answer3">Answer 3</string>
     <string name="answer4">Answer 4</string>
+    <string name="song_end_dialog_title">よくがんばったね！</string>
+    <string name="song_end_dialog_message">Would you like to return to the dashboard or view your score?</string>
+    <string name="view_score">View Score</string>
+    <string name="dashboard">Dashboard</string>
 
     <!--PlayTypeModeActivity -->
     <string name="title_activity_play_type_mode">Play</string>
@@ -97,8 +101,8 @@
 
     <!-- SongSelectionActivity -->
     <string name="title_activity_song_selection">Select a Song</string>
-    <string name="dialog_message">Select which mode you would like to play.</string>
-    <string name="dialog_title">Song Mode Selection</string>
+    <string name="song_mode_dialog_message">Select which mode you would like to play.</string>
+    <string name="song_mode_dialog_title">Song Mode Selection</string>
     <string name="tap_mode">Tap Mode</string>
     <string name="type_mode">Type Mode</string>
     <string name="cancel">Cancel</string>

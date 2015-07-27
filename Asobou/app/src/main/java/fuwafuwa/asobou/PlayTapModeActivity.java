@@ -1,5 +1,7 @@
 package fuwafuwa.asobou;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -115,6 +117,7 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         final YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
 
+
         // run update thread
         hUpdate = new Handler();
         rUpdate = new Runnable() {
@@ -122,14 +125,73 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
             public void run() {
                 try {
                     currTime = youTubePlayer.getCurrentTimeMillis()/1000;
-                    Log.d(TAG, " - current time in secs: " + currTime);
+                    Log.d(TAG, " - " + currTime + "/" + song.getLength());
                     /*if(currTime < lyrics.size()) {
                         lyricsTextView.setText(blankLyrics());
                     }*/
-                    if(timings.contains(currTime) && lastTiming != currTime) { // if the currTime matches the call time for the lyrics, set the textview once
-                        Log.d(TAG, " - change lyrics at " + currTime);
-                        lastTiming = currTime;
-                        lyricsTextView.setText(blankLyrics()); //blankLyrics()
+                    if(lastTiming != currTime) { // if the currTime matches the call time for the lyrics, set the textview once
+                        if(timings.contains(currTime)) {
+                            Log.d(TAG, " - change lyrics at " + currTime);
+                            lastTiming = currTime;
+                            lyricsTextView.setText(blankLyrics()); //blankLyrics()
+                        }
+                    }
+                    if(currTime == song.getLength()) { // if the video is done playing
+                        Log.d(TAG, " - currTime == song.getLength()");
+                        youTubePlayer.setPlayerStateChangeListener(new YouTubePlayer.PlayerStateChangeListener() {
+                            @Override
+                            public void onLoading() {
+
+                            }
+
+                            @Override
+                            public void onLoaded(String s) {
+
+                            }
+
+                            @Override
+                            public void onAdStarted() {
+
+                            }
+
+                            @Override
+                            public void onVideoStarted() {
+
+                            }
+
+                            @Override
+                            public void onVideoEnded() {
+                                Log.d(TAG, " - video ended");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(PlayTapModeActivity.this);
+                                builder.setMessage(R.string.song_end_dialog_message).setTitle(R.string.song_end_dialog_title);
+                                /*builder.setPositiveButton(R.string.tap_mode, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        startActivity(new Intent(PlayTapModeActivity.this, PlayTapModeActivity.class).putExtra("song", selectedSong));
+                                    }
+                                });*/
+                                builder.setNeutralButton(R.string.view_score, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        startActivity(new Intent(PlayTapModeActivity.this, ScoreboardActivity.class));
+                                    }
+                                });
+                                builder.setNegativeButton(R.string.dashboard, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        startActivity(new Intent(PlayTapModeActivity.this, DashboardActivity.class));
+                                    }
+                                });
+
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
+
+                            @Override
+                            public void onError(YouTubePlayer.ErrorReason errorReason) {
+
+                            }
+                        });
                     }
                 } catch (NullPointerException | IllegalStateException e) {
                     e.printStackTrace();
