@@ -31,15 +31,17 @@ import fuwafuwa.asobou.model.Song;
 public class PlayTypeModeActivity extends YouTubeFailureRecoveryActivity {
 
     private Song song;
-    private List<String> lyrics;
-    private List<Integer> timings = new ArrayList<>();
-    TextView lyricsTextView;
+    private String lyrics;
+    private List<List<Integer>> timings = new ArrayList<>();
+    private TextView lyricsTextView;
     private static final String TAG = "PlayTypeModeActivity";
-    YouTubePlayer youTubePlayer;
+    private YouTubePlayer youTubePlayer;
     int currTime;
+    int lineNum = 0;
     int lastTiming = -1;
-    EditText usrAnswer;
-    String missingWord;
+    private EditText usrAnswer;
+    private String missingWord;
+    private boolean done = false;
 
     private Handler hUpdate;
     private Runnable rUpdate;
@@ -53,35 +55,24 @@ public class PlayTypeModeActivity extends YouTubeFailureRecoveryActivity {
         usrAnswer = (EditText) findViewById(R.id.usrAnswer);
 
         song = getIntent().getParcelableExtra("song");
+        lyrics = song.getLyricsKanji();
 
-        try { // to retrieve the song lyrics file as type ArrayList<String>
-            lyrics = readFile(song.getLyricsKanji());
-        } catch (IOException e) {
-            e.printStackTrace();
-            lyrics = new ArrayList<>();
-            lyrics.add("hello world");
-            lyrics.add("わたたたたた どっきゅん!");
-            lyrics.add("ずきゅん! どきゅん!");
-            lyrics.add("ずきゅん! どきゅん!");
-            lyrics.add("ヤダ! ヤダ! ヤダ! ヤダ!");
-        }
-        Log.d(TAG, " - lyrics: " + lyrics);
-        timings.add(4);
-        timings.add(16);
-        timings.add(28);
-        timings.add(39);
-        timings.add(50);
-         /*
-            あたたたたた ずっきゅん!
-            わたたたたた どっきゅん!
-            ずきゅん! どきゅん!
-            ずきゅん! どきゅん!
-            ヤダ! ヤダ! ヤダ! ヤダ!
-         */
+        // TODO: 8/9/2015 get start time of lyrics & substring indexes; add to DB
+        //Log.d(TAG, " - lyrics: " + lyrics);
+        // timings.add(Array[timing, lyricsIndex]);
+        List<Integer> one = new ArrayList<>();
+        one.add(0); // at time 0 seconds
+        one.add(0); // from index 0 to
+        one.add(12); // 12 substring, including twelve
+        timings.add(one);
+        List<Integer> two = new ArrayList<>();
+        two.add(10);
+        two.add(13);
+        two.add(25);
+        timings.add(two);
 
         final YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
-
 
         // run update thread
         hUpdate = new Handler();
@@ -90,76 +81,16 @@ public class PlayTypeModeActivity extends YouTubeFailureRecoveryActivity {
             public void run() {
                 try {
                     currTime = youTubePlayer.getCurrentTimeMillis()/1000;
-                    //Log.d(TAG, " - " + currTime + "/" + song.getLength());
-                    /*if(currTime < lyrics.size()) {
-                        lyricsTextView.setText(blankLyrics());
-                    }*/
-                    if(lastTiming != currTime) { // if the currTime matches the call time for the lyrics, set the textview once
-                        if(timings.contains(currTime)) {
+
+                    if(lastTiming != currTime && lineNum < timings.size()) { // if the currTime matches the call time for the lyrics, set the textview once
+                        if(timings.get(lineNum).contains(currTime)) {
+                            checkAnswer(usrAnswer.getText().toString());
                             Log.d(TAG, " - change lyrics at " + currTime);
                             lastTiming = currTime;
-                            boolean correct = checkAnswer(usrAnswer.getText().toString());
                             lyricsTextView.setText(blankLyrics()); //blankLyrics()
-                            Log.d(TAG, " - boolean correct = " + correct);
                         }
                     }
-                    if(currTime == song.getLength()) { // if the video is done playing
-                        Log.d(TAG, " - currTime == song.getLength()");
-                        youTubePlayer.setPlayerStateChangeListener(new YouTubePlayer.PlayerStateChangeListener() {
-                            @Override
-                            public void onLoading() {
 
-                            }
-
-                            @Override
-                            public void onLoaded(String s) {
-
-                            }
-
-                            @Override
-                            public void onAdStarted() {
-
-                            }
-
-                            @Override
-                            public void onVideoStarted() {
-
-                            }
-
-                            @Override
-                            public void onVideoEnded() {
-                                Log.d(TAG, " - video ended");
-                                AlertDialog.Builder builder = new AlertDialog.Builder(PlayTypeModeActivity.this);
-                                builder.setMessage(R.string.song_end_dialog_message).setTitle(R.string.song_end_dialog_title);
-                                /*builder.setPositiveButton(R.string.tap_mode, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        startActivity(new Intent(PlayTapModeActivity.this, PlayTapModeActivity.class).putExtra("song", selectedSong));
-                                    }
-                                });*/
-                                builder.setNeutralButton(R.string.view_score, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        startActivity(new Intent(PlayTypeModeActivity.this, ScoreboardActivity.class));
-                                    }
-                                });
-                                builder.setNegativeButton(R.string.dashboard, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        startActivity(new Intent(PlayTypeModeActivity.this, DashboardActivity.class));
-                                    }
-                                });
-
-                                AlertDialog dialog = builder.create();
-                                dialog.show();
-                            }
-
-                            @Override
-                            public void onError(YouTubePlayer.ErrorReason errorReason) {
-
-                            }
-                        });
-                    }
                 } catch (NullPointerException | IllegalStateException e) {
                     e.printStackTrace();
                 }
@@ -169,7 +100,11 @@ public class PlayTypeModeActivity extends YouTubeFailureRecoveryActivity {
             public void run() {
                 while(true) {
                     try {
-                        this.sleep(1);
+                        sleep(1);
+                        if(currTime == song.getLength() && !done) { // if the video is done playing
+                            end();
+                            return;
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -195,24 +130,16 @@ public class PlayTypeModeActivity extends YouTubeFailureRecoveryActivity {
         return (YouTubePlayerView) findViewById(R.id.youtube_view);
     }
 
-    private List<String> readFile(String file) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        String line;
-        //List<String> lyrics = new ArrayList<>();
-        //StringBuilder stringBuilder= new StringBuilder();
-        //String ls = System.getProperty("line.separator");
-
-        while((line = reader.readLine()) != null) {
-            //stringBuilder.append(line);
-            //stringBuilder.append(ls);
-            lyrics.add(line);
-        }
-        //return stringBuilder.toString();
-        return lyrics;
-    }
-
     private String blankLyrics() {
-        String[] wordsAsArray = lyrics.get(timings.indexOf(currTime)).split(" ");
+        Log.d(TAG, "current line num = " + lineNum);
+        int startTime = timings.get(lineNum).get(1);
+        int endTime = timings.get(lineNum).get(2);
+        Log.d(TAG, "" + startTime);
+        Log.d(TAG, "" + endTime);
+        lyrics =  "Hello world!! My name is N"; // TODO: remove debug
+        String currLine = lyrics.substring(startTime, endTime);
+
+        String[] wordsAsArray = currLine.split(" "); // TODO: change blanking method; japanese words aren't separated by spaces OR edit files in DB
 
         int index = new Random().nextInt(wordsAsArray.length);
         missingWord = wordsAsArray[index];
@@ -225,21 +152,81 @@ public class PlayTypeModeActivity extends YouTubeFailureRecoveryActivity {
                 blankLyrics = blankLyrics.concat(" ");
             }
         }
+        lineNum++;
         return blankLyrics;
     }
 
-    private boolean checkAnswer(String answer) {
-        /*if (missingWord == null) {
-            return; // do nothing if the first answer is not available
-        }*/
-        if(answer.equals(missingWord)) {
-            // yay you got it right
-            Log.d(TAG, "Correct! " + answer + " = " + missingWord);
-            return true;
-        } else {
-            // boo you suck
-            Log.d(TAG, "You answered " + answer + "; Correct answer is " + missingWord);
-            return false;
+    private void checkAnswer(String answer) { // TODO: 8/9/2015 scoring
+        if (missingWord != null) {
+            if(answer.equals(missingWord)) {
+                // yay you got it right
+                Log.d(TAG, "Correct! " + answer + " = " + missingWord);
+                //return true;
+            } else {
+                // boo you suck
+                Log.d(TAG, "You answered " + answer + "; Correct answer is " + missingWord);
+                //return false;
+            }
         }
+    }
+
+    private void end() {
+        done = true;
+        checkAnswer(usrAnswer.getText().toString());
+        Log.d(TAG, " - currTime == song.getLength()");
+        youTubePlayer.setPlayerStateChangeListener(new YouTubePlayer.PlayerStateChangeListener() {
+            @Override
+            public void onLoading() {
+
+            }
+
+            @Override
+            public void onLoaded(String s) {
+
+            }
+
+            @Override
+            public void onAdStarted() {
+
+            }
+
+            @Override
+            public void onVideoStarted() {
+
+            }
+
+            @Override
+            public void onVideoEnded() {
+                Log.d(TAG, " - video ended");
+                AlertDialog.Builder builder = new AlertDialog.Builder(PlayTypeModeActivity.this);
+                builder.setMessage(R.string.song_end_dialog_message).setTitle(R.string.song_end_dialog_title);
+                                /*builder.setPositiveButton(R.string.tap_mode, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        startActivity(new Intent(PlayTapModeActivity.this, PlayTapModeActivity.class).putExtra("song", selectedSong));
+                                    }
+                                });*/
+                builder.setNeutralButton(R.string.view_score, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(PlayTypeModeActivity.this, ScoreboardActivity.class));
+                    }
+                });
+                builder.setNegativeButton(R.string.dashboard, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(PlayTypeModeActivity.this, DashboardActivity.class));
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+
+            @Override
+            public void onError(YouTubePlayer.ErrorReason errorReason) {
+
+            }
+        });
     }
 }

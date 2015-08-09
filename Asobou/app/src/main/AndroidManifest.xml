@@ -32,7 +32,7 @@
             android:value="6aebf3659c5f53f7d33e300095f5d2c538bfecd7" />
 
         <activity
-            android:name=".LoginActivity"
+            android:name="LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
         <activity

@@ -189,26 +189,30 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
     }   //end song select task
 
     public void sortSongList(final String sortBy, final boolean ascending) {
-        Collections.sort(filteredSongList, new Comparator<Song>() {
-            @Override
-            public int compare(Song lhs, Song rhs) {
-                if (ascending) {
-                    if (sortBy.equals("Artist")) {
-                        return (lhs.getArtist().compareTo(rhs.getArtist()));
-                    } else {
-                        return (lhs.getTitle().compareTo(rhs.getTitle()));
-                    }
-                } else { // descending
-                    if (sortBy.equals("Artist")) {
-                        return (-lhs.getArtist().compareTo(rhs.getArtist()));
-                    } else {
-                        return (-lhs.getTitle().compareTo(rhs.getTitle()));
+        try {
+            Collections.sort(filteredSongList, new Comparator<Song>() {
+                @Override
+                public int compare(Song lhs, Song rhs) {
+                    if (ascending) {
+                        if (sortBy.equals("Artist")) {
+                            return (lhs.getArtist().compareTo(rhs.getArtist()));
+                        } else {
+                            return (lhs.getTitle().compareTo(rhs.getTitle()));
+                        }
+                    } else { // descending
+                        if (sortBy.equals("Artist")) {
+                            return (-lhs.getArtist().compareTo(rhs.getArtist()));
+                        } else {
+                            return (-lhs.getTitle().compareTo(rhs.getTitle()));
+                        }
                     }
                 }
-            }
-        });
-        ArrayAdapter<Song> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filteredSongList);
-        songListView.setAdapter(songAdapter);
+            });
+            ArrayAdapter<Song> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filteredSongList);
+            songListView.setAdapter(songAdapter);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public void filterSongList(String sortBy, Boolean sortMethod, String filter) {
