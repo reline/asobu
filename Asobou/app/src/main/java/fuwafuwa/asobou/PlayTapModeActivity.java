@@ -92,7 +92,6 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         song = getIntent().getParcelableExtra("song");
         lyrics = song.getLyricsKanji();
 
-        // TODO: 8/9/2015 get start time of lyrics & substring indexes; add to DB
         //Log.d(TAG, " - lyrics: " + lyrics);
         // timings.add(Array[timing, lyricsIndex]);
         List<Integer> one = new ArrayList<>();
@@ -171,10 +170,10 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         int endTime = timings.get(lineNum).get(2);
         Log.d(TAG, "" + startTime);
         Log.d(TAG, "" + endTime);
-        lyrics =  "Hello world!! My name is N"; // TODO: remove debug
+        lyrics =  "Hello world!! My name is N";
         String currLine = lyrics.substring(startTime, endTime);
 
-        String[] wordsAsArray = currLine.split(" "); // TODO: change blanking method; japanese words aren't separated by spaces OR edit files in DB
+        String[] wordsAsArray = currLine.split(" ");
 
         int index = new Random().nextInt(wordsAsArray.length);
         missingWord = wordsAsArray[index];
