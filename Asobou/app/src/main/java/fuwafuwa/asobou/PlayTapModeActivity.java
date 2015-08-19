@@ -4,54 +4,53 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.Buffer;
-import java.sql.Time;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import fuwafuwa.asobou.model.RetrieveLyricsFile;
+import fuwafuwa.asobou.model.PostData;
 import fuwafuwa.asobou.model.Song;
+import fuwafuwa.asobou.model.User;
+
 
 public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
 
     private Song song;
-    private String lyrics;
-    private List<List<Integer>> timings = new ArrayList<>();
+    //private List<List<Integer>> timings = new ArrayList<>();
     private TextView lyricsTextView;
     private static final String TAG = "PlayTapModeActivity";
     private YouTubePlayer youTubePlayer;
-    int currTime;
-    int lineNum = 0;
-    int lastTiming = -1;
+    private int currTime;
+    private int lineNum = 0;
+    private int lastTiming = -1;
     private Button answer1;
     private Button answer2;
     private Button answer3;
     private Button answer4;
-    private String missingWord;
+    private String[] missingWord = new String[3];
     private boolean done = false;
+    private String currLine = "";
+    private boolean firstRun = true;
+    private int score = 0;
 
     private Handler hUpdate;
     private Runnable rUpdate;
+    RetrieveLyricsFile lyrics = new RetrieveLyricsFile();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,20 +89,7 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         });
 
         song = getIntent().getParcelableExtra("song");
-        lyrics = song.getLyricsKanji();
-
-        //Log.d(TAG, " - lyrics: " + lyrics);
-        // timings.add(Array[timing, lyricsIndex]);
-        List<Integer> one = new ArrayList<>();
-        one.add(0); // at time 0 seconds
-        one.add(0); // from index 0 to
-        one.add(12); // 12 substring, including twelve
-        timings.add(one);
-        List<Integer> two = new ArrayList<>();
-        two.add(10);
-        two.add(13);
-        two.add(25);
-        timings.add(two);
+        lyrics.execute("http://198.199.94.36/lyrics/" + song.getLyricsKanji());
 
         final YouTubePlayerView youTubeView = (YouTubePlayerView) findViewById(R.id.youtube_view);
         youTubeView.initialize(DeveloperKey.DEVELOPER_KEY, this);
@@ -115,18 +101,12 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
             public void run() {
                 try {
                     currTime = youTubePlayer.getCurrentTimeMillis()/1000;
-
-
-                    if(lastTiming != currTime && lineNum < timings.size()) { // if the currTime matches the call time for the lyrics, set the textview once
-                        if(timings.get(lineNum).contains(currTime)) {
-                            Log.d(TAG, " - change lyrics at " + currTime);
-                            lastTiming = currTime;
-                            lyricsTextView.setText(blankLyrics()); //blankLyrics()
-                        }
+                    if(lyrics.newLine(currTime)) {
+                        currLine = blankLyrics(lyrics.getLyrics(currTime));
+                        lyricsTextView.setText(currLine);
                     }
-
                 } catch (NullPointerException | IllegalStateException e) {
-                    e.printStackTrace();
+                    // e.printStackTrace();
                 }
             }
         };
@@ -164,62 +144,118 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         return (YouTubePlayerView) findViewById(R.id.youtube_view);
     }
 
-    private String blankLyrics() {
-        Log.d(TAG, "current line num = " + lineNum);
-        int startTime = timings.get(lineNum).get(1);
-        int endTime = timings.get(lineNum).get(2);
-        Log.d(TAG, "" + startTime);
-        Log.d(TAG, "" + endTime);
-        lyrics =  "Hello world!! My name is N";
-        String currLine = lyrics.substring(startTime, endTime);
-
-        String[] wordsAsArray = currLine.split(" ");
-
-        int index = new Random().nextInt(wordsAsArray.length);
-        missingWord = wordsAsArray[index];
-
-        int buttonNum = new Random().nextInt(4);
-        if(buttonNum == 1) {
-            answer1.setText(missingWord);
-        } else if (buttonNum == 2) {
-            answer2.setText(missingWord);
-        } else if (buttonNum == 3) {
-            answer3.setText(missingWord);
-        } else {
-            answer4.setText(missingWord);
-        }
-
-        // TODO: 8/9/2015 implement changing remaining selections to random/related words
-
-        wordsAsArray[index] = "_______";
+    private String blankLyrics(String lyrics) { // TODO: minimum of 3-4 characters for blank word
+        // substring using "\n", then blank a word, then add "\n" back in, then do one big string
+        if(lyrics.length() == 0) { return ""; }
+        String[] linesAsArray = lyrics.split("\n");
+        Arrays.copyOf(linesAsArray, linesAsArray.length - 1); // remove leftover empty object
         String blankLyrics = "";
-        for (int i = 0; i < wordsAsArray.length; i++) {
-            blankLyrics = blankLyrics.concat(wordsAsArray[i]);
-            if(i != wordsAsArray.length - 1) {
-                blankLyrics = blankLyrics.concat(" ");
+
+        for (int i = 0; i < linesAsArray.length; i++) {
+            String line = linesAsArray[i];
+            if (!line.contains("_")) {
+
+                // select random section to blank out
+                int len = line.length();
+                Random rand = new Random();
+                int startIndex = rand.nextInt(len - 1);
+                int endIndex = rand.nextInt(len - startIndex) + startIndex + 1;
+                missingWord[i] = line.substring(startIndex, endIndex); // substring(regionStart, regionEnd)
+
+                String[] incorrect = {new String(jumble(missingWord[0].toCharArray())),
+                        new String(jumble(missingWord[0].toCharArray())),
+                        new String(jumble(missingWord[0].toCharArray()))};
+
+                int buttonNum = new Random().nextInt(4);
+                if(buttonNum == 1) {
+                    answer1.setText(missingWord[0]);
+                    answer2.setText(incorrect[0]);
+                    answer3.setText(incorrect[1]);
+                    answer4.setText(incorrect[2]);
+                } else if (buttonNum == 2) {
+                    answer1.setText(incorrect[0]);
+                    answer2.setText(missingWord[0]);
+                    answer3.setText(incorrect[1]);
+                    answer4.setText(incorrect[2]);
+                } else if (buttonNum == 3) {
+                    answer1.setText(incorrect[0]);
+                    answer2.setText(incorrect[1]);
+                    answer3.setText(missingWord[0]);
+                    answer4.setText(incorrect[2]);
+                } else {
+                    answer1.setText(incorrect[0]);
+                    answer2.setText(incorrect[1]);
+                    answer3.setText(incorrect[2]);
+                    answer4.setText(missingWord[0]);
+                }
+
+                // dynamic blank size
+                String blank = "";
+                for(int j = 0; j < endIndex-startIndex; j++) {
+                    blank += '_';
+                }
+                blankLyrics += line.substring(0, startIndex + 1) + blank + line.substring(endIndex, len);
+                /*if(i != linesAsArray.length - 1) {
+                    blankLyrics += "\n";
+                }*/
             }
         }
-        lineNum++;
+        firstRun = false;
         return blankLyrics;
     }
 
-    private void checkAnswer(String answer) { // TODO: 8/9/2015 scoring
-        if (missingWord != null) {
-            if(answer.equals(missingWord)) {
-                // yay you got it right
-                Log.d(TAG, "Correct! " + answer + " = " + missingWord);
-                //return true;
+    private static char[] jumble(char[] arr){
+        Random r = new Random();
+        for(int i = arr.length-1; i > 0; i--){
+            int rand = r.nextInt(i);
+            char temp = arr[i];
+            arr[i] = arr[rand];
+            arr[rand] = temp;
+        }
+        return arr;
+    }
+
+    private void checkAnswer(String answer) { // TODO: regulate single answer check per line
+        if (missingWord[0] != null) {
+            if(answer.equals(missingWord[0])) {
+                score += 100;
             } else {
-                // boo you suck
-                Log.d(TAG, "You answered " + answer + "; Correct answer is " + missingWord);
-                //return false;
+                // incorrect answer UI alert
             }
         }
     }
 
     private void end() {
         done = true;
-        Log.d(TAG, " - currTime == song.getLength()");
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        String date = df.format(today);
+
+        // THIS DOESN'T WORK
+        /*String userId = "add_user_id=" + User.currentUser.getId();
+        String songId = "add_song_id=" + song.getId();
+        String temp = "add_score=" + (String.valueOf(score));
+        char[] addscore = new char[temp.length()];
+        for (int i = 0; i < temp.length(); i++) {
+            addscore[i] = temp.charAt(i);
+        }
+        String adddate = "add_date=" + date; //date2015-08-18 12:00:00";
+        String and = "&"; // pretty pointless, I know
+        PostData testScore = new PostData(userId + and + songId + and + addscore + and + adddate);// http://198.199.94.36/change/backend/addscore.php
+        testScore.execute("http://198.199.94.36/change/backend/addscore.php");*/
+
+        // TODO: get dynamic score POST to work
+        // TODO: check if 'edit' or 'add' POST is needed
+        // THIS WORKS
+        String userId = "add_user_id=" + User.currentUser.getId();
+        String songId = "add_song_id=" + song.getId();
+        String newScore = "add_score=100"; // score won't push if passed an int
+        String adddate = "add_date=" + date; //date2015-08-18 12:00:00";
+        PostData testScore = new PostData(userId + "&" + songId + "&" + newScore + "&" + adddate);// http://198.199.94.36/change/backend/addscore.php
+        testScore.execute("http://198.199.94.36/change/backend/addscore.php");
+
+        //Log.d(TAG, " - currTime == song.getLength()");
         youTubePlayer.setPlayerStateChangeListener(new YouTubePlayer.PlayerStateChangeListener() {
             @Override
             public void onLoading() {

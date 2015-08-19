@@ -40,7 +40,8 @@
                 android:text="@string/answer1"
                 android:id="@+id/button"
                 android:layout_column="0"
-                android:width="175dp"/>
+                android:width="350dp"
+                android:height="350dp"/>
 
             <Button
                 android:layout_width="wrap_content"
@@ -49,7 +50,8 @@
                 android:id="@+id/button2"
                 android:layout_gravity="right"
                 android:layout_column="5"
-                android:width="175dp"/>
+                android:width="350dp"
+                android:height="350dp"/>
         </TableRow>
 
         <TableRow
@@ -62,7 +64,8 @@
                 android:text="@string/answer3"
                 android:id="@+id/button3"
                 android:layout_gravity="left|bottom"
-                android:width="175dp"/>
+                android:width="350dp"
+                android:height="350dp"/>
 
             <Button
                 android:layout_width="wrap_content"
@@ -71,7 +74,8 @@
                 android:id="@+id/button4"
                 android:layout_gravity="bottom|right"
                 android:layout_column="5"
-                android:width="175dp"/>
+                android:width="350dp"
+                android:height="350dp"/>
         </TableRow>
 
     </TableLayout>

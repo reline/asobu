@@ -148,7 +148,7 @@ public class PlayTypeModeActivity extends YouTubeFailureRecoveryActivity {
         return blankLyrics;
     }
 
-    private void checkAnswer(String answer) { // TODO: 8/9/2015 scoring
+    private void checkAnswer(String answer) {
         if (missingWord[0] != null) {
             if(answer.equals(missingWord[0])) {
                 score += 100;
