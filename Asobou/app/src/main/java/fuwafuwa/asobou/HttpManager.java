@@ -82,8 +82,6 @@ public class HttpManager {
     }
 
     public static String getData(String uri) {
-        Log.d(TAG, "Running getData in HttpManager");
-
         BufferedReader reader = null;
 
         try {

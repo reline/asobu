@@ -216,13 +216,12 @@ public class Song implements Parcelable {
         this.lyricsRomaji = lyricsRomaji;
     }
 
-    /* should not be in Song, should be in User if anything
     public int getUserScore() {
         return userScore;
     }
 
     public void setUserScore(int userScore) {
         this.userScore = userScore;
-    }*/
+    }
 
 }

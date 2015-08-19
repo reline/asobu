@@ -1,5 +1,6 @@
 package fuwafuwa.asobou;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -34,7 +35,7 @@ public class ScoreboardActivity extends AppCompatActivity {
 
     private static final String TAG = "ScoreboardActivity";
 
-    private String weburl = "http://198.199.94.36/change/backend/getscoreboard.php"; // requires a user id
+    private String weburl = "http://198.199.94.36/change/backend/getscoreinfo.php"; // requires a user id
 
     private ArrayList<Song> songList = new ArrayList<>();
     private ArrayList<Song> filteredSongList = new ArrayList<>();
@@ -57,10 +58,12 @@ public class ScoreboardActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = (String) parent.getAdapter().getItem(position);
-                if (currSort.equals("Song")) {
-                    filterSongList(currSort, songAscending, selectedItem);
-                } else {
-                    filterSongList(currSort, artistAscending, selectedItem);
+                if(filteredSongList != null) {
+                    if (currSort.equals("Song")) {
+                        filterSongList(currSort, songAscending, selectedItem);
+                    } else {
+                        filterSongList(currSort, artistAscending, selectedItem);
+                    }
                 }
             }
 
@@ -78,6 +81,21 @@ public class ScoreboardActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "The network is currently unavailable, check your connection.", Toast.LENGTH_SHORT).show();
         }
+
+        songListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Song selectedSong = (Song) parent.getAdapter().getItem(position);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ScoreboardActivity.this);
+                builder.setMessage("Song: " + selectedSong.getTitle() +
+                                    "\nArtist: " + selectedSong.getArtist() +
+                                    "\nScore: " + selectedSong.getUserScore() +
+                                    "\nDifficulty: " + selectedSong.getDifficulty()).setTitle("Score Information");
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
 
         // sort by song title
         Button sortSongButton = (Button) findViewById(R.id.sort_by_song);
@@ -201,18 +219,19 @@ public class ScoreboardActivity extends AppCompatActivity {
         Collections.sort(filteredSongList, new Comparator<Song>() {
             @Override
             public int compare(Song lhs, Song rhs) {
+                // TODO: include artists in scoreinfo GET request
                 if (ascending) {
-                    if (sortBy.equals("Artist")) {
+                    /*if (sortBy.equals("Artist")) {
                         return (lhs.getArtist().compareTo(rhs.getArtist()));
-                    } else {
+                    } else {*/
                         return (lhs.getTitle().compareTo(rhs.getTitle()));
-                    }
+                    //}
                 } else { // descending
-                    if (sortBy.equals("Artist")) {
+                    /*if (sortBy.equals("Artist")) {
                         return (-lhs.getArtist().compareTo(rhs.getArtist()));
-                    } else {
+                    } else {*/
                         return (-lhs.getTitle().compareTo(rhs.getTitle()));
-                    }
+                    //}
                 }
             }
         });

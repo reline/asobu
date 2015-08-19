@@ -179,6 +179,8 @@ public class PlayTypeModeActivity extends YouTubeFailureRecoveryActivity {
         PostData testScore = new PostData(userId + and + songId + and + addscore + and + adddate);// http://198.199.94.36/change/backend/addscore.php
         testScore.execute("http://198.199.94.36/change/backend/addscore.php");*/
 
+        // TODO: get dynamic score POST to work
+        // TODO: check if 'edit' or 'add' POST is needed
         // THIS WORKS
         String userId = "add_user_id=" + User.currentUser.getId();
         String songId = "add_song_id=" + song.getId();

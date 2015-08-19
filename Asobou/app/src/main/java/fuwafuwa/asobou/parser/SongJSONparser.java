@@ -43,28 +43,36 @@ public class SongJSONparser {
                 //song
                 song.setId(obj.getInt("song_id"));
                 song.setTitle(obj.getString("song_name"));
-                song.setArtist(obj.getString("song_artist"));
-                song.setAlbum(obj.getString("song_album"));
-                song.setGenre(obj.getString("song_genre"));
+                try {
+                    song.setArtist(obj.getString("song_artist"));
+                    song.setAlbum(obj.getString("song_album"));
+                    song.setGenre(obj.getString("song_genre"));
 
-                String[] split = obj.getString("song_length").split(":");
-                int hours = Integer.parseInt(split[0]);
-                int minutes = Integer.parseInt(split[1]) + hours*60;
-                int seconds = Integer.parseInt(split[2]) + minutes*60;
-                song.setLength(seconds);
+                    String[] split = obj.getString("song_length").split(":");
+                    int hours = Integer.parseInt(split[0]);
+                    int minutes = Integer.parseInt(split[1]) + hours*60;
+                    int seconds = Integer.parseInt(split[2]) + minutes*60;
+                    song.setLength(seconds);
 
-                song.setDifficulty(obj.getString("song_diff")); // "slow", "medium", "fast"
-                song.setAlbumArtwork(obj.getString("album_artwork"));
+                    song.setDifficulty(obj.getString("song_diff")); // "slow", "medium", "fast"
+                    song.setAlbumArtwork(obj.getString("album_artwork"));
 
-                //media
-                //song.setYoutubeLink("WIKqgE4BwAY");
-                song.setYoutubeLink(obj.getString("link"));
+                    //media
+                    //song.setYoutubeLink("WIKqgE4BwAY");
+                    song.setYoutubeLink(obj.getString("link"));
 
-                //lyrics
-                song.setLyricsKanji(obj.getString("link_to_file"));
+                    //lyrics
+                    song.setLyricsKanji(obj.getString("link_to_file"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                //userscore
-
+                try {
+                    //userscore
+                    song.setUserScore(obj.getInt("score"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 //add song
                 songList.add(song);
             }   //end for loop
