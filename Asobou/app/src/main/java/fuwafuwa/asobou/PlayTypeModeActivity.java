@@ -4,30 +4,26 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 import fuwafuwa.asobou.model.RetrieveLyricsFile;
+import fuwafuwa.asobou.model.PostData;
 import fuwafuwa.asobou.model.Song;
+import fuwafuwa.asobou.model.User;
 
 
 public class PlayTypeModeActivity extends YouTubeFailureRecoveryActivity {
@@ -45,6 +41,7 @@ public class PlayTypeModeActivity extends YouTubeFailureRecoveryActivity {
     private boolean done = false;
     private String currLine = "";
     private boolean firstRun = true;
+    private int score = 0;
 
     private Handler hUpdate;
     private Runnable rUpdate;
@@ -154,13 +151,9 @@ public class PlayTypeModeActivity extends YouTubeFailureRecoveryActivity {
     private void checkAnswer(String answer) { // TODO: 8/9/2015 scoring
         if (missingWord[0] != null) {
             if(answer.equals(missingWord[0])) {
-                // yay you got it right
-                Log.d(TAG, "Correct! " + answer + " = " + missingWord[0]);
-                //return true;
+                score += 100;
             } else {
-                // boo you suck
-                Log.d(TAG, "You answered " + answer + "; Correct answer is " + missingWord[0]);
-                //return false;
+                // incorrect answer UI alert
             }
         }
     }
@@ -168,7 +161,33 @@ public class PlayTypeModeActivity extends YouTubeFailureRecoveryActivity {
     private void end() {
         done = true;
         checkAnswer(usrAnswer.getText().toString());
-        Log.d(TAG, " - currTime == song.getLength()");
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date today = Calendar.getInstance().getTime();
+        String date = df.format(today);
+
+        // THIS DOESN'T WORK
+        /*String userId = "add_user_id=" + User.currentUser.getId();
+        String songId = "add_song_id=" + song.getId();
+        String temp = "add_score=" + (String.valueOf(score));
+        char[] addscore = new char[temp.length()];
+        for (int i = 0; i < temp.length(); i++) {
+            addscore[i] = temp.charAt(i);
+        }
+        String adddate = "add_date=" + date; //date2015-08-18 12:00:00";
+        String and = "&"; // pretty pointless, I know
+        PostData testScore = new PostData(userId + and + songId + and + addscore + and + adddate);// http://198.199.94.36/change/backend/addscore.php
+        testScore.execute("http://198.199.94.36/change/backend/addscore.php");*/
+
+        // THIS WORKS
+        String userId = "add_user_id=" + User.currentUser.getId();
+        String songId = "add_song_id=" + song.getId();
+        String newScore = "add_score=100"; // score won't push if passed an int
+        String adddate = "add_date=" + date; //date2015-08-18 12:00:00";
+        PostData testScore = new PostData(userId + "&" + songId + "&" + newScore + "&" + adddate);// http://198.199.94.36/change/backend/addscore.php
+        testScore.execute("http://198.199.94.36/change/backend/addscore.php");
+
+        //Log.d(TAG, " - currTime == song.getLength()");
         youTubePlayer.setPlayerStateChangeListener(new YouTubePlayer.PlayerStateChangeListener() {
             @Override
             public void onLoading() {

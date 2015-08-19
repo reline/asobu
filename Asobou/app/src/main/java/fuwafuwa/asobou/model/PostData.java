@@ -3,11 +3,11 @@ package fuwafuwa.asobou.model;
 import android.os.AsyncTask;
 import fuwafuwa.asobou.HttpManager;
 
-public class SendScoreData extends AsyncTask<String, String, String> {
+public class PostData extends AsyncTask<String, String, String> {
 
     private String data = "";
 
-    public SendScoreData(String data) {
+    public PostData(String data) {
         this.data = data;
     }
 

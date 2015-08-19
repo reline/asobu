@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import fuwafuwa.asobou.model.SendScoreData;
+import fuwafuwa.asobou.model.PostData;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -13,15 +13,6 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-
-        String userId = "add_user_id=1";
-        String songId = "add_song_id=1";
-        String score = "add_score=100";
-        String date = "add_date=2015-08-18 12:00:00";
-        String and = "&"; // pretty pointless, I know
-
-        SendScoreData testScore = new SendScoreData(userId + and + songId + and + score + and + date);// http://198.199.94.36/change/backend/addscore.php
-        testScore.execute("http://198.199.94.36/change/backend/addscore.php");
     }
 
     @Override

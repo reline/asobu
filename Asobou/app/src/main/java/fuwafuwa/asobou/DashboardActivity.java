@@ -17,7 +17,9 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        setTitle("こんにちは " + User.id + "さん!"); // TODO: get username from database using userId
+
+        setTitle("こんにちは " + ((User.currentUser.getUsername().equals("")) ? User.currentUser.getId() : User.currentUser.getUsername()) + "さん!"); // TODO: get username from database using userId
+        setTitle(User.currentUser.getId());
     }
 
     @Override

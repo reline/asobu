@@ -7,16 +7,23 @@ package fuwafuwa.asobou.model;
  * holds user info
  */
 public class User {
-    public static long id;
+    private String id;
+    private String username = "";
+    private String phonenumber = "";
 
-    private String phonenumber;
-    private String username;
+    public static User currentUser;
 
-    public long getId() {
+    public User(String id, String username, String phonenumber) {
+        this.id = id;
+        this.username = username;
+        this.phonenumber = phonenumber;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -29,7 +36,7 @@ public class User {
     }
 
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     public void setUsername(String username) {
