@@ -2,9 +2,6 @@
 #####Version - Not yet released - 8/22/15
 An Android application for studying Japanese by listening to songs and filling in the missing lyrics.
 
-##General Usage Notes
-Supported on systems using Ice Cream Sandwich v4.04 and up.
-
 ##Environment Settings
 JDK version: 1.8.0_31
 
