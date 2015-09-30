@@ -1,5 +1,6 @@
 package fuwafuwa.asobou;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -31,7 +32,7 @@ import fuwafuwa.asobou.model.Song;
 import fuwafuwa.asobou.model.User;
 import fuwafuwa.asobou.parser.SongJSONparser;
 
-public class ScoreboardActivity extends AppCompatActivity {
+public class ScoreboardActivity extends Activity {
 
     private static final String TAG = "ScoreboardActivity";
 

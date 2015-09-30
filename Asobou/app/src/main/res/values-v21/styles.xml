@@ -1,0 +1,33 @@
+<resources>
+    <style name="AppTheme" parent="android:Theme.Material">
+        <!-- Customize your theme here. -->
+        <item name="android:colorPrimary">@color/primaryColor</item>
+        <item name="android:colorPrimaryDark">@color/darkPrimaryColor</item>
+        <item name="android:colorAccent">@color/accentColor</item>
+        <item name="android:textColorPrimary">@color/primaryText</item>
+        <item name="android:textColorSecondary">@color/secondaryText</item>
+        <item name="android:icon">@color/icons</item>
+        <item name="android:divider">@color/dividers</item>
+        <item name="android:windowBackground">@color/tw__solid_white</item>
+
+        <item name="android:popupMenuStyle">@style/MyPopupMenu</item>
+        <item name="android:itemTextAppearance">@style/TextAppearance</item>
+
+        <item name="android:actionBarWidgetTheme">@style/Theme.stylingactionbar.widget</item>
+    </style>
+
+    <style name="MyPopupMenu" parent="android:style/Widget.Holo.ListPopupWindow">
+        <item name="android:popupBackground">@color/tw__solid_white</item>
+    </style>
+    <style name="TextAppearance">
+        <item name="android:textColor">@color/tw__solid_white</item>
+    </style>
+
+    <style name="PopupMenu" parent="@android:style/Widget.Holo.ListPopupWindow">
+        <item name="android:popupBackground">@color/tw__solid_white</item>
+        <!-- for @color you have to create a color.xml in res > values -->
+    </style>
+    <style name="Theme.stylingactionbar.widget" parent="@android:style/Theme.Holo">
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
+    </style>
+</resources>

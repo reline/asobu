@@ -184,7 +184,8 @@ public class PlayTypeModeActivity extends YouTubeFailureRecoveryActivity {
         // THIS WORKS
         String userId = "add_user_id=" + User.currentUser.getId();
         String songId = "add_song_id=" + song.getId();
-        String newScore = "add_score=100"; // score won't push if passed an int
+        String scoreToString = Integer.toString(score);
+        String newScore = "add_score=" + scoreToString; // score won't push if passed an int
         String adddate = "add_date=" + date; //date2015-08-18 12:00:00";
         PostData testScore = new PostData(userId + "&" + songId + "&" + newScore + "&" + adddate);// http://198.199.94.36/change/backend/addscore.php
         testScore.execute("http://198.199.94.36/change/backend/addscore.php");

@@ -20,7 +20,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="@string/asobou"
         android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.google.android.gms.version"
@@ -33,7 +33,7 @@
 
         <activity
             android:name="LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/asobou">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -65,15 +65,17 @@
         </activity>
         <activity
             android:name=".PlayTapModeActivity"
-            android:label="@string/title_activity_play_tap_mode" >
+            android:label="@string/title_activity_play_tap_mode"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        </activity>
+        <activity
+            android:name=".PlayTypeModeActivity"
+            android:label="@string/title_activity_play_type_mode"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
         </activity>
         <activity
             android:name=".gotoeverypage"
             android:label="@string/title_activity_gotoeverypage" >
-        </activity>
-        <activity
-            android:name=".PlayTypeModeActivity"
-            android:label="@string/title_activity_play_type_mode" >
         </activity>
     </application>
 

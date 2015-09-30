@@ -1,5 +1,6 @@
 package fuwafuwa.asobou;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +12,7 @@ import android.widget.Button;
 
 import fuwafuwa.asobou.model.User;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

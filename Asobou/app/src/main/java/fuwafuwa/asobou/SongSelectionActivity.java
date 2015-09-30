@@ -1,5 +1,6 @@
 package fuwafuwa.asobou;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData.Item;
 import android.content.Context;
@@ -29,7 +30,7 @@ import fuwafuwa.asobou.model.Song;
 import fuwafuwa.asobou.model.User;
 import fuwafuwa.asobou.parser.SongJSONparser;
 
-public class SongSelectionActivity extends AppCompatActivity {//Activity implements AdapterView.OnItemClickListener{
+public class SongSelectionActivity extends Activity {//Activity implements AdapterView.OnItemClickListener{
 
     private static final String TAG = "SongSelectionActivity";
 
