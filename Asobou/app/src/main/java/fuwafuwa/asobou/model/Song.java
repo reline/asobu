@@ -3,15 +3,8 @@ package fuwafuwa.asobou.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
-/**
- * Created by mena on 7/10/2015.
- *
- * Song Class
- * holds song info, media info, lyric info and also user score info
- */
 public class Song implements Parcelable {
+
     //about the song
     private int songId;
     private String title;
@@ -34,7 +27,11 @@ public class Song implements Parcelable {
 
     //user score info
     private int userScore;
-    //TODO: implement datatime thing...
+    //TODO: implement datatime thing...  -- which is what exactly again?
+
+    public Song() { // don't delete me!
+
+    }
 
     @Override
     public int describeContents() {
@@ -84,10 +81,6 @@ public class Song implements Parcelable {
         userScore = parcel.readInt();
     }
 
-    public Song() {
-
-    }
-
     public static final Parcelable.Creator<Song> CREATOR = new Parcelable.Creator<Song>() {
         @Override
         public Song createFromParcel(Parcel parcel) {
@@ -104,124 +97,130 @@ public class Song implements Parcelable {
         return getTitle();
     }
 
+    // GETTERS - cause we totally need 'em
+
     public int getId() {
         return songId;
-    }
-
-    public void setId(int songId) {
-        this.songId = songId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getArtist() {
         return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
     }
 
     public String getAlbum() {
         return album;
     }
 
-    public void setAlbum(String album) {
-        this.album = album;
-    }
-
     public String getGenre() {
         return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
     }
 
     public long getLength() {
         return length;
     }
 
-    public void setLength(long length) {
-        this.length = length;
-    }
-
     public String getDifficulty() {
         return difficulty;
-    }
-
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
     }
 
     public String getAlbumArtwork() {
         return albumArtwork;
     }
 
-    public void setAlbumArtwork(String albumArtwork) {
-        this.albumArtwork = albumArtwork;
-    }
-
     public String getYoutubeLink() {
         return youtubeLink;
-    }
-
-    public void setYoutubeLink(String youtubeLink) {
-        this.youtubeLink = youtubeLink;
     }
 
     public String getVideoLink() {
         return videoLink;
     }
 
-    public void setVideoLink(String videoLink) {
-        this.videoLink = videoLink;
-    }
-
     public String getSongLink() {
         return songLink;
-    }
-
-    public void setSongLink(String songLink) {
-        this.songLink = songLink;
     }
 
     public String getLyricsKana() {
         return lyricsKana;
     }
 
-    public void setLyricsKana(String lyricsKana) {
-        this.lyricsKana = lyricsKana;
-    }
-
     public String getLyricsKanji() {
         return lyricsKanji;
-    }
-
-    public void setLyricsKanji(String lyricsKanji) {
-        this.lyricsKanji = lyricsKanji;
     }
 
     public String getLyricsRomaji() {
         return lyricsRomaji;
     }
 
-    public void setLyricsRomaji(String lyricsRomaji) {
-        this.lyricsRomaji = lyricsRomaji;
-    }
-
     public int getUserScore() {
         return userScore;
+    }
+
+
+
+
+    // SETTERS - cause we totally need these too
+
+    public void setId(int songId) {
+        this.songId = songId;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public void setLength(long length) {
+        this.length = length;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public void setAlbumArtwork(String albumArtwork) {
+        this.albumArtwork = albumArtwork;
+    }
+
+    public void setYoutubeLink(String youtubeLink) {
+        this.youtubeLink = youtubeLink;
+    }
+
+    public void setVideoLink(String videoLink) {
+        this.videoLink = videoLink;
+    }
+
+    public void setSongLink(String songLink) {
+        this.songLink = songLink;
+    }
+
+    public void setLyricsKana(String lyricsKana) {
+        this.lyricsKana = lyricsKana;
+    }
+
+    public void setLyricsKanji(String lyricsKanji) {
+        this.lyricsKanji = lyricsKanji;
+    }
+
+    public void setLyricsRomaji(String lyricsRomaji) {
+        this.lyricsRomaji = lyricsRomaji;
     }
 
     public void setUserScore(int userScore) {
         this.userScore = userScore;
     }
-
 }

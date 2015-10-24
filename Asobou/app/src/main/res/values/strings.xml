@@ -34,7 +34,7 @@
         tempus felis, in tempus ligula turpis quis magna. Nulla ullamcorper pretium dolor non
         rhoncus. Cras volutpat ex ipsum, eget ullamcorper massa luctus eu. Praesent non urna ipsum.
         Donec euismod pretium hendrerit.</string>
-    <string name="dev_names">Benedicta Baidoo/nNathan Reline</string>
+    <string name="dev_names">Benedicta Baidoo\nNathan Reline</string>
 
     <!-- DashboardActivity -->
     <string name="title_activity_dashboard">Hello Username!</string>

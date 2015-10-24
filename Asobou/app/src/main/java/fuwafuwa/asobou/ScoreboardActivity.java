@@ -8,7 +8,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,15 +16,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import fuwafuwa.asobou.model.Song;
 import fuwafuwa.asobou.model.User;
@@ -103,7 +98,7 @@ public class ScoreboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 songAscending = !songAscending;
-                sortSongList("Song",songAscending);
+                sortSongList(songAscending);
                 currSort = "Song";
                 artistAscending = false;
             }
@@ -114,7 +109,7 @@ public class ScoreboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 artistAscending = !artistAscending;
-                sortSongList("Artist",artistAscending);
+                sortSongList(artistAscending);
                 currSort = "Artist";
                 songAscending = false;
             }
@@ -153,16 +148,8 @@ public class ScoreboardActivity extends AppCompatActivity {
     }
 
     protected void updateDisplay() {
-        //output.append(message + "\n");
-        //ArrayList<String> songTitles = new ArrayList<>();
 
         if(songList != null) {
-            /*for(Song song : songList) {
-                Log.d(TAG, " - updateDisplay: " + song.getTitle());
-                //output.append(song.getTitle() + "\n");
-                songTitles.add(song.getTitle());
-            }*/
-
             filterSongList("Song", true, "All"); // sort song list by ascending song title by default
             ArrayAdapter<Song> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filteredSongList);
             songListView.setAdapter(songAdapter);
@@ -172,7 +159,6 @@ public class ScoreboardActivity extends AppCompatActivity {
     private void requestData(String uri){
 
         ScoreboardTasks task = new ScoreboardTasks();
-        //task.execute("ド・キ・ド・キ　モーニン", "メギツネ", "ギッミチョコ", "イ～ネ", "君とアニメが見たい");
         task.execute(uri);
     }
 
@@ -186,19 +172,11 @@ public class ScoreboardActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            //updateDisplay("Starting task...");
+
         }
 
         @Override
         protected String doInBackground(String... params) {
-            /*
-            for(int i=0; i<params.length; i++){
-                publishProgress(params[i]);
-            }
-            return "Task Complete";
-            */
-
-            //String content = HttpManager.getData(params[0]);
             return HttpManager.getData(params[0]);
         }
 
@@ -211,27 +189,19 @@ public class ScoreboardActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(String... values) {
-            //updateDisplay(values[0]);
+
         }
     }   //end Scoreboard Tasks
 
-    public void sortSongList(final String sortBy, final boolean ascending) {
+    public void sortSongList(final boolean ascending) {
         Collections.sort(filteredSongList, new Comparator<Song>() {
             @Override
             public int compare(Song lhs, Song rhs) {
                 // TODO: include artists in scoreinfo GET request
                 if (ascending) {
-                    /*if (sortBy.equals("Artist")) {
-                        return (lhs.getArtist().compareTo(rhs.getArtist()));
-                    } else {*/
-                        return (lhs.getTitle().compareTo(rhs.getTitle()));
-                    //}
-                } else { // descending
-                    /*if (sortBy.equals("Artist")) {
-                        return (-lhs.getArtist().compareTo(rhs.getArtist()));
-                    } else {*/
-                        return (-lhs.getTitle().compareTo(rhs.getTitle()));
-                    //}
+                    return (lhs.getTitle().compareTo(rhs.getTitle()));
+                } else {
+                    return (-lhs.getTitle().compareTo(rhs.getTitle()));
                 }
             }
         });
@@ -270,7 +240,7 @@ public class ScoreboardActivity extends AppCompatActivity {
                 filteredSongList = songList;
                 break;
         }
-        sortSongList(sortBy, sortMethod);
+        sortSongList(sortMethod);
         ArrayAdapter<Song> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filteredSongList);
         songListView.setAdapter(songAdapter);
     }

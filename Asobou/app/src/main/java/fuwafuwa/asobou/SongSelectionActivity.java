@@ -1,7 +1,6 @@
 package fuwafuwa.asobou;
 
 import android.app.AlertDialog;
-import android.content.ClipData.Item;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,7 +9,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -23,13 +21,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import fuwafuwa.asobou.model.Song;
-import fuwafuwa.asobou.model.User;
 import fuwafuwa.asobou.parser.SongJSONparser;
 
 public class SongSelectionActivity extends AppCompatActivity {//Activity implements AdapterView.OnItemClickListener{
+
+    // TODO: make sort the same as scoreboard
 
     private static final String TAG = "SongSelectionActivity";
 
@@ -82,14 +80,6 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Song selectedSong = (Song) parent.getAdapter().getItem(position);
-                //String youtubeLink = "";
-
-                /*for(Song song : songList) {
-                    if(song.getTitle().equals(selectedSong)) {
-                        selectedSong = song;
-                        youtubeLink = song.getYoutubeLink();
-                    }
-                }*/
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(SongSelectionActivity.this);
                 builder.setMessage(R.string.song_mode_dialog_message).setTitle(R.string.song_mode_dialog_title);
@@ -142,16 +132,7 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
     }
 
     protected void updateDisplay() {
-        //output.append(message + "\n");
-        //ArrayList<String> songTitles = new ArrayList<>();
-
         if(songList != null) {
-            /*for(Song song : songList) {
-                Log.d(TAG, " - updateDisplay: " + song.getTitle());
-                //output.append(song.getTitle() + "\n");
-                songTitles.add(song.getTitle());
-            }*/
-
             filterSongList("Song", true, "All"); // sort song list by ascending song title by default
             ArrayAdapter<Song> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filteredSongList);
             songListView.setAdapter(songAdapter);
@@ -161,9 +142,7 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
     private void requestData(String uri){
 
         SelectSongTask task = new SelectSongTask();
-        //task.execute("ド・キ・ド・キ　モーニン", "メギツネ", "ギッミチョコ", "イ～ネ", "君とアニメが見たい");
         task.execute(uri);
-        //task.onPostExecute();
     }
 
     protected boolean isOnline(){

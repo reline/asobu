@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubePlayer;
@@ -19,11 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 import fuwafuwa.asobou.model.RetrieveLyricsFile;
-import fuwafuwa.asobou.model.PostData;
 import fuwafuwa.asobou.model.Song;
 import fuwafuwa.asobou.model.User;
 
@@ -106,7 +103,7 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
                         lyricsTextView.setText(currLine);
                     }
                 } catch (NullPointerException | IllegalStateException e) {
-                    // e.printStackTrace();
+                    e.printStackTrace();
                 }
             }
         };
@@ -195,9 +192,6 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
                     blank += '_';
                 }
                 blankLyrics += line.substring(0, startIndex + 1) + blank + line.substring(endIndex, len);
-                /*if(i != linesAsArray.length - 1) {
-                    blankLyrics += "\n";
-                }*/
             }
         }
         firstRun = false;
@@ -232,19 +226,6 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         Date today = Calendar.getInstance().getTime();
         String date = df.format(today);
 
-        // THIS DOESN'T WORK
-        /*String userId = "add_user_id=" + User.currentUser.getId();
-        String songId = "add_song_id=" + song.getId();
-        String temp = "add_score=" + (String.valueOf(score));
-        char[] addscore = new char[temp.length()];
-        for (int i = 0; i < temp.length(); i++) {
-            addscore[i] = temp.charAt(i);
-        }
-        String adddate = "add_date=" + date; //date2015-08-18 12:00:00";
-        String and = "&"; // pretty pointless, I know
-        PostData testScore = new PostData(userId + and + songId + and + addscore + and + adddate);// http://198.199.94.36/change/backend/addscore.php
-        testScore.execute("http://198.199.94.36/change/backend/addscore.php");*/
-
         // TODO: get dynamic score POST to work
         // TODO: check if 'edit' or 'add' POST is needed
         // THIS WORKS
@@ -252,10 +233,9 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         String songId = "add_song_id=" + song.getId();
         String newScore = "add_score=100"; // score won't push if passed an int
         String adddate = "add_date=" + date; //date2015-08-18 12:00:00";
-        PostData testScore = new PostData(userId + "&" + songId + "&" + newScore + "&" + adddate);// http://198.199.94.36/change/backend/addscore.php
-        testScore.execute("http://198.199.94.36/change/backend/addscore.php");
+        HttpManager.postData("http://198.199.94.36/change/backend/addscore.php",
+                userId + "&" + songId + "&" + newScore + "&" + adddate);// http://198.199.94.36/change/backend/addscore.php
 
-        //Log.d(TAG, " - currTime == song.getLength()");
         youTubePlayer.setPlayerStateChangeListener(new YouTubePlayer.PlayerStateChangeListener() {
             @Override
             public void onLoading() {
@@ -282,12 +262,6 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
                 Log.d(TAG, " - video ended");
                 AlertDialog.Builder builder = new AlertDialog.Builder(PlayTapModeActivity.this);
                 builder.setMessage(R.string.song_end_dialog_message).setTitle(R.string.song_end_dialog_title);
-                                /*builder.setPositiveButton(R.string.tap_mode, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        startActivity(new Intent(PlayTapModeActivity.this, PlayTapModeActivity.class).putExtra("song", selectedSong));
-                                    }
-                                });*/
                 builder.setNeutralButton(R.string.view_score, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

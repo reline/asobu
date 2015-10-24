@@ -1,45 +1,53 @@
 package fuwafuwa.asobou.model;
 
-/**
- * Created by mena on 7/10/2015.
- *
- * User
- * holds user info
- */
 public class User {
+
     private String id;
-    private String username = "";
-    private String phonenumber = "";
+    private String digitsSessionId; // TODO: implement after adding to user table in database
+    private String userName = "";
+    private String phoneNumber = "";
 
     public static User currentUser;
 
-    public User(String id, String username, String phonenumber) {
-        this.id = id;
-        this.username = username;
-        this.phonenumber = phonenumber;
+    // create a default/guest user account
+    public User() {
+        this.id = "0";
+        this.userName = "Guest";
+        this.phoneNumber = "1234567890";
     }
+
+    public User(String id, String userName, String phoneNumber) {
+        this.id = id;
+        this.userName = userName;
+        this.phoneNumber = phoneNumber;
+    }
+
+    // GETTERS
 
     public String getId() {
         return id;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getUserName() {
+        return this.userName;
+    }
+
+
+    // SETTERS
+
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getPhonenumber() {
-        return phonenumber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
-    }
-
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

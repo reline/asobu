@@ -68,10 +68,6 @@
             android:label="@string/title_activity_play_tap_mode" >
         </activity>
         <activity
-            android:name=".gotoeverypage"
-            android:label="@string/title_activity_gotoeverypage" >
-        </activity>
-        <activity
             android:name=".PlayTypeModeActivity"
             android:label="@string/title_activity_play_type_mode" >
         </activity>

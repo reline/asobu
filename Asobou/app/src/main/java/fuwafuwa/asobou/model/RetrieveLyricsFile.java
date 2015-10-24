@@ -2,14 +2,8 @@ package fuwafuwa.asobou.model;
 
 import android.os.AsyncTask;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import fuwafuwa.asobou.HttpManager;
 
@@ -19,10 +13,6 @@ public class RetrieveLyricsFile extends AsyncTask<String, String, String>
     private URL lyricFile;
     private String lyricsRaw;
     private int lastTime = 0;
-
-    public RetrieveLyricsFile() {
-        //this.execute(fileName);
-    }
 
     @Override
     protected String doInBackground(String... params)
@@ -59,7 +49,7 @@ public class RetrieveLyricsFile extends AsyncTask<String, String, String>
         String newLine = "";
 
         for (LyricLine line : lyrics) {
-            if(line.startLyrics(currTime)) {
+            if(line.startOfLine(currTime)) {
                 int ind = lyrics.indexOf(line);
                 int inc = ind + 1;
                 newLine = line.getLine();
@@ -75,7 +65,7 @@ public class RetrieveLyricsFile extends AsyncTask<String, String, String>
 
     public boolean newLine(int currTime) {
         for (LyricLine line : lyrics) {
-            if(line.startLyrics(currTime)) {
+            if(line.startOfLine(currTime)) {
                 return (lastTime != currTime);
             }
         }

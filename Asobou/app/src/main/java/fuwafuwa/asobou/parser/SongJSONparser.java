@@ -11,12 +11,7 @@ import java.util.List;
 
 import fuwafuwa.asobou.model.Song;
 
-/**
- * Created by mena on 7/10/2015.
- * parses Song JSON data
- */
-
-//TODO: change the name of this to include all objects...want to pasrse user data also
+//TODO: change the name of this to include all objects...want to parse user data also
 
 public class SongJSONparser {
     private static final String TAG = "JSONParser";
@@ -24,6 +19,7 @@ public class SongJSONparser {
         try{
             /*
             * changed the gradle min version from 15 to 19 because JSONArray is only supported from 19 up
+            * if needed, JSONArray will be rid away with. API version is more important.
               * TODO: change code to account for other versions of android to support JSON from 15+
             */
             JSONArray array = new JSONArray(content);
@@ -67,12 +63,14 @@ public class SongJSONparser {
                     e.printStackTrace();
                 }
 
+                // this will probably break if i don't leave it in a different try/catch
                 try {
                     //userscore
                     song.setUserScore(obj.getInt("score"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
                 //add song
                 songList.add(song);
             }   //end for loop
@@ -84,7 +82,5 @@ public class SongJSONparser {
             return null;
         }
     }   //end parseSongs
-
-
 
 }   //end SongJSON parser class

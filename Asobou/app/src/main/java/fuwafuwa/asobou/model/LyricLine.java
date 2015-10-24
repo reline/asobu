@@ -1,6 +1,7 @@
 package fuwafuwa.asobou.model;
 
 public class LyricLine {
+
     private int lineNumber;
     private int startTime;
     private int endTime;
@@ -13,11 +14,11 @@ public class LyricLine {
         this.lyrics = lyrics;
     }
 
-    public boolean startLyrics(int currTime) {
+    public boolean startOfLine(int currTime) {
         return (startTime == currTime);
     }
 
-    public boolean endLyrics(int currTime) {
+    public boolean endOfLine(int currTime) {
         return (endTime == currTime);
     }
 

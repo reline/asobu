@@ -3,11 +3,9 @@ package fuwafuwa.asobou;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import fuwafuwa.asobou.model.User;
 
@@ -18,7 +16,8 @@ public class DashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        setTitle("こんにちは " + ((User.currentUser.getUsername().equals("")) ? User.currentUser.getId() : User.currentUser.getUsername()) + "さん!"); // TODO: get username from database using userId
+        // TODO: get username from database using userId
+        setTitle("こんにちは " + ((User.currentUser.getUserName().equals("")) ? User.currentUser.getId() : User.currentUser.getUserName()) + "さん!");
         setTitle(User.currentUser.getId());
     }
 
@@ -59,9 +58,4 @@ public class DashboardActivity extends AppCompatActivity {
     public void onHelpButtonClick(MenuItem menuItem) {
         startActivity(new Intent(this, HelpActivity.class));
     }
-
-    public void onGoToActivityPagesClick(View v) {
-        startActivity(new Intent(DashboardActivity.this, gotoeverypage.class));
-    }
-
 }

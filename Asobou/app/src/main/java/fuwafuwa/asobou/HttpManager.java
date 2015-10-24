@@ -2,39 +2,14 @@ package fuwafuwa.asobou;
 
 import android.util.Log;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
 
-/**
- * Created by mena on 7/10/2015.
- * for doing an http request
- * returns a string
- */
-@SuppressWarnings("ALL")
 public class HttpManager {
 
     public static String TAG = "HttpManager";
@@ -42,7 +17,6 @@ public class HttpManager {
     public static void postData(String uri, String data) {
 
         try {
-            //String encodedData = URLEncoder.encode(data, "UTF-8");
             URL url = new URL(uri);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoOutput(true);
@@ -55,10 +29,11 @@ public class HttpManager {
             os.flush();
             os.close();
 
-            int responseCode = connection.getResponseCode();
+            // DEBUG
+            /*int responseCode = connection.getResponseCode();
             Log.d(TAG, "\nSending 'POST' request to URL : " + url);
             Log.d(TAG, "\nPost parameters : " + data);
-            Log.d(TAG, "\nResponse Code : " + responseCode);
+            Log.d(TAG, "\nResponse Code : " + responseCode);*/
 
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(connection.getInputStream())
@@ -71,14 +46,11 @@ public class HttpManager {
             }
             in.close();
 
-            Log.d(TAG, response.toString());
+            //Log.d(TAG, response.toString()); // it's time to d-d-d-debug!
 
         } catch (IOException e) {
-            //e.printStackTrace();
-        } finally {
-
+            e.printStackTrace();
         }
-
     }
 
     public static String getData(String uri) {
@@ -95,26 +67,14 @@ public class HttpManager {
             while((line = reader.readLine()) != null){
                 sbuffer.append(line);
             }
-            // Show Http request in console **************
-            int responseCode = connection.getResponseCode();
+
+            // Show Http request in console ***DEBUG***
+            /*int responseCode = connection.getResponseCode();
             Log.d(TAG, "\nSending 'GET' request to URL : " + url);
             //Log.d(TAG, "\nPost parameters : " + data);
             Log.d(TAG, "\nResponse Code : " + responseCode);
 
-            Log.d(TAG, sbuffer.toString());
-            /*BufferedReader in = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream())
-            );
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            Log.d(TAG, response.toString());*/
-            //**********************************************
+            Log.d(TAG, sbuffer.toString());*/
 
             return sbuffer.toString();
 
@@ -122,7 +82,6 @@ public class HttpManager {
             Log.d(TAG, "Exception in HttpManager");
             e.printStackTrace();
             return null;
-
         } finally {
             if (reader != null) {
                 try{
@@ -131,11 +90,8 @@ public class HttpManager {
                 catch(IOException e) {
                     e.printStackTrace();
                 }
-
             }   //end reader if
-
         }   //end finally
-
     }   //end getData method
 
-}   //end GETmanager class
+}

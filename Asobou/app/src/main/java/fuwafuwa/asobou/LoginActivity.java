@@ -10,14 +10,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
-import fuwafuwa.asobou.model.PostData;
 import fuwafuwa.asobou.model.User;
 import io.fabric.sdk.android.Fabric;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.digits.sdk.android.Digits;
 import com.digits.sdk.android.AuthCallback;
-import com.digits.sdk.android.DigitsAuthButton;
 import com.digits.sdk.android.DigitsException;
 import com.digits.sdk.android.DigitsSession;
 
@@ -26,7 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
@@ -133,8 +130,8 @@ public class LoginActivity extends AppCompatActivity {
 
         // if that user_id is not found in the db
         if(User.currentUser == null) {
-            PostData createUser = new PostData("add_username=" + username + "&" + "add_phone=" + "none");
-            createUser.execute("http://198.199.94.36/change/backend/addnewuser.php");
+            HttpManager.postData("http://198.199.94.36/change/backend/addnewuser.php",
+                    "add_username=" + username + "&" + "add_phone=" + "none");
 
             RetrieveUsers getUsers = new RetrieveUsers();
             getUsers.execute("http://198.199.94.36/change/backend/getallnewusers.php");
@@ -149,8 +146,8 @@ public class LoginActivity extends AppCompatActivity {
     public User getUser(String username) {
         //Log.d(TAG, "Search: " + username);
         for (int i = 0; i < userList.size(); i++) {
-            Log.d(TAG, String.valueOf(userList.get(i).getUsername()));
-            if(userList.get(i).getUsername().equals(username)) { // TODO: change db for id compatibility
+            Log.d(TAG, String.valueOf(userList.get(i).getUserName()));
+            if(userList.get(i).getUserName().equals(username)) { // TODO: change db for id compatibility
                 return userList.get(i);
             }
         }
