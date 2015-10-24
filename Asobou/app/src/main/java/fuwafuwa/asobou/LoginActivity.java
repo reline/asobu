@@ -52,8 +52,8 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void success(DigitsSession digitsSession, String s) {
                         digitsSessionId = Long.toString(digitsSession.getId());
-                        RetrieveUsers getUsers = new RetrieveUsers();
-                        getUsers.execute("http://198.199.94.36/change/backend/getallnewusers.php");
+                        //RetrieveUsers getUsers = new RetrieveUsers();
+                        //getUsers.execute("http://198.199.94.36/change/backend/getallnewusers.php");
                     }
 
                     @Override
@@ -95,6 +95,8 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
     private class RetrieveUsers extends AsyncTask<String, String, String> {
 
         @Override
@@ -123,34 +125,35 @@ public class LoginActivity extends AppCompatActivity {
 
             startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
         }
+
+        private void AssignUser(String username) {
+            // TODO: create digitsSessionId number in db
+
+            // if that user_id is not found in the db
+            if(User.currentUser == null) {
+                HttpManager.postData("http://198.199.94.36/change/backend/addnewuser.php",
+                        "add_username=" + username + "&" + "add_phone=" + "none");
+
+                RetrieveUsers getUsers = new RetrieveUsers();
+                getUsers.execute("http://198.199.94.36/change/backend/getallnewusers.php");
+                User.currentUser = getUser(username);
+
+                if(User.currentUser == null) { // if things are really messed up
+                    User.currentUser = new User("8", "bura", "none");
+                }
+            }
+        }
+
+        public User getUser(String username) {
+            //Log.d(TAG, "Search: " + username);
+            for (int i = 0; i < userList.size(); i++) {
+                Log.d(TAG, String.valueOf(userList.get(i).getUserName()));
+                if(userList.get(i).getUserName().equals(username)) { // TODO: change db for id compatibility
+                    return userList.get(i);
+                }
+            }
+            return null;
+        }
     }   //end song select task
 
-    private void AssignUser(String username) {
-        // TODO: create digitsSessionId number in db
-
-        // if that user_id is not found in the db
-        if(User.currentUser == null) {
-            HttpManager.postData("http://198.199.94.36/change/backend/addnewuser.php",
-                    "add_username=" + username + "&" + "add_phone=" + "none");
-
-            RetrieveUsers getUsers = new RetrieveUsers();
-            getUsers.execute("http://198.199.94.36/change/backend/getallnewusers.php");
-            User.currentUser = getUser(username);
-
-            if(User.currentUser == null) { // if things are really messed up
-                User.currentUser = new User("8", "bura", "none");
-            }
-        }
-    }
-
-    public User getUser(String username) {
-        //Log.d(TAG, "Search: " + username);
-        for (int i = 0; i < userList.size(); i++) {
-            Log.d(TAG, String.valueOf(userList.get(i).getUserName()));
-            if(userList.get(i).getUserName().equals(username)) { // TODO: change db for id compatibility
-                return userList.get(i);
-            }
-        }
-        return null;
-    }
 }

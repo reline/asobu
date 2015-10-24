@@ -31,7 +31,7 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
 
     private static final String TAG = "SongSelectionActivity";
 
-    private String weburl = "http://198.199.94.36/change/backend/getsongselection.php";
+    private static final String GET_SONGS = "http://198.199.94.36/change/backend/getsongselection.php";
 
     private ArrayList<Song> songList = new ArrayList<>();
     private ArrayList<Song> filteredSongList = new ArrayList<>();
@@ -71,7 +71,7 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
         // get songs and place them in the listview
         songListView = (ListView) findViewById(R.id.selectsong_listview);
         if(isOnline()){
-            requestData(weburl);
+            requestData(GET_SONGS);
         } else {
             Toast.makeText(this, "The network is currently unavailable, check your connection.", Toast.LENGTH_SHORT).show();
         }

@@ -30,7 +30,7 @@ public class ScoreboardActivity extends AppCompatActivity {
 
     private static final String TAG = "ScoreboardActivity";
 
-    private String weburl = "http://198.199.94.36/change/backend/getscoreinfo.php"; // requires a user id
+    private static final String GET_SCORES = "http://198.199.94.36/change/backend/getscoreinfo.php"; // requires a user id
 
     private ArrayList<Song> songList = new ArrayList<>();
     private ArrayList<Song> filteredSongList = new ArrayList<>();
@@ -72,7 +72,7 @@ public class ScoreboardActivity extends AppCompatActivity {
         songListView = (ListView) findViewById(R.id.scoreboard_listview);
         //output = (TextView) findViewById(R.id.textView2);
         if(isOnline()){
-            requestData(weburl + "?" + "user_id=" + User.currentUser.getId()); // TODO: make user accessible throughout activities
+            requestData(GET_SCORES + "?" + "user_id=" + User.currentUser.getId()); // TODO: make user accessible throughout activities
         } else {
             Toast.makeText(this, "The network is currently unavailable, check your connection.", Toast.LENGTH_SHORT).show();
         }
