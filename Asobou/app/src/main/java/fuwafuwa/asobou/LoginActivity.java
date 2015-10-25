@@ -1,13 +1,11 @@
 package fuwafuwa.asobou;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Looper;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
     private String digitsSessionId;
+    private String PHONE_NUMBER;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,8 +78,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login() {
+        PHONE_NUMBER = getPhoneNumber();
         RetrieveUser retrieveUser = new RetrieveUser();
         retrieveUser.execute(digitsSessionId);
+    }
+
+    private String getPhoneNumber() {
+        TelephonyManager telephonyManager = (TelephonyManager) getApplicationContext().
+                getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getLine1Number();
     }
 
     @Override
@@ -165,7 +171,7 @@ public class LoginActivity extends AppCompatActivity {
 
         private void addUserToDb(String user) {
             HttpManager.postData(ADD_USER,
-                    "add_username=" + user + "&" + "add_phone=" + "none");
+                    "add_username=" + user + "&" + "add_phone=" + PHONE_NUMBER);
         }
     }
 
