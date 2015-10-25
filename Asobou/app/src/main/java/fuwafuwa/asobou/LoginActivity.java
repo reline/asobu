@@ -2,6 +2,10 @@ package fuwafuwa.asobou;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,8 +36,10 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TWITTER_KEY = "QoRJuK2MljCoc6VG19INXBHwJ";
     private static final String TWITTER_SECRET = "FfnPO03pLwiXBmfQ9zivAZ1K6qSL8PFv10KVU66HIyetrDSrTe";
 
+    public static String GET_ALL_USERS = "http://198.199.94.36/change/backend/getallnewusers.php";
+    public static String ADD_USER = "http://198.199.94.36/change/backend/addnewuser.php";
+
     private static final String TAG = "LoginActivity";
-    private List<User> userList = new ArrayList<>();
     private String digitsSessionId;
 
     @Override
@@ -50,10 +56,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Digits.authenticate(new AuthCallback() {
                     @Override
-                    public void success(DigitsSession digitsSession, String s) {
+                    public void success(final DigitsSession digitsSession, String s) {
                         digitsSessionId = Long.toString(digitsSession.getId());
-                        //RetrieveUsers getUsers = new RetrieveUsers();
-                        //getUsers.execute("http://198.199.94.36/change/backend/getallnewusers.php");
+                        login();
                     }
 
                     @Override
@@ -71,6 +76,11 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, AboutActivity.class));
             }
         });
+    }
+
+    public void login() {
+        RetrieveUser retrieveUser = new RetrieveUser();
+        retrieveUser.execute(digitsSessionId);
     }
 
     @Override
@@ -95,65 +105,68 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // class created here instead of a new file so we don't have to pass the activity to RetrieveUser
+    private class RetrieveUser extends AsyncTask<String, String, User> {
 
-
-    private class RetrieveUsers extends AsyncTask<String, String, String> {
+        private List<User> userList = new ArrayList<>();
+        private User currentUser;
 
         @Override
-        protected String doInBackground(String... params) {
-            return HttpManager.getData(params[0]);
+        protected User doInBackground(String... strings) {
+            String data =  HttpManager.getData(GET_ALL_USERS); // make an http request for the users in the db
+            parseUsers(data); // parse the users into an array list
+            setCurrentUser(digitsSessionId);
+            return currentUser;
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(User result) {
+
+            // we move to the next activity with the new user in hand!
+            startActivity(new Intent(LoginActivity.this, DashboardActivity.class)
+                    .putExtra("DIGITS_SESSION_ID", result));
+        }
+
+        private void parseUsers(String data) {
             try {
-                JSONArray array = new JSONArray(result);
-                userList = new ArrayList<>();
+                // put the result of the GET request into a JSONArray for parsing
+                JSONArray array = new JSONArray(data);
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject obj = array.getJSONObject(i);
                     User user = new User(obj.getString("user_id"), obj.getString("username"), obj.getString("phonenumber"));
                     userList.add(user);
                 }
-                Log.d(TAG, String.valueOf(userList.size()));
             } catch (JSONException e) {
-                Log.d(TAG, "JSONException");
                 e.printStackTrace();
             }
-            User.currentUser = getUser(digitsSessionId);
-
-            AssignUser(digitsSessionId);
-
-            startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
         }
 
-        private void AssignUser(String username) {
-            // TODO: create digitsSessionId number in db
-
-            // if that user_id is not found in the db
-            if(User.currentUser == null) {
-                HttpManager.postData("http://198.199.94.36/change/backend/addnewuser.php",
-                        "add_username=" + username + "&" + "add_phone=" + "none");
-
-                RetrieveUsers getUsers = new RetrieveUsers();
-                getUsers.execute("http://198.199.94.36/change/backend/getallnewusers.php");
-                User.currentUser = getUser(username);
-
-                if(User.currentUser == null) { // if things are really messed up
-                    User.currentUser = new User("8", "bura", "none");
+        private void setCurrentUser(String user) {
+            currentUser = findCurrentUser(user);
+            if (currentUser == null) {
+                addUserToDb(user);
+                currentUser = findCurrentUser(user);
+                // if currentUser is still null, set him as guest user profile
+                if (currentUser == null) {
+                    currentUser = new User();
                 }
             }
         }
 
-        public User getUser(String username) {
-            //Log.d(TAG, "Search: " + username);
+        private User findCurrentUser(String user) {
+            // look for our user, if they are not found in the db then return null
             for (int i = 0; i < userList.size(); i++) {
-                Log.d(TAG, String.valueOf(userList.get(i).getUserName()));
-                if(userList.get(i).getUserName().equals(username)) { // TODO: change db for id compatibility
+                if(userList.get(i).getUserName().equals(user)) { // TODO: change db for id compatibility
                     return userList.get(i);
                 }
             }
             return null;
         }
-    }   //end song select task
+
+        private void addUserToDb(String user) {
+            HttpManager.postData(ADD_USER,
+                    "add_username=" + user + "&" + "add_phone=" + "none");
+        }
+    }
 
 }

@@ -17,8 +17,9 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         // TODO: get username from database using userId
-        setTitle("こんにちは " + ((User.currentUser.getUserName().equals("")) ? User.currentUser.getId() : User.currentUser.getUserName()) + "さん!");
-        setTitle(User.currentUser.getId());
+        User.setCurrentUser((User) getIntent().getParcelableExtra("DIGITS_SESSION_ID"));
+        setTitle("こんにちは " + ((User.getCurrentUser().getUserName().equals("")) ? User.getCurrentUser().getId() : User.getCurrentUser().getUserName()) + "さん!");
+        //setTitle(User.getCurrentUser().getId());
     }
 
     @Override

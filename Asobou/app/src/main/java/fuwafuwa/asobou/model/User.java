@@ -1,11 +1,14 @@
 package fuwafuwa.asobou.model;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class User implements Parcelable {
 
     private String id;
     private String digitsSessionId; // TODO: implement after adding to user table in database
-    private String userName = "";
-    private String phoneNumber = "";
+    private String userName;
+    private String phoneNumber;
 
     public static User currentUser;
 
@@ -22,6 +25,38 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public User(Parcel parcel) {
+        id = parcel.readString();
+        digitsSessionId = parcel.readString();
+        userName = parcel.readString();
+        phoneNumber = parcel.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(digitsSessionId);
+        parcel.writeString(userName);
+        parcel.writeString(phoneNumber);
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel parcel) {
+            return new User(parcel);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+
     // GETTERS
 
     public String getId() {
@@ -34,6 +69,10 @@ public class User {
 
     public String getUserName() {
         return this.userName;
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
     }
 
 
@@ -49,5 +88,9 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public static void setCurrentUser(User user) {
+        currentUser = user;
     }
 }

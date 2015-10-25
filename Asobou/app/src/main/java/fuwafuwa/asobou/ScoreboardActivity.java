@@ -72,7 +72,7 @@ public class ScoreboardActivity extends AppCompatActivity {
         songListView = (ListView) findViewById(R.id.scoreboard_listview);
         //output = (TextView) findViewById(R.id.textView2);
         if(isOnline()){
-            requestData(GET_SCORES + "?" + "user_id=" + User.currentUser.getId()); // TODO: make user accessible throughout activities
+            requestData(GET_SCORES + "?" + "user_id=" + User.getCurrentUser().getId()); // TODO: make user accessible throughout activities
         } else {
             Toast.makeText(this, "The network is currently unavailable, check your connection.", Toast.LENGTH_SHORT).show();
         }

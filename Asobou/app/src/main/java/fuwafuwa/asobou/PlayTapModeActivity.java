@@ -229,7 +229,7 @@ public class PlayTapModeActivity extends YouTubeFailureRecoveryActivity {
         // TODO: get dynamic score POST to work
         // TODO: check if 'edit' or 'add' POST is needed
         // THIS WORKS
-        String userId = "add_user_id=" + User.currentUser.getId();
+        String userId = "add_user_id=" + User.getCurrentUser().getId();
         String songId = "add_song_id=" + song.getId();
         String newScore = "add_score=100"; // score won't push if passed an int
         String adddate = "add_date=" + date; //date2015-08-18 12:00:00";
