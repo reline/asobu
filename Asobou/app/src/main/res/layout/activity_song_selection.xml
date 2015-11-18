@@ -9,7 +9,7 @@
                 android:orientation="vertical"
                 android:layout_gravity="center"
                 android:background="@color/tw__solid_white"
-                tools:context="fuwafuwa.asobou.SongSelectionActivity">
+                tools:context="fuwafuwa.asobou.activities.SongSelectionActivity">
 
     <LinearLayout
         android:layout_width="fill_parent"

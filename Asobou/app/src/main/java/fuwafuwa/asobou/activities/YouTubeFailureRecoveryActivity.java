@@ -1,4 +1,4 @@
-package fuwafuwa.asobou;
+package fuwafuwa.asobou.activities;
 
 import android.content.Intent;
 import android.widget.Toast;
@@ -6,6 +6,9 @@ import android.widget.Toast;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
+
+import fuwafuwa.asobou.R;
+import fuwafuwa.asobou.model.Keys;
 
 public abstract class YouTubeFailureRecoveryActivity  extends YouTubeBaseActivity implements YouTubePlayer.OnInitializedListener {
 
@@ -26,7 +29,7 @@ public abstract class YouTubeFailureRecoveryActivity  extends YouTubeBaseActivit
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RECOVERY_DIALOG_REQUEST) {
             // Retry initialization if user performed a recovery action
-            getYouTubePlayerProvider().initialize(DeveloperKey.DEVELOPER_KEY, this);
+            getYouTubePlayerProvider().initialize(Keys.DEVELOPER_KEY, this);
         }
     }
 

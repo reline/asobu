@@ -1,17 +1,17 @@
-package fuwafuwa.asobou;
+package fuwafuwa.asobou.activities;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -22,15 +22,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import fuwafuwa.asobou.R;
+import fuwafuwa.asobou.webservices.HttpManager;
 import fuwafuwa.asobou.model.Song;
-import fuwafuwa.asobou.model.User;
-import fuwafuwa.asobou.parser.SongJSONparser;
+import fuwafuwa.asobou.model.SongJSONparser;
 
-public class ScoreboardActivity extends AppCompatActivity {
+public class SongSelectionActivity extends AppCompatActivity {//Activity implements AdapterView.OnItemClickListener{
 
-    private static final String TAG = "ScoreboardActivity";
+    // TODO: make sort the same as scoreboard
 
-    private static final String GET_SCORES = "http://198.199.94.36/change/backend/getscoreinfo.php"; // requires a user id
+    private static final String TAG = "SongSelectionActivity";
+
+    private static final String GET_SONGS = "http://198.199.94.36/change/backend/getsongselection.php";
 
     private ArrayList<Song> songList = new ArrayList<>();
     private ArrayList<Song> filteredSongList = new ArrayList<>();
@@ -42,23 +45,22 @@ public class ScoreboardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scoreboard);
+        setContentView(R.layout.activity_song_selection);
 
         //get the spinner to display the difficulty levels
-        Spinner diffView = (Spinner) findViewById(R.id.scoreboard_diffspinner);
+        Spinner diffView = (Spinner) findViewById(R.id.selectsong_diff);
         ArrayAdapter spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.order_diff_spinner, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         diffView.setAdapter(spinnerAdapter);
+
         diffView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedItem = (String) parent.getAdapter().getItem(position);
-                if(filteredSongList != null) {
-                    if (currSort.equals("Song")) {
-                        filterSongList(currSort, songAscending, selectedItem);
-                    } else {
-                        filterSongList(currSort, artistAscending, selectedItem);
-                    }
+                if(currSort.equals("Song")) {
+                    filterSongList(currSort, songAscending, selectedItem);
+                } else {
+                    filterSongList(currSort, artistAscending, selectedItem);
                 }
             }
 
@@ -68,25 +70,40 @@ public class ScoreboardActivity extends AppCompatActivity {
             }
         });
 
-
-        songListView = (ListView) findViewById(R.id.scoreboard_listview);
-        //output = (TextView) findViewById(R.id.textView2);
+        // get songs and place them in the listview
+        songListView = (ListView) findViewById(R.id.selectsong_listview);
         if(isOnline()){
-            requestData(GET_SCORES + "?" + "user_id=" + User.getCurrentUser().getId()); // TODO: make user accessible throughout activities
+            requestData(GET_SONGS);
         } else {
             Toast.makeText(this, "The network is currently unavailable, check your connection.", Toast.LENGTH_SHORT).show();
         }
 
-        songListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        songListView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Song selectedSong = (Song) parent.getAdapter().getItem(position);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(ScoreboardActivity.this);
-                builder.setMessage("Song: " + selectedSong.getTitle() +
-                                    "\nArtist: " + selectedSong.getArtist() +
-                                    "\nScore: " + selectedSong.getUserScore() +
-                                    "\nDifficulty: " + selectedSong.getDifficulty()).setTitle("Score Information");
+                AlertDialog.Builder builder = new AlertDialog.Builder(SongSelectionActivity.this);
+                builder.setMessage(R.string.song_mode_dialog_message).setTitle(R.string.song_mode_dialog_title);
+                builder.setPositiveButton(R.string.tap_mode, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(SongSelectionActivity.this, PlayTapModeActivity.class).putExtra("song", selectedSong));
+                    }
+                });
+                builder.setNeutralButton(R.string.type_mode, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(SongSelectionActivity.this, PlayTypeModeActivity.class).putExtra("song", selectedSong));
+                    }
+                });
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // user canceled dialog
+                    }
+                });
+
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
@@ -98,7 +115,7 @@ public class ScoreboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 songAscending = !songAscending;
-                sortSongList(songAscending);
+                sortSongList("Song",songAscending);
                 currSort = "Song";
                 artistAscending = false;
             }
@@ -109,46 +126,14 @@ public class ScoreboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 artistAscending = !artistAscending;
-                sortSongList(artistAscending);
+                sortSongList("Artist",artistAscending);
                 currSort = "Artist";
                 songAscending = false;
             }
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_scoreboard, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public void onSettingsButtonClick(MenuItem menuItem) {
-        startActivity(new Intent(this, SettingsActivity.class));
-    }
-
-    public void onHelpButtonClick(MenuItem menuItem) {
-        startActivity(new Intent(this, HelpActivity.class));
-    }
-
     protected void updateDisplay() {
-
         if(songList != null) {
             filterSongList("Song", true, "All"); // sort song list by ascending song title by default
             ArrayAdapter<Song> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filteredSongList);
@@ -158,55 +143,57 @@ public class ScoreboardActivity extends AppCompatActivity {
 
     private void requestData(String uri){
 
-        ScoreboardTasks task = new ScoreboardTasks();
+        SelectSongTask task = new SelectSongTask();
         task.execute(uri);
     }
 
     protected boolean isOnline(){
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return ((netInfo != null) &&(netInfo.isConnectedOrConnecting()));
+
+        return (netInfo != null && netInfo.isConnectedOrConnecting());
     }
 
-    private class ScoreboardTasks extends AsyncTask<String, String, String> {
-
-        @Override
-        protected void onPreExecute() {
-
-        }
+    private class SelectSongTask extends AsyncTask<String, String, String>{
 
         @Override
         protected String doInBackground(String... params) {
-            return HttpManager.getData(params[0]);
+            return ""; //HttpManager.getData(params[0]);
         }
 
         @Override
         protected void onPostExecute(String result) {
-            songList = (ArrayList<Song>)SongJSONparser.parseSongs(result);
+            songList = (ArrayList<Song>) SongJSONparser.parseSongs(result);
             filteredSongList = songList;
             updateDisplay();
         }
+    }   //end song select task
 
-        @Override
-        protected void onProgressUpdate(String... values) {
-
-        }
-    }   //end Scoreboard Tasks
-
-    public void sortSongList(final boolean ascending) {
-        Collections.sort(filteredSongList, new Comparator<Song>() {
-            @Override
-            public int compare(Song lhs, Song rhs) {
-                // TODO: include artists in scoreinfo GET request
-                if (ascending) {
-                    return (lhs.getTitle().compareTo(rhs.getTitle()));
-                } else {
-                    return (-lhs.getTitle().compareTo(rhs.getTitle()));
+    public void sortSongList(final String sortBy, final boolean ascending) {
+        try {
+            Collections.sort(filteredSongList, new Comparator<Song>() {
+                @Override
+                public int compare(Song lhs, Song rhs) {
+                    if (ascending) {
+                        if (sortBy.equals("Artist")) {
+                            return (lhs.getArtist().compareTo(rhs.getArtist()));
+                        } else {
+                            return (lhs.getTitle().compareTo(rhs.getTitle()));
+                        }
+                    } else { // descending
+                        if (sortBy.equals("Artist")) {
+                            return (-lhs.getArtist().compareTo(rhs.getArtist()));
+                        } else {
+                            return (-lhs.getTitle().compareTo(rhs.getTitle()));
+                        }
+                    }
                 }
-            }
-        });
-        ArrayAdapter<Song> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filteredSongList);
-        songListView.setAdapter(songAdapter);
+            });
+            ArrayAdapter<Song> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filteredSongList);
+            songListView.setAdapter(songAdapter);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public void filterSongList(String sortBy, Boolean sortMethod, String filter) {
@@ -240,9 +227,9 @@ public class ScoreboardActivity extends AppCompatActivity {
                 filteredSongList = songList;
                 break;
         }
-        sortSongList(sortMethod);
+        sortSongList(sortBy, sortMethod);
         ArrayAdapter<Song> songAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filteredSongList);
         songListView.setAdapter(songAdapter);
     }
 
-}   //end scoreboard activity
+}   //end of activity

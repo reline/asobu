@@ -7,7 +7,7 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 android:background="@color/tw__solid_white"
-                tools:context="fuwafuwa.asobou.AboutActivity">
+                tools:context="fuwafuwa.asobou.activities.AboutActivity">
     <!-- TODO: ABOUT - write a kinda sincere message to app users -->
     <TextView
         android:id="@+id/dev_note"

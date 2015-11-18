@@ -9,7 +9,7 @@
                 android:orientation="vertical"
                 android:layout_gravity="center"
               android:background="@color/tw__solid_white"
-                tools:context="fuwafuwa.asobou.ScoreboardActivity">
+                tools:context="fuwafuwa.asobou.activities.ScoreboardActivity">
 
     <LinearLayout
         android:layout_width="fill_parent"

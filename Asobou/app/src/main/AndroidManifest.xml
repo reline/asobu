@@ -5,11 +5,11 @@
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!--
- To retrieve OAuth 2.0 tokens or invalidate tokens to disconnect a user. This disconnect
+ To retrieve OAuth 2.0 tokens or invalidate tokens to disconnect a player. This disconnect
      option is required to comply with the Google+ Sign-In developer policies
     -->
     <uses-permission android:name="android.permission.USE_CREDENTIALS" /> <!-- To retrieve the account name (email) as part of sign-in: -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" /> <!-- To auto-complete the email text field in the login form with the player's emails -->
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -32,7 +32,7 @@
             android:value="6aebf3659c5f53f7d33e300095f5d2c538bfecd7" />
 
         <activity
-            android:name="LoginActivity"
+            android:name=".activities.LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,35 +40,35 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AboutActivity"
+            android:name=".activities.AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
         <activity
-            android:name=".DashboardActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/title_activity_dashboard" >
         </activity>
         <activity
-            android:name=".ScoreboardActivity"
+            android:name=".activities.ScoreboardActivity"
             android:label="@string/title_activity_scoreboard" >
         </activity>
         <activity
-            android:name=".HelpActivity"
+            android:name=".activities.HelpActivity"
             android:label="@string/title_activity_help" >
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
         <activity
-            android:name=".SongSelectionActivity"
+            android:name=".activities.SongSelectionActivity"
             android:label="@string/title_activity_song_selection" >
         </activity>
         <activity
-            android:name=".PlayTapModeActivity"
+            android:name=".activities.PlayTapModeActivity"
             android:label="@string/title_activity_play_tap_mode" >
         </activity>
         <activity
-            android:name=".PlayTypeModeActivity"
+            android:name=".activities.PlayTypeModeActivity"
             android:label="@string/title_activity_play_type_mode" >
         </activity>
     </application>

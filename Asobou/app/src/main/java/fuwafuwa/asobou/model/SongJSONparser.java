@@ -1,4 +1,4 @@
-package fuwafuwa.asobou.parser;
+package fuwafuwa.asobou.model;
 
 import android.util.Log;
 

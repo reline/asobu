@@ -3,31 +3,32 @@ package fuwafuwa.asobou.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class User implements Parcelable {
+public class Player implements Parcelable {
 
-    private String id;
-    private String digitsSessionId; // TODO: implement after adding to user table in database
+    private int id;
+    private String digitsID; // TODO: implement after adding to user table in database
     private String userName;
     private String phoneNumber;
 
-    public static User currentUser;
+    public static Player currentPlayer;
 
     // create a default/guest user account
-    public User() {
-        this.id = "0";
+    public Player() {
+        this.id = 0;
         this.userName = "Guest";
         this.phoneNumber = "1234567890";
     }
 
-    public User(String id, String userName, String phoneNumber) {
+    public Player(int id, String userName, String phoneNumber, String digitsID) {
         this.id = id;
         this.userName = userName;
         this.phoneNumber = phoneNumber;
+        this.digitsID = digitsID;
     }
 
-    public User(Parcel parcel) {
-        id = parcel.readString();
-        digitsSessionId = parcel.readString();
+    public Player(Parcel parcel) {
+        id = parcel.readInt();
+        digitsID = parcel.readString();
         userName = parcel.readString();
         phoneNumber = parcel.readString();
     }
@@ -39,27 +40,27 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(id);
-        parcel.writeString(digitsSessionId);
+        parcel.writeInt(id);
+        parcel.writeString(digitsID);
         parcel.writeString(userName);
         parcel.writeString(phoneNumber);
     }
 
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+    public static final Parcelable.Creator<Player> CREATOR = new Parcelable.Creator<Player>() {
         @Override
-        public User createFromParcel(Parcel parcel) {
-            return new User(parcel);
+        public Player createFromParcel(Parcel parcel) {
+            return new Player(parcel);
         }
 
         @Override
-        public User[] newArray(int size) {
-            return new User[size];
+        public Player[] newArray(int size) {
+            return new Player[size];
         }
     };
 
     // GETTERS
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -71,14 +72,18 @@ public class User implements Parcelable {
         return this.userName;
     }
 
-    public static User getCurrentUser() {
-        return currentUser;
+    public String getDigitsID() {
+        return this.digitsID;
     }
 
+    @Override
+    public String toString() {
+        return this.getDigitsID();
+    }
 
     // SETTERS
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -88,9 +93,5 @@ public class User implements Parcelable {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public static void setCurrentUser(User user) {
-        currentUser = user;
     }
 }

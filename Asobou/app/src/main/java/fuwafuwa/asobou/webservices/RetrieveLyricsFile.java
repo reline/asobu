@@ -1,11 +1,11 @@
-package fuwafuwa.asobou.model;
+package fuwafuwa.asobou.webservices;
 
 import android.os.AsyncTask;
 
 import java.net.URL;
 import java.util.ArrayList;
 
-import fuwafuwa.asobou.HttpManager;
+import fuwafuwa.asobou.model.LyricLine;
 
 public class RetrieveLyricsFile extends AsyncTask<String, String, String>
 {
@@ -17,7 +17,7 @@ public class RetrieveLyricsFile extends AsyncTask<String, String, String>
     @Override
     protected String doInBackground(String... params)
     {
-        return HttpManager.getData(params[0]);
+        return ""; //HttpManager.getData(params[0]);
     }
 
     @Override

@@ -1,31 +1,25 @@
-package fuwafuwa.asobou;
+package fuwafuwa.asobou.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import fuwafuwa.asobou.model.User;
+import fuwafuwa.asobou.R;
 
-public class DashboardActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
-
-        // TODO: get username from database using userId
-        User.setCurrentUser((User) getIntent().getParcelableExtra("DIGITS_SESSION_ID"));
-        setTitle("こんにちは " + ((User.getCurrentUser().getUserName().equals("")) ? User.getCurrentUser().getId() : User.getCurrentUser().getUserName()) + "さん!");
-        //setTitle(User.getCurrentUser().getId());
+        setContentView(R.layout.activity_settings);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        getMenuInflater().inflate(R.menu.menu_settings, menu);
         return true;
     }
 
@@ -42,18 +36,6 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void onViewMoreButtonClick(View v){
-        startActivity(new Intent(DashboardActivity.this, ScoreboardActivity.class));
-    }
-
-    public void onPlayButtonClick(View v) {
-        startActivity(new Intent(this, SongSelectionActivity.class));
-    }
-
-    public void onSettingsButtonClick(MenuItem menuItem) {
-        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     public void onHelpButtonClick(MenuItem menuItem) {

@@ -1,10 +1,12 @@
-package fuwafuwa.asobou;
+package fuwafuwa.asobou.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import fuwafuwa.asobou.R;
 
 public class HelpActivity extends AppCompatActivity {
 
