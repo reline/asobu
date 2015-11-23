@@ -15,16 +15,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
-        
-        setTitle("こんにちは " + ((Player.currentPlayer.getUserName().equals("")) ? Player.currentPlayer.getId() : Player.currentPlayer.getUserName()) + "さん!");
-        //setTitle(Player.getCurrentPlayer().getId());
+        setContentView(R.layout.activity_main);
+
+        setTitle("こんにちは " + Player.currentPlayer.getUserName() + "さん!");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_dashboard, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -43,12 +42,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onViewMoreButtonClick(View v){
+    public void onScoreboardButtonClick(View v) {
         startActivity(new Intent(MainActivity.this, ScoreboardActivity.class));
     }
 
     public void onPlayButtonClick(View v) {
-        startActivity(new Intent(this, SongSelectionActivity.class));
+        //startActivity(new Intent(this, SongSelectionActivity.class));
     }
 
     public void onSettingsButtonClick(MenuItem menuItem) {
@@ -57,5 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void onHelpButtonClick(MenuItem menuItem) {
         startActivity(new Intent(this, HelpActivity.class));
+    }
+
+    public void onAboutButtonClick(MenuItem menuItem) {
+        startActivity(new Intent(this, AboutActivity.class));
     }
 }

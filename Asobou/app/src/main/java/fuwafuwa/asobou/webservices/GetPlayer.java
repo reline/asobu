@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 
 public class GetPlayer extends AsyncTask<String, String, String> {
 
-    private static String GET_PLAYER = HttpManager.SERVER + "/getplayer.php";
+    private static final String GET_PLAYER = HttpManager.SERVER + "/getplayer.php";
 
     // ID
     // UserName

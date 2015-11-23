@@ -10,5 +10,9 @@
         android:title="@string/action_help"
         android:orderInCategory="2"
         android:onClick="onHelpButtonClick"/>
+    <item android:id="@+id/action_about"
+        android:title="@string/action_about"
+        android:orderInCategory="3"
+        android:onClick="onAboutButtonClick"/>
 
 </menu>

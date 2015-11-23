@@ -203,12 +203,14 @@ public class PlayTypeModeActivity extends YouTubeFailureRecoveryActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         startActivity(new Intent(PlayTypeModeActivity.this, ScoreboardActivity.class));
+                        finish();
                     }
                 });
                 builder.setNegativeButton(R.string.dashboard, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         startActivity(new Intent(PlayTypeModeActivity.this, MainActivity.class));
+                        finish();
                     }
                 });
 

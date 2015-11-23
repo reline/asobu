@@ -29,8 +29,6 @@ import fuwafuwa.asobou.model.SongJSONparser;
 
 public class SongSelectionActivity extends AppCompatActivity {//Activity implements AdapterView.OnItemClickListener{
 
-    // TODO: make sort the same as scoreboard
-
     private static final String TAG = "SongSelectionActivity";
 
     private static final String GET_SONGS = "http://198.199.94.36/change/backend/getsongselection.php";

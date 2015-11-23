@@ -5,12 +5,12 @@ import android.os.Parcelable;
 
 public class Player implements Parcelable {
 
+    public static Player currentPlayer;
+
     private int id;
     private String digitsID; // TODO: implement after adding to user table in database
     private String userName;
     private String phoneNumber;
-
-    public static Player currentPlayer;
 
     // create a default/guest user account
     public Player() {

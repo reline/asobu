@@ -45,6 +45,7 @@
     <string name="song">Song</string>
     <string name="score">Score</string>
     <string name="viewMore">View More&#8230;</string>
+    <string name="logo_description">Logo</string>
 
     <!-- HelpActivity -->
     <string name="title_activity_help">Help</string>
@@ -108,5 +109,6 @@
     <string name="tap_mode">Tap Mode</string>
     <string name="type_mode">Type Mode</string>
     <string name="cancel">Cancel</string>
+    <string name="action_about">About</string>
 
 </resources>

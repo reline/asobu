@@ -8,17 +8,15 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context="fuwafuwa.asobou.activities.MainActivity"
                 android:background="@color/tw__solid_white">
-    <!-- TODO: add a logo picture here-->
+
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:id="@+id/imageView"
-        android:src="@drawable/babymetal"
+        android:src="@drawable/asobu_logo_red"
+        android:contentDescription="@string/logo_description"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="-100dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="10dp"/>
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/play_button"
@@ -27,17 +25,18 @@
         android:text="@string/play"
         android:clickable="true"
         android:onClick="onPlayButtonClick"
-        android:layout_alignBottom="@+id/imageView"
-        android:layout_centerHorizontal="true"/>
+        android:layout_below="@+id/imageView"
+        android:layout_alignLeft="@+id/scoreboard"
+        android:layout_alignStart="@+id/scoreboard" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:text="@string/title_activity_scoreboard"
-        android:id="@+id/view_more_scores_button"
-        android:layout_centerHorizontal="true"
-        android:onClick="onViewMoreButtonClick"
-        android:layout_below="@+id/play_button"/>
+        android:id="@+id/scoreboard"
+        android:onClick="onScoreboardButtonClick"
+        android:layout_below="@+id/play_button"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

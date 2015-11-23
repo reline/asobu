@@ -3,6 +3,7 @@ package fuwafuwa.asobou.activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -63,14 +64,6 @@ public class LoginActivity extends AppCompatActivity {
                 });
             }
         });
-
-        Button aboutButton = (Button) findViewById(R.id.about_button);
-        aboutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, AboutActivity.class));
-            }
-        });
     }
 
     public void login() {
@@ -117,9 +110,15 @@ public class LoginActivity extends AppCompatActivity {
         // Show the signed-in alert
         showDialog(R.string.signed_in, R.string.signin_status_changed);
 
-        // go to maps activity
-        Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
-        LoginActivity.this.startActivity(myIntent);
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                // go to maps activity
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                LoginActivity.this.startActivity(intent);
+                finish();
+            }
+        }, 2000);
+
     }
 
     private void showDialog(int message, int title) {
