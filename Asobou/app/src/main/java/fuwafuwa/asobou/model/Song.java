@@ -12,7 +12,12 @@ public class Song implements Parcelable {
     private String album;
     private String genre;
     private long length;
+
+    public enum Difficulty {
+        slow, medium, fast
+    }
     private String difficulty;
+
     private String albumArtwork;
 
     //media info
@@ -27,10 +32,18 @@ public class Song implements Parcelable {
 
     //user score info
     private int userScore;
-    //TODO: implement datatime thing...  -- which is what exactly again?
 
-    public Song() { // don't delete me!
+    public Song() { /* don't delete me! */ }
 
+    public Song(int ID, String Name, String Artist, String Album, String Genre, long Length,
+                String Difficulty) {
+        this.songId = ID;
+        this.title = Name;
+        this.artist = Artist;
+        this.album = Album;
+        this.genre = Genre;
+        this.length = Length;
+        this.difficulty = Difficulty;
     }
 
     @Override

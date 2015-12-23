@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onPlayButtonClick(View v) {
-        //startActivity(new Intent(this, SongSelectionActivity.class));
+        startActivity(new Intent(this, SongSelectionActivity.class));
     }
 
     public void onSettingsButtonClick(MenuItem menuItem) {
