@@ -40,7 +40,7 @@ public class ScoreboardActivity extends AppCompatActivity {
         new GetSong() {
             @Override
             protected void onPostExecute(String data) {
-                
+
             }
         }.execute("*");
     }

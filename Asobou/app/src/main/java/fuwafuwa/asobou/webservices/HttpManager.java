@@ -18,6 +18,9 @@ public class HttpManager {
     public static void postData(String uri, String data) {
 
         try {
+            uri += "?" + data;
+            Log.d(TAG, uri);
+
             URL url = new URL(uri);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
