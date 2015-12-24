@@ -24,15 +24,15 @@ public class JSONArrayToSongList {
             */
             JSONArray array = new JSONArray(content);
 
-            // Log.d(TAG, "- Content: " + content);
+            Log.d(TAG, "- Content: " + content);
 
-            // Log.d(TAG, "- JSONarray: " + array.toString());
+            Log.d(TAG, "- JSONarray: " + array.toString());
 
             List<Song> songList = new ArrayList<>();
 
             for (int i=0; i < array.length(); i++){
                 JSONObject obj = array.getJSONObject(i);
-                //Log.d(TAG, " JSONobj: " + obj.toString());
+                Log.d(TAG, " JSONobj: " + obj.toString());
 
                 String[] length = obj.getString("Length").split(":");
                 int hours = Integer.parseInt(length[0]);
@@ -40,7 +40,7 @@ public class JSONArrayToSongList {
                 int seconds = Integer.parseInt(length[2]) + minutes*60;
 
                 Song song = new Song(obj.getInt("ID"), obj.getString("Name"), obj.getString("Artist"),
-                        obj.getString("Album"), obj.getString("Genre"), seconds, obj.getString("Difficult"));
+                        obj.getString("Album"), obj.getString("Genre"), seconds, obj.getString("Difficulty"));
 
                 songList.add(song);
             }
@@ -48,7 +48,7 @@ public class JSONArrayToSongList {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            return null;
+            return new ArrayList<>();
         }
     }
 

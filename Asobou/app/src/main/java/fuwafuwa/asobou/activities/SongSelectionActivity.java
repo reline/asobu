@@ -53,13 +53,13 @@ public class SongSelectionActivity extends AppCompatActivity {//Activity impleme
                 builder.setPositiveButton(R.string.tap_mode, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(SongSelectionActivity.this, PlayTapModeActivity.class).putExtra("song", selectedSong));
+                        // startActivity(new Intent(SongSelectionActivity.this, PlayTapModeActivity.class).putExtra("song", selectedSong));
                     }
                 });
                 builder.setNeutralButton(R.string.type_mode, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(SongSelectionActivity.this, PlayTypeModeActivity.class).putExtra("song", selectedSong));
+                        // startActivity(new Intent(SongSelectionActivity.this, PlayTypeModeActivity.class).putExtra("song", selectedSong));
                     }
                 });
                 builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

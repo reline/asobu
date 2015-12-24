@@ -8,11 +8,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fuwafuwa.asobou.R;
+import fuwafuwa.asobou.model.JSONArrayToSongList;
 import fuwafuwa.asobou.model.Song;
 import fuwafuwa.asobou.webservices.GetSong;
 
@@ -20,7 +23,7 @@ public class ScoreboardActivity extends AppCompatActivity {
 
     private static final String TAG = "ScoreboardActivity";
 
-    private ArrayList<Song> songList = new ArrayList<>();
+    private List<Song> songList = new ArrayList<>();
     private ListView songListView;
 
     @Override
@@ -39,10 +42,12 @@ public class ScoreboardActivity extends AppCompatActivity {
 
         new GetSong() {
             @Override
-            protected void onPostExecute(String data) {
-
+            protected void onPostExecute(String result) {
+                songList = JSONArrayToSongList.parseSongs(result);
+                ArrayAdapter songAdapter = new ArrayAdapter<>(ScoreboardActivity.this, android.R.layout.simple_list_item_1, songList);
+                songListView.setAdapter(songAdapter);
             }
-        }.execute("*");
+        }.execute("*"); // retrieve all songs
     }
 
     private void showScoreDialog(Song selectedSong) {
